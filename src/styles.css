@@ -691,6 +691,7 @@ p {
     align-items: stretch;
     justify-content: flex-end;
     scroll-snap-align: none;
+    scroll-margin-top: 110px;
     background-size: cover !important;
     background-position: center !important;
   }

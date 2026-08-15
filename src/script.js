@@ -439,6 +439,8 @@ document.addEventListener("DOMContentLoaded", function () {
       if (entry.caption) runScramble(entry.caption);
     };
 
+    var isStackedLayout = window.matchMedia("(max-width: 860px)").matches;
+
     var panelObserver = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
@@ -447,7 +449,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         });
       },
-      { root: projectsScroll, threshold: 0.6 }
+      { root: isStackedLayout ? null : projectsScroll, threshold: 0.6 }
     );
 
     projectPanels.forEach(function (panel) {
