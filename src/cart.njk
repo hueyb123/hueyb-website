@@ -1,0 +1,25 @@
+---
+layout: base.njk
+title: "Cart | Huey B"
+---
+    <section class="page-header container">
+      <h1>Cart</h1>
+      <p>Review your order before checkout.</p>
+    </section>
+
+    <section class="container cart-page">
+      <div id="cart-items" class="cart-items"></div>
+      <p id="cart-empty-message" class="cart-empty-message" style="display:none;">Your cart is empty. <a href="/prints/">Browse prints</a>.</p>
+
+      <div id="cart-checkout" class="cart-checkout" style="display:none;">
+        <div class="cart-total-row">
+          <span>Total</span>
+          <span id="cart-total">$0.00</span>
+        </div>
+        <div id="paypal-button-container" class="paypal-button-container"></div>
+      </div>
+
+      <p id="cart-note" class="print-checkout-note" style="display:none;"></p>
+    </section>
+
+    <script src="https://www.paypal.com/sdk/js?client-id=BAAVtW7msVBDVDbzG75GhdnwuCezk0y8Hrd8Phl2w7L5txEJn4YL4JCNtnUNK87yBv9S_C3np9a8lVYXMg&currency=USD"></script>

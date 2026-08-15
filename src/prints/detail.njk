@@ -27,7 +27,7 @@ eleventyComputed:
       <p class="print-description">{{ print.data.description }}</p>
       {% endif %}
 
-      <div class="print-variants" data-print-name="{{ print.data.name }}">
+      <div class="print-variants" data-print-slug="{{ print.fileSlug }}" data-print-name="{{ print.data.name }}" data-print-image="{{ print.data.image }}">
         {% for variant in print.data.variants %}
         <button type="button" class="variant-option{% if variant.sold_out %} is-sold-out{% endif %}" data-label="{{ variant.label }}" data-price="{{ variant.price }}"{% if variant.sold_out %} disabled{% endif %}>
           <span class="variant-label">{{ variant.label }}</span>
@@ -37,9 +37,7 @@ eleventyComputed:
       </div>
 
       <div class="print-checkout">
-        <div id="paypal-button-container" class="paypal-button-container"></div>
-        <p class="print-checkout-note" style="display:none;">Select a size above to continue.</p>
+        <button type="button" id="add-to-cart-btn" class="btn" disabled>Select a size</button>
+        <p class="print-checkout-note" style="display:none;"></p>
       </div>
     </section>
-
-    <script src="https://www.paypal.com/sdk/js?client-id=BAAVtW7msVBDVDbzG75GhdnwuCezk0y8Hrd8Phl2w7L5txEJn4YL4JCNtnUNK87yBv9S_C3np9a8lVYXMg&currency=USD"></script>

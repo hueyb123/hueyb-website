@@ -215,23 +215,36 @@ Huey sells prints directly — no Etsy/Shopify — prints and ships everything
 herself, and wanted to connect straight to her own PayPal account. Full
 context/reasoning lives in the plan history; summary of what's built:
 
-- **Phase 1 (live)**: client-side PayPal Smart Buttons on
-  `src/prints/detail.njk`. Each print's `variants` are rendered as
-  size-picker buttons (`.variant-option`); selecting one re-renders a
-  `paypal.Buttons()` instance for that variant's exact price (logic in
-  `src/script.js`, guarded by `.print-variants` existing on the page — a
-  no-op everywhere else). Checkout is configured to collect a shipping
-  address, which lands in the transaction details in Huey's own PayPal
+- **Phase 1 (live)**, since revised to a real cart: `src/prints/detail.njk`
+  renders each print's `variants` as size-picker buttons
+  (`.variant-option`); selecting one enables an **Add to Cart** button
+  (`#add-to-cart-btn`, plain `.btn`, no PayPal SDK loaded on this page
+  anymore). The cart itself is `localStorage` under the key `hueyb_cart`
+  (array of `{slug, name, variantLabel, price, image, quantity}`) — no
+  backend, so it's per-browser only. `src/cart.njk` (`/cart/`, linked from
+  the header cart icon, which used to just point at `/prints/`) renders the
+  cart contents client-side and runs **one** `paypal.Buttons()` checkout
+  for everything in it at once — a single PayPal order with one
+  `purchase_unit` whose `items` array lists every line, rather than a
+  separate payment per print. The header's `.cart-badge` count updates from
+  `localStorage` on every page load (`updateCartBadge()` in `src/script.js`,
+  runs unconditionally, not gated behind any page-specific element). Cart
+  clears automatically after a successful checkout capture. Checkout is
+  configured to collect a shipping address, which lands in the transaction
+  details in Huey's own PayPal
   account/email — no separate order-notification system was built, since
   PayPal's own notifications cover it for now.
 - **Live PayPal Client ID is hardcoded** directly in the `<script src=
-  "https://www.paypal.com/sdk/js?client-id=...">` tag in
-  `src/prints/detail.njk` — this is intentional and safe, Client IDs are
-  meant to be public (unlike the Secret, which Phase 2 will need and which
-  must go in a Netlify environment variable, never the repo).
+  "https://www.paypal.com/sdk/js?client-id=...">` tag in `src/cart.njk`
+  (the only page that loads the PayPal SDK now that checkout moved off the
+  print detail page) — this is intentional and safe, Client IDs are meant
+  to be public (unlike the Secret, which Phase 2 will need and which must
+  go in a Netlify environment variable, never the repo).
 - Confirmed working end-to-end 2026-08-15: a real $1 test purchase on a
-  throwaway print completed successfully and appeared in Huey's PayPal
-  account with a shipping address attached, then the test print was deleted.
+  throwaway print completed successfully via the original single-item
+  checkout and appeared in Huey's PayPal account with a shipping address
+  attached; the cart rework happened afterward and hasn't had a fresh real
+  purchase run through it yet, only manual add/remove/badge verification.
 - **Known limitation (by design, for now)**: entirely client-side. No
   server-side price validation (a tampered client could submit a lower
   price) and no real stock enforcement for `limited` edition_type variants

@@ -991,6 +991,107 @@ p {
   outline-offset: 3px;
 }
 
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn:disabled:hover {
+  background-color: transparent;
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+
+/* ==========================================================================
+   Cart page
+   ========================================================================== */
+
+.cart-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding-bottom: 100px;
+}
+
+.cart-empty-message {
+  color: var(--color-text-muted);
+}
+
+.cart-empty-message a {
+  color: var(--color-accent);
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 64px 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.cart-item-image {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius);
+  background-color: var(--color-bg-alt);
+  background-size: cover;
+  background-position: center;
+}
+
+.cart-item-name {
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.cart-item-variant,
+.cart-item-qty {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.cart-item-price {
+  font-size: 0.9rem;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+.cart-item-remove {
+  border: none;
+  background: none;
+  color: var(--color-text-muted);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color var(--transition);
+}
+
+.cart-item-remove:hover {
+  color: var(--color-accent);
+}
+
+.cart-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 1rem;
+  color: var(--color-text);
+  margin-bottom: 20px;
+  padding-top: 4px;
+}
+
+#cart-total {
+  color: var(--color-accent);
+  font-size: 1.2rem;
+}
+
 /* ==========================================================================
    Forms (Contact page)
    ========================================================================== */

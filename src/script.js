@@ -63,6 +63,55 @@ document.addEventListener("DOMContentLoaded", function () {
     if (e.key === "Escape") closeDropdowns();
   });
 
+  var CART_STORAGE_KEY = "hueyb_cart";
+
+  function getCart() {
+    try {
+      var raw = localStorage.getItem(CART_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function updateCartBadge() {
+    var badge = document.querySelector(".cart-badge");
+    if (!badge) return;
+    var count = getCart().reduce(function (sum, item) {
+      return sum + item.quantity;
+    }, 0);
+    badge.textContent = count;
+  }
+
+  function saveCart(items) {
+    try {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+    } catch (e) {}
+    updateCartBadge();
+  }
+
+  function addToCart(entry) {
+    var cart = getCart();
+    var existing = cart.filter(function (item) {
+      return item.slug === entry.slug && item.variantLabel === entry.variantLabel;
+    })[0];
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      entry.quantity = 1;
+      cart.push(entry);
+    }
+    saveCart(cart);
+  }
+
+  function removeFromCart(index) {
+    var cart = getCart();
+    cart.splice(index, 1);
+    saveCart(cart);
+  }
+
+  updateCartBadge();
+
   var studioGrid = document.getElementById("studio-grid");
   if (studioGrid) {
     var studioTileLinks = studioGrid.querySelectorAll("a.tile");
@@ -90,51 +139,30 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   var printVariants = document.querySelector(".print-variants");
-  if (printVariants && window.paypal) {
+  if (printVariants) {
     var variantButtons = Array.prototype.slice.call(printVariants.querySelectorAll(".variant-option"));
-    var payPalContainer = document.getElementById("paypal-button-container");
+    var addToCartBtn = document.getElementById("add-to-cart-btn");
     var checkoutNote = document.querySelector(".print-checkout-note");
+    var printSlug = printVariants.getAttribute("data-print-slug");
     var printName = printVariants.getAttribute("data-print-name");
-
-    var renderPayPalButton = function (variant) {
-      payPalContainer.innerHTML = "";
-      window.paypal
-        .Buttons({
-          style: { layout: "horizontal", color: "black", shape: "rect", label: "pay" },
-          createOrder: function (data, actions) {
-            return actions.order.create({
-              purchase_units: [
-                {
-                  description: printName + " (" + variant.label + ")",
-                  amount: { value: variant.price.toFixed(2) },
-                },
-              ],
-              application_context: { shipping_preference: "GET_FROM_FILE" },
-            });
-          },
-          onApprove: function (data, actions) {
-            return actions.order.capture().then(function () {
-              payPalContainer.innerHTML = "";
-              if (checkoutNote) {
-                checkoutNote.textContent = "Thanks — your order is confirmed! It'll ship soon.";
-                checkoutNote.style.display = "block";
-              }
-            });
-          },
-        })
-        .render(payPalContainer);
-    };
+    var printImage = printVariants.getAttribute("data-print-image");
+    var selectedVariant = null;
+    var addToCartResetTimer = null;
 
     var selectVariant = function (btn) {
       variantButtons.forEach(function (b) {
         b.classList.remove("is-selected");
       });
       btn.classList.add("is-selected");
-      if (checkoutNote) checkoutNote.style.display = "none";
-      renderPayPalButton({
+      selectedVariant = {
         label: btn.getAttribute("data-label"),
         price: parseFloat(btn.getAttribute("data-price")),
-      });
+      };
+      if (addToCartBtn) {
+        addToCartBtn.disabled = false;
+        addToCartBtn.textContent = "Add to Cart";
+      }
+      if (checkoutNote) checkoutNote.style.display = "none";
     };
 
     variantButtons.forEach(function (btn) {
@@ -143,15 +171,154 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener("click", function () {
+        if (!selectedVariant) return;
+        addToCart({
+          slug: printSlug,
+          name: printName,
+          variantLabel: selectedVariant.label,
+          price: selectedVariant.price,
+          image: printImage,
+        });
+        addToCartBtn.textContent = "Added ✓";
+        clearTimeout(addToCartResetTimer);
+        addToCartResetTimer = setTimeout(function () {
+          addToCartBtn.textContent = "Add to Cart";
+        }, 1400);
+      });
+    }
+
     var availableVariants = variantButtons.filter(function (b) {
       return !b.disabled;
     });
     if (availableVariants.length === 1) {
       selectVariant(availableVariants[0]);
-    } else if (!availableVariants.length && checkoutNote) {
-      checkoutNote.textContent = "This print is sold out.";
-      checkoutNote.style.display = "block";
+    } else if (!availableVariants.length) {
+      if (addToCartBtn) addToCartBtn.style.display = "none";
+      if (checkoutNote) {
+        checkoutNote.textContent = "This print is sold out.";
+        checkoutNote.style.display = "block";
+      }
     }
+  }
+
+  var cartItemsEl = document.getElementById("cart-items");
+  if (cartItemsEl) {
+    var cartEmptyMsg = document.getElementById("cart-empty-message");
+    var cartCheckoutEl = document.getElementById("cart-checkout");
+    var cartTotalEl = document.getElementById("cart-total");
+    var cartPayPalContainer = document.getElementById("paypal-button-container");
+    var cartNote = document.getElementById("cart-note");
+
+    var renderCart = function () {
+      var cart = getCart();
+      cartItemsEl.innerHTML = "";
+
+      if (!cart.length) {
+        if (cartEmptyMsg) cartEmptyMsg.style.display = "block";
+        if (cartCheckoutEl) cartCheckoutEl.style.display = "none";
+        return;
+      }
+
+      if (cartEmptyMsg) cartEmptyMsg.style.display = "none";
+      if (cartCheckoutEl) cartCheckoutEl.style.display = "block";
+
+      var total = 0;
+      cart.forEach(function (item, index) {
+        total += item.price * item.quantity;
+
+        var row = document.createElement("div");
+        row.className = "cart-item";
+
+        var thumb = document.createElement("div");
+        thumb.className = "cart-item-image";
+        if (item.image) thumb.style.backgroundImage = "url('" + item.image + "')";
+
+        var info = document.createElement("div");
+        info.className = "cart-item-info";
+        var nameEl = document.createElement("div");
+        nameEl.className = "cart-item-name";
+        nameEl.textContent = item.name;
+        var variantEl = document.createElement("div");
+        variantEl.className = "cart-item-variant";
+        variantEl.textContent = item.variantLabel;
+        var qtyEl = document.createElement("div");
+        qtyEl.className = "cart-item-qty";
+        qtyEl.textContent = "Qty: " + item.quantity;
+        info.appendChild(nameEl);
+        info.appendChild(variantEl);
+        info.appendChild(qtyEl);
+
+        var priceEl = document.createElement("div");
+        priceEl.className = "cart-item-price";
+        priceEl.textContent = "$" + (item.price * item.quantity).toFixed(2);
+
+        var removeBtn = document.createElement("button");
+        removeBtn.type = "button";
+        removeBtn.className = "cart-item-remove";
+        removeBtn.setAttribute("aria-label", "Remove");
+        removeBtn.textContent = "×";
+        removeBtn.addEventListener("click", function () {
+          removeFromCart(index);
+          renderCart();
+        });
+
+        row.appendChild(thumb);
+        row.appendChild(info);
+        row.appendChild(priceEl);
+        row.appendChild(removeBtn);
+        cartItemsEl.appendChild(row);
+      });
+
+      if (cartTotalEl) cartTotalEl.textContent = "$" + total.toFixed(2);
+
+      if (window.paypal && cartPayPalContainer) {
+        cartPayPalContainer.innerHTML = "";
+        window.paypal
+          .Buttons({
+            style: { layout: "horizontal", color: "black", shape: "rect", label: "pay" },
+            createOrder: function (data, actions) {
+              var currentCart = getCart();
+              var items = currentCart.map(function (item) {
+                return {
+                  name: item.name + " (" + item.variantLabel + ")",
+                  unit_amount: { currency_code: "USD", value: item.price.toFixed(2) },
+                  quantity: String(item.quantity),
+                };
+              });
+              var itemTotal = currentCart.reduce(function (sum, item) {
+                return sum + item.price * item.quantity;
+              }, 0);
+              return actions.order.create({
+                purchase_units: [
+                  {
+                    items: items,
+                    amount: {
+                      value: itemTotal.toFixed(2),
+                      breakdown: { item_total: { currency_code: "USD", value: itemTotal.toFixed(2) } },
+                    },
+                  },
+                ],
+                application_context: { shipping_preference: "GET_FROM_FILE" },
+              });
+            },
+            onApprove: function (data, actions) {
+              return actions.order.capture().then(function () {
+                saveCart([]);
+                renderCart();
+                if (cartNote) {
+                  cartNote.textContent = "Thanks — your order is confirmed! It'll ship soon.";
+                  cartNote.style.display = "block";
+                }
+              });
+            },
+          })
+          .render(cartPayPalContainer);
+      }
+    };
+
+    renderCart();
   }
 
   var GLITCH_CHARS = "$&#%@!<>[]{}=+*^?/\\_~";
