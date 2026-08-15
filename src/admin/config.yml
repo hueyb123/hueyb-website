@@ -68,9 +68,26 @@ collections:
     identifier_field: name
     fields:
       - { label: "Name", name: "name", widget: "string" }
-      - { label: "Price", name: "price", widget: "string", hint: "Written however you like — \"$24\", \"Inquire\", etc." }
+      - { label: "Description", name: "description", widget: "text", required: false }
       - { label: "Image", name: "image", widget: "image" }
-      - { label: "Sold Out", name: "sold_out", widget: "boolean", default: false, hint: "Shows a Sold Out label instead of Add to Cart." }
+      - label: "Edition Type"
+        name: "edition_type"
+        widget: "select"
+        default: "open"
+        hint: "Open = you print it whenever it sells, no fixed count. Limited = a fixed number of copies exist."
+        options:
+          - { label: "Open / Print-on-Demand", value: "open" }
+          - { label: "Limited Edition", value: "limited" }
+      - label: "Sizes"
+        name: "variants"
+        widget: "list"
+        summary: "{{fields.label}} — ${{fields.price}}"
+        hint: "Add one entry even if there's only a single size. Each size has its own price and sold-out status."
+        fields:
+          - { label: "Size / Label", name: "label", widget: "string", hint: "e.g. \"8x10\", or \"Standard\" if there's only one." }
+          - { label: "Price (USD)", name: "price", widget: "number", value_type: "float", hint: "Include shipping in this number — nothing is added at checkout." }
+          - { label: "Total Copies", name: "quantity", widget: "number", value_type: "int", required: false, hint: "Only matters for Limited Edition prints — how many of this size exist." }
+          - { label: "Sold Out", name: "sold_out", widget: "boolean", default: false }
 
   - name: "cv"
     label: "CV"

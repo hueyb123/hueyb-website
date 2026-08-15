@@ -10,18 +10,17 @@ nav: prints
 
     <section class="container">
       <div class="tile-grid">
-        {% for product in collections.prints %}
-        <div class="tile reveal"{% if product.data.image %} style="background-image:url('{{ product.data.image }}');background-size:cover;background-position:center;"{% endif %}>
+        {% for print in collections.prints %}
+        <a href="/prints/{{ print.fileSlug }}/" class="tile reveal"{% if print.data.image %} style="background-image:url('{{ print.data.image }}');background-size:cover;background-position:center;"{% endif %}>
           <div class="tile-overlay">
-            <h3>{{ product.data.name }}</h3>
-            <div class="tile-price">{{ product.data.price }}</div>
-            {% if product.data.sold_out %}
+            <h3>{{ print.data.name }}</h3>
+            {% if print.data.variants | allSoldOut %}
             <div class="tile-sold-out">Sold Out</div>
             {% else %}
-            <button class="btn">Add to Cart</button>
+            <div class="tile-price">{% if print.data.variants.length > 1 %}From {% endif %}${{ print.data.variants | minPrice }}</div>
             {% endif %}
           </div>
-        </div>
+        </a>
         {% endfor %}
       </div>
     </section>

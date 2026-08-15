@@ -1,0 +1,45 @@
+---
+pagination:
+  data: collections.prints
+  size: 1
+  alias: print
+permalink: "prints/{{ print.fileSlug }}/index.html"
+layout: base.njk
+nav: prints
+eleventyComputed:
+  title: "{{ print.data.name }} | Huey B"
+---
+    <a href="/prints/" class="back-button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      Prints
+    </a>
+
+    <section class="page-header container">
+      <h1>{{ print.data.name }}</h1>
+    </section>
+
+    <section class="container print-detail">
+      {% if print.data.image %}
+      <img src="{{ print.data.image }}" alt="{{ print.data.name }}" class="print-image">
+      {% endif %}
+
+      {% if print.data.description %}
+      <p class="print-description">{{ print.data.description }}</p>
+      {% endif %}
+
+      <div class="print-variants" data-print-name="{{ print.data.name }}">
+        {% for variant in print.data.variants %}
+        <button type="button" class="variant-option{% if variant.sold_out %} is-sold-out{% endif %}" data-label="{{ variant.label }}" data-price="{{ variant.price }}"{% if variant.sold_out %} disabled{% endif %}>
+          <span class="variant-label">{{ variant.label }}</span>
+          <span class="variant-price">{% if variant.sold_out %}Sold Out{% else %}${{ variant.price }}{% endif %}</span>
+        </button>
+        {% endfor %}
+      </div>
+
+      <div class="print-checkout">
+        <div id="paypal-button-container" class="paypal-button-container"></div>
+        <p class="print-checkout-note" style="display:none;">Select a size above to continue.</p>
+      </div>
+    </section>
+
+    <script src="https://www.paypal.com/sdk/js?client-id=BAAVtW7msVBDVDbzG75GhdnwuCezk0y8Hrd8Phl2w7L5txEJn4YL4JCNtnUNK87yBv9S_C3np9a8lVYXMg&currency=USD"></script>

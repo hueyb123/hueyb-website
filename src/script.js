@@ -89,6 +89,71 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  var printVariants = document.querySelector(".print-variants");
+  if (printVariants && window.paypal) {
+    var variantButtons = Array.prototype.slice.call(printVariants.querySelectorAll(".variant-option"));
+    var payPalContainer = document.getElementById("paypal-button-container");
+    var checkoutNote = document.querySelector(".print-checkout-note");
+    var printName = printVariants.getAttribute("data-print-name");
+
+    var renderPayPalButton = function (variant) {
+      payPalContainer.innerHTML = "";
+      window.paypal
+        .Buttons({
+          style: { layout: "horizontal", color: "black", shape: "rect", label: "pay" },
+          createOrder: function (data, actions) {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  description: printName + " (" + variant.label + ")",
+                  amount: { value: variant.price.toFixed(2) },
+                },
+              ],
+              application_context: { shipping_preference: "GET_FROM_FILE" },
+            });
+          },
+          onApprove: function (data, actions) {
+            return actions.order.capture().then(function () {
+              payPalContainer.innerHTML = "";
+              if (checkoutNote) {
+                checkoutNote.textContent = "Thanks — your order is confirmed! It'll ship soon.";
+                checkoutNote.style.display = "block";
+              }
+            });
+          },
+        })
+        .render(payPalContainer);
+    };
+
+    var selectVariant = function (btn) {
+      variantButtons.forEach(function (b) {
+        b.classList.remove("is-selected");
+      });
+      btn.classList.add("is-selected");
+      if (checkoutNote) checkoutNote.style.display = "none";
+      renderPayPalButton({
+        label: btn.getAttribute("data-label"),
+        price: parseFloat(btn.getAttribute("data-price")),
+      });
+    };
+
+    variantButtons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        selectVariant(btn);
+      });
+    });
+
+    var availableVariants = variantButtons.filter(function (b) {
+      return !b.disabled;
+    });
+    if (availableVariants.length === 1) {
+      selectVariant(availableVariants[0]);
+    } else if (!availableVariants.length && checkoutNote) {
+      checkoutNote.textContent = "This print is sold out.";
+      checkoutNote.style.display = "block";
+    }
+  }
+
   var GLITCH_CHARS = "$&#%@!<>[]{}=+*^?/\\_~";
 
   function TextScramble(el, glitchProbability) {

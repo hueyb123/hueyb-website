@@ -182,12 +182,13 @@ Decap collection shapes are used depending on the content:
 - **Prints** (originally built as "Products", renamed once Huey clarified
   this page is specifically for selling art prints) — a folder collection,
   same shape as Projects/Studio: one markdown file per item in
-  `src/content/prints/`, frontmatter `name`, `price` (plain string — "$24",
-  "Inquire", whatever reads best, not a number field), `image`, `sold_out`
-  (boolean; true swaps the "Add to Cart" button for a "Sold Out" label). No
-  detail page — same simple hover-tile interaction as before, just
-  data-driven now. **Real checkout is not wired up yet** — see "Prints /
-  e-commerce" below for the plan.
+  `src/content/prints/`, frontmatter `name`, `description` (optional),
+  `image`, `edition_type` (`open`/`limited`), and `variants` — a list of
+  `{label, price, quantity, sold_out}`, one entry per size (a single-size
+  print just has one variant). Now has its own detail page
+  (`src/prints/detail.njk`), since a variant picker + checkout needs more
+  room than a hover tile — see "Prints e-commerce" below for the real
+  checkout wiring.
 - **CV** and **Home** — **file collections**, not folders. Both are a single
   JSON file (`src/_data/cv.json`, `src/_data/home.json`) exposed to every
   template automatically via Eleventy's `_data` directory convention (no
@@ -207,6 +208,49 @@ Decap collection shapes are used depending on the content:
 - Same schema-lives-in-two-places caveat as Projects: if a field changes in
   `src/admin/config.yml`, the corresponding `.njk` template needs a matching
   update since templates read `data.<field>` directly.
+
+## Prints e-commerce (Phase 1 added 2026-08-15)
+
+Huey sells prints directly — no Etsy/Shopify — prints and ships everything
+herself, and wanted to connect straight to her own PayPal account. Full
+context/reasoning lives in the plan history; summary of what's built:
+
+- **Phase 1 (live)**: client-side PayPal Smart Buttons on
+  `src/prints/detail.njk`. Each print's `variants` are rendered as
+  size-picker buttons (`.variant-option`); selecting one re-renders a
+  `paypal.Buttons()` instance for that variant's exact price (logic in
+  `src/script.js`, guarded by `.print-variants` existing on the page — a
+  no-op everywhere else). Checkout is configured to collect a shipping
+  address, which lands in the transaction details in Huey's own PayPal
+  account/email — no separate order-notification system was built, since
+  PayPal's own notifications cover it for now.
+- **Live PayPal Client ID is hardcoded** directly in the `<script src=
+  "https://www.paypal.com/sdk/js?client-id=...">` tag in
+  `src/prints/detail.njk` — this is intentional and safe, Client IDs are
+  meant to be public (unlike the Secret, which Phase 2 will need and which
+  must go in a Netlify environment variable, never the repo).
+- Confirmed working end-to-end 2026-08-15: a real $1 test purchase on a
+  throwaway print completed successfully and appeared in Huey's PayPal
+  account with a shipping address attached, then the test print was deleted.
+- **Known limitation (by design, for now)**: entirely client-side. No
+  server-side price validation (a tampered client could submit a lower
+  price) and no real stock enforcement for `limited` edition_type variants
+  (two buyers could both complete checkout on the last copy). Acceptable
+  for a small shop starting out; both are closed by **Phase 2**, not yet
+  built: a Netlify Function creates the PayPal order server-side (reading
+  the true price from the print's own content file) and checks/decrements
+  remaining stock in Netlify Blobs for `limited` variants before allowing
+  checkout, capturing after payment (not on checkout start, to avoid
+  falsely reserving stock on abandoned carts). Phase 2 needs the PayPal
+  **Secret** (from the same Developer Dashboard app as the Client ID) added
+  as a Netlify environment variable.
+- **Gotcha hit while setting this up**: testing checkout while logged into
+  the PayPal Business account in the same browser causes the checkout popup
+  to silently reuse that session and try to log in as the merchant (PayPal
+  won't let you pay yourself). Test as a buyer in a private/incognito
+  window instead. Also, brand-new PayPal Business accounts sometimes don't
+  show the guest "Debit or Credit Card" option until PayPal finishes their
+  own account verification/review — not something fixable from the code.
 
 ## Hosting
 

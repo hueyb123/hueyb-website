@@ -54,6 +54,23 @@ module.exports = function (eleventyConfig) {
     });
   });
 
+  eleventyConfig.addFilter("minPrice", function (variants) {
+    if (!Array.isArray(variants) || !variants.length) return null;
+    return Math.min.apply(
+      null,
+      variants.map(function (v) {
+        return v.price;
+      })
+    );
+  });
+
+  eleventyConfig.addFilter("allSoldOut", function (variants) {
+    if (!Array.isArray(variants) || !variants.length) return false;
+    return variants.every(function (v) {
+      return v.sold_out;
+    });
+  });
+
   return {
     dir: {
       input: "src",
