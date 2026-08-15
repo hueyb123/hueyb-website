@@ -565,7 +565,13 @@ p {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--color-text);
-  margin: 0 0 20px;
+  margin: 0 0 8px;
+}
+
+.project-index-description {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  margin: 0 0 24px;
 }
 
 .project-index ul {
