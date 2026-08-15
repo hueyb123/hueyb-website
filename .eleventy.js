@@ -71,6 +71,13 @@ module.exports = function (eleventyConfig) {
     });
   });
 
+  eleventyConfig.addFilter("hasCategory", function (entries, category) {
+    if (!Array.isArray(entries)) return false;
+    return entries.some(function (e) {
+      return e.category === category;
+    });
+  });
+
   return {
     dir: {
       input: "src",

@@ -11,6 +11,7 @@ nav: cv
     <section class="container">
       <div class="cv-wrap">
 
+        {% if cv.entries | hasCategory("solo") %}
         <div class="cv-section reveal">
           <h2>Solo Exhibitions</h2>
           <ul class="cv-list">
@@ -27,7 +28,9 @@ nav: cv
             {% endfor %}
           </ul>
         </div>
+        {% endif %}
 
+        {% if cv.entries | hasCategory("group") %}
         <div class="cv-section reveal">
           <h2>Group Exhibitions</h2>
           <ul class="cv-list">
@@ -44,7 +47,28 @@ nav: cv
             {% endfor %}
           </ul>
         </div>
+        {% endif %}
 
+        {% if cv.entries | hasCategory("residency") %}
+        <div class="cv-section reveal">
+          <h2>Residencies</h2>
+          <ul class="cv-list">
+            {% for entry in cv.entries | sort(true, false, "year") %}
+            {% if entry.category == "residency" %}
+            <li>
+              <span class="cv-year">{{ entry.year }}</span>
+              <div class="cv-detail">
+                <div class="cv-title">{{ entry.title }}</div>
+                <div class="cv-venue">{{ entry.venue }}</div>
+              </div>
+            </li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        {% if cv.entries | hasCategory("education") %}
         <div class="cv-section reveal">
           <h2>Education</h2>
           <ul class="cv-list">
@@ -61,6 +85,7 @@ nav: cv
             {% endfor %}
           </ul>
         </div>
+        {% endif %}
 
       </div>
     </section>

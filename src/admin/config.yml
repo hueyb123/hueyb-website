@@ -108,6 +108,7 @@ collections:
                 options:
                   - { label: "Solo Exhibition", value: "solo" }
                   - { label: "Group Exhibition", value: "group" }
+                  - { label: "Residency", value: "residency" }
                   - { label: "Education", value: "education" }
               - { label: "Year", name: "year", widget: "string" }
               - { label: "Title", name: "title", widget: "string" }
