@@ -9,11 +9,13 @@ nav: home
       <div class="container hero-inner">
         <h1 class="wordmark">
           <span class="scramble-target" aria-hidden="true"></span>
-          <span class="visually-hidden">Huey B</span>
+          <span class="visually-hidden">{{ home.title }}</span>
         </h1>
         <p>
           <span class="scramble-target" aria-hidden="true"></span>
-          <span class="visually-hidden">Huey B is a multidisciplinary artist working across drawing, painting, sculpture, and digital media. The practice moves between the studio and the world &mdash; collecting textures, objects, and moments that surface later as finished work, spanning projects both current and archived. Use the menu above to explore recent studio updates, ongoing and past projects, available pieces, exhibition history, and ways to get in touch.</span>
+          <span class="visually-hidden">{{ home.description }}</span>
         </p>
       </div>
     </section>
+
+    <script>window.HERO_VIDEOS = {{ home.videos | dump | safe }};</script>

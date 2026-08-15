@@ -1,7 +1,6 @@
 ---
 title: The Rock Scans
 date: 2026-07-22
-status: past
 caption: "Scans taken of ancient viewing rock at Arte Sumapaz "
 cover: /assets/uploads/imag0081.jpg
 media:

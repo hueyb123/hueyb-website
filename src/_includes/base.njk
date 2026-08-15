@@ -48,11 +48,11 @@
     </div>
   </header>
 
-  <main>
+  <main class="page-enter">
 {{ content | safe }}
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer{% if revealFooter %} fade-in-item{% else %} page-enter{% endif %}"{% if revealFooter %} style="animation-delay: 600ms;"{% endif %}>
     <div class="container">
       <a href="https://www.instagram.com/huebeeeee/" target="_blank" rel="noopener">@huebeeeee</a>
       <p>&copy; 2026 Huey B. All rights reserved.</p>

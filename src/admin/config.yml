@@ -15,14 +15,7 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, hint: "Used to sort projects, newest first." }
-      - label: "Status"
-        name: "status"
-        widget: "select"
-        options:
-          - { label: "Current", value: "current" }
-          - { label: "Past", value: "past" }
-        default: "current"
-      - { label: "Tile Caption", name: "caption", widget: "string", hint: "Short line shown on the project tile, e.g. \"2026 — Ongoing\"" }
+      - { label: "Tile Caption", name: "caption", widget: "string", required: false, hint: "Optional short line shown on the project tile — a year, a phrase, or leave blank." }
       - { label: "Cover Image", name: "cover", widget: "image", hint: "Shown as the background of the project tile." }
       - label: "Media"
         name: "media"
@@ -40,3 +33,82 @@ collections:
           - { label: "File", name: "file", widget: "file" }
           - { label: "Caption", name: "caption", widget: "string", required: false }
       - { label: "Description", name: "body", widget: "markdown" }
+
+  - name: "studio"
+    label: "Studio"
+    folder: "src/content/studio"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}{{second}}"
+    identifier_field: date
+    fields:
+      - { label: "Date", name: "date", widget: "datetime", hint: "Used to sort posts, newest first." }
+      - { label: "Headline (optional)", name: "headline", widget: "string", required: false, hint: "Most posts can skip this and just lead with the date." }
+      - label: "Media"
+        name: "media"
+        widget: "list"
+        summary: "{{fields.type}} — {{fields.caption}}"
+        hint: "Add as many images, videos, or sound files as this post needs. The first image becomes the tile thumbnail."
+        fields:
+          - label: "Type"
+            name: "type"
+            widget: "select"
+            options:
+              - { label: "Image", value: "image" }
+              - { label: "Video", value: "video" }
+              - { label: "Audio", value: "audio" }
+          - { label: "File", name: "file", widget: "file" }
+          - { label: "Caption", name: "caption", widget: "string", required: false }
+      - { label: "Musing", name: "body", widget: "markdown", hint: "Thoughts, progress notes, whatever's on your mind about this." }
+
+  - name: "products"
+    label: "Products"
+    folder: "src/content/products"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: name
+    fields:
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Price", name: "price", widget: "string", hint: "Written however you like — \"$24\", \"Inquire\", etc." }
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Sold Out", name: "sold_out", widget: "boolean", default: false, hint: "Shows a Sold Out label instead of Add to Cart." }
+
+  - name: "cv"
+    label: "CV"
+    files:
+      - name: "cv"
+        label: "CV"
+        file: "src/_data/cv.json"
+        fields:
+          - label: "Entries"
+            name: "entries"
+            widget: "list"
+            summary: "{{fields.year}} — {{fields.title}}"
+            hint: "Drag to reorder within the list. Category controls which section on the page it shows up in."
+            fields:
+              - label: "Category"
+                name: "category"
+                widget: "select"
+                options:
+                  - { label: "Solo Exhibition", value: "solo" }
+                  - { label: "Group Exhibition", value: "group" }
+                  - { label: "Education", value: "education" }
+              - { label: "Year", name: "year", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Venue", name: "venue", widget: "string" }
+
+  - name: "home"
+    label: "Home"
+    files:
+      - name: "home"
+        label: "Home Page"
+        file: "src/_data/home.json"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Description", name: "description", widget: "text" }
+          - label: "Background Videos"
+            name: "videos"
+            widget: "list"
+            summary: "{{fields.file}}"
+            hint: "One random video from this pool plays each time someone loads the home page."
+            fields:
+              - { label: "Video File", name: "file", widget: "file" }

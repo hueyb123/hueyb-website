@@ -9,9 +9,13 @@ nav: projects
 eleventyComputed:
   title: "{{ project.data.title }} | Huey B"
 ---
+    <a href="/projects/" class="back-button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      Projects
+    </a>
+
     <section class="page-header container">
       <h1>{{ project.data.title }}</h1>
-      <p><a href="/projects/" class="back-link">&larr; Back to Projects</a></p>
     </section>
 
     <section class="container project-detail">

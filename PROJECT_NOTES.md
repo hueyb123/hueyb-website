@@ -14,23 +14,33 @@ specifically to support the CMS.
 src/                  Eleventy input directory — everything here becomes the site
   _includes/base.njk  Shared header/nav/footer layout — every page extends this.
                        Edit nav links, header markup, or footer ONCE here, not per-page.
-  index.njk           Home — full-bleed video hero, glitch/scramble text intro
-  studio.njk          Studio updates (drawings, paintings, in-progress work) — still placeholder tiles
+  index.njk           Home — full-bleed video hero, glitch/scramble text intro. Title/description
+                       text and the hero video pool are all CMS-driven now (see "Home CMS" below).
+  studio.njk          Studio updates — data-driven from src/content/studio/*.md
+  studio/detail.njk   Per-post detail page template, one HTML page per post at /studio/<slug>/
   projects.njk        Projects tile grid — data-driven from src/content/projects/*.md (see below)
   projects/detail.njk Per-project detail page template — one HTML page generated per
                        project markdown file, at /projects/<slug>/
-  products.njk         Items for sale (decorative cart, not wired to checkout) — still placeholders
-  cv.njk               Exhibition history — Solo, Group, Education — still placeholder content
-  contact.njk          Contact form (name + email, not wired to a backend)
-  content/projects/    One markdown file per project (frontmatter + description) — this is
-                       what Decap CMS edits via /admin
-  admin/               Decap CMS: index.html (CMS shell) + config.yml (content schema)
-  assets/uploads/      Where Decap CMS uploads project media (images/video/audio)
+  products.njk         Items for sale (decorative cart, not wired to checkout) — data-driven
+                       from src/content/products/*.md
+  cv.njk               Exhibition history — Solo, Group, Education — data-driven from
+                       src/_data/cv.json
+  contact.njk          Contact form (name + email, not wired to a backend) — still placeholder
+  content/projects/    One markdown file per project (frontmatter + description) — edited via /admin
+  content/studio/      One markdown file per studio post — edited via /admin
+  content/products/    One markdown file per product — edited via /admin
+  _data/cv.json         Single file, one JSON list of exhibition entries — edited via /admin
+                       (a Decap "file collection", not a folder — see "Products/CV/Home CMS" below)
+  _data/home.json       Hero title, description, and the pool of background videos — edited via /admin
+  admin/               Decap CMS: index.html (CMS shell) + config.yml (content schema for every
+                       collection: projects, studio, products, cv, home)
+  assets/uploads/      Where Decap CMS uploads media for every collection (images/video/audio)
   styles.css           All site styling
   script.js            Nav dropdown, scroll reveals, hero video picker, glitch text, accent randomizer
-  index_videos/        Background videos for the homepage hero (currently 2 .mp4 files)
-.eleventy.js           Eleventy config: passthrough copies, the `projects`/`projectsCurrent`/
-                       `projectsPast` collections read from src/content/projects/*.md
+  index_videos/        The two original hero videos, still seeded into home.json's video pool
+                       (new videos added via /admin upload into assets/uploads/ instead)
+.eleventy.js           Eleventy config: passthrough copies, collections for projects/studio/products,
+                       plus the `dump`/`firstImage`/`readableDate` template filters
 netlify.toml           Netlify build command (`npm run build`) + publish dir (`_site`)
 package.json            `npm run build` (one-off) / `npm run serve` (local dev server, localhost:8080)
 _site/                 Generated output — gitignored, never edit directly
@@ -84,12 +94,13 @@ where **About** is a dropdown containing **CV** and **Contact**.
 ## Homepage hero
 
 - Full-bleed `<video>` background: muted, looped, no controls, `object-fit:
-  cover`. On each load, `script.js` picks **one random video** from a
-  hardcoded filename list (`index_videos/video_2023-11-08_14-15-30.mp4`,
-  `index_videos/video_2026-08-14_19-19-06.mp4`).
-  - **To add more videos**: drop the file into `index_videos/` and add its
-    filename to the `videoFiles` array in `script.js` — static sites can't
-    auto-list a folder's contents, so this list has to be maintained by hand.
+  cover`. On each load, `script.js` picks **one random video** from
+  `window.HERO_VIDEOS`, an array Eleventy prints into `index.njk` from
+  `src/_data/home.json`'s `videos` list.
+  - **To add more videos**: upload through `/admin` (Home collection) — no
+    code edit or redeploy-by-hand needed anymore. The random pick itself is
+    still client-side JS (has to be, so each visitor/page-load gets a
+    different video), only the *source list* moved to the CMS.
 - A left-to-right dark scrim sits over the video for legibility.
 - Title + description are **left-aligned**, positioned at the same left
   margin as the header logo.
@@ -117,16 +128,15 @@ character via a custom `TextScramble` class in `script.js`:
 
 ## Known placeholders / things Huey still needs to supply
 
-- Projects CMS pipeline is live and confirmed working end-to-end (first real
-  entry, "The Rock Scans", published 2026-08-14 via `/admin`). Studio/Products
-  tile backgrounds are still gradient/pattern placeholders (not yet moved
-  onto the CMS pipeline).
-- CV page has placeholder venue names, "20XX" dates, and a placeholder
-  Education entry — needs real exhibition history.
-- Studio update tiles have placeholder titles/dates ("New Drawings — Aug
-  2026" etc.) — needs real captions.
-- Product prices and names are placeholders; "Add to Cart" buttons are
-  decorative only (no real cart/checkout wired up).
+- Every content page (Projects, Studio, Products, CV, Home) is now CMS-driven
+  end-to-end via `/admin` — no more hard-coded placeholder markup anywhere.
+  What's still placeholder is the *content itself*, not the pipeline:
+  - CV is seeded with the original placeholder venue names, "20XX" dates,
+    and a placeholder Education entry — needs real exhibition history
+    (editable as one list under the CV collection in `/admin`).
+  - Products currently has zero real entries (test placeholders were
+    published and then deleted to prove the pipeline) — needs real items.
+  - "Add to Cart" buttons remain decorative only — no real cart/checkout.
 - Contact form does not submit anywhere yet (no backend, no Netlify Forms /
   Formspree integration).
 
@@ -160,6 +170,37 @@ modal).
   unwieldy well before 1GB — if the body of work grows large/video-heavy,
   swap `media.file` for an external host (Cloudinary free tier, YouTube/
   SoundCloud embeds) rather than continuing to commit large binaries.
+
+## Products / CV / Home CMS (added 2026-08-15)
+
+Extended the same `/admin` pipeline to the rest of the site. Two different
+Decap collection shapes are used depending on the content:
+
+- **Products** — a folder collection, same shape as Projects/Studio: one
+  markdown file per item in `src/content/products/`, frontmatter `name`,
+  `price` (plain string — "$24", "Inquire", whatever reads best, not a
+  number field), `image`, `sold_out` (boolean; true swaps the "Add to Cart"
+  button for a "Sold Out" label). No detail page — same simple hover-tile
+  interaction as before, just data-driven now.
+- **CV** and **Home** — **file collections**, not folders. Both are a single
+  JSON file (`src/_data/cv.json`, `src/_data/home.json`) exposed to every
+  template automatically via Eleventy's `_data` directory convention (no
+  custom collection code needed, unlike Products/Projects/Studio). CV holds
+  one `entries` list (category/year/title/venue per exhibition) editable as
+  one screen in `/admin` with native drag-to-reorder — deliberately not
+  folder-per-entry, since CV lines have no media/detail page and would
+  otherwise scatter dozens of tiny files for what's really one small table.
+  Home holds `title`, `description` (the hero text), and `videos` (the
+  background-video pool, replacing the old hard-coded `videoFiles` array in
+  `script.js` — see "Homepage hero" above).
+- `src/cv.njk` filters/sorts `cv.entries` in the template itself (plain
+  `{% for %}` + `{% if %}` per category, Nunjucks' built-in `sort` filter
+  for newest-first) rather than a custom Eleventy collection, since Nunjucks
+  has no `selectattr`-style filter (a trap already hit once building
+  Projects — don't reach for it again).
+- Same schema-lives-in-two-places caveat as Projects: if a field changes in
+  `src/admin/config.yml`, the corresponding `.njk` template needs a matching
+  update since templates read `data.<field>` directly.
 
 ## Hosting
 

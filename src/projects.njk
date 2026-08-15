@@ -3,37 +3,37 @@ layout: base.njk
 title: "Projects | Huey B"
 nav: projects
 ---
-    <section class="page-header container">
-      <h1>Projects</h1>
-      <p>Current and past projects, spanning the practice over time.</p>
-    </section>
+    <div class="projects-layout">
+      <nav class="project-index" aria-label="Jump to project">
+        <h2 class="project-index-title">Projects</h2>
+        <ul>
+          {% for project in collections.projects %}
+          <li>
+            <a href="#{{ project.fileSlug }}" class="project-index-link">
+              <span class="scramble-target project-scramble" aria-hidden="true"></span>
+              <span class="visually-hidden">{{ project.data.title }}</span>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </nav>
 
-    <section class="container">
-      {% if collections.projectsCurrent.length %}
-      <h2 class="section-heading">Current</h2>
-      <div class="tile-grid">
-        {% for project in collections.projectsCurrent %}
-        <a href="/projects/{{ project.fileSlug }}/" class="tile reveal"{% if project.data.cover %} style="background-image:url('{{ project.data.cover }}');background-size:cover;background-position:center;"{% endif %}>
-          <div class="tile-overlay">
-            <h3>{{ project.data.title }}</h3>
-            <p>{{ project.data.caption }}</p>
+      <div class="projects-scroll">
+        {% for project in collections.projects %}
+        <a href="/projects/{{ project.fileSlug }}/" id="{{ project.fileSlug }}" class="project-panel"{% if project.data.cover %} style="background-image:url('{{ project.data.cover }}');background-size:45%;background-repeat:no-repeat;background-position:75% center;"{% endif %}>
+          <div class="project-panel-overlay">
+            <h3>
+              <span class="scramble-target project-scramble" aria-hidden="true"></span>
+              <span class="visually-hidden">{{ project.data.title }}</span>
+            </h3>
+            {% if project.data.caption %}
+            <p>
+              <span class="scramble-target project-scramble" aria-hidden="true"></span>
+              <span class="visually-hidden">{{ project.data.caption }}</span>
+            </p>
+            {% endif %}
           </div>
         </a>
         {% endfor %}
       </div>
-      {% endif %}
-
-      {% if collections.projectsPast.length %}
-      <h2 class="section-heading">Past</h2>
-      <div class="tile-grid">
-        {% for project in collections.projectsPast %}
-        <a href="/projects/{{ project.fileSlug }}/" class="tile reveal"{% if project.data.cover %} style="background-image:url('{{ project.data.cover }}');background-size:cover;background-position:center;"{% endif %}>
-          <div class="tile-overlay">
-            <h3>{{ project.data.title }}</h3>
-            <p>{{ project.data.caption }}</p>
-          </div>
-        </a>
-        {% endfor %}
-      </div>
-      {% endif %}
-    </section>
+    </div>

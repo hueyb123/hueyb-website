@@ -1,0 +1,11 @@
+{
+  "entries": [
+    { "category": "solo", "year": "2026", "title": "Corners", "venue": "Gallery Name, City" },
+    { "category": "solo", "year": "2024", "title": "Foldables", "venue": "Gallery Name, City" },
+    { "category": "solo", "year": "2021", "title": "LINES", "venue": "Gallery Name, City" },
+    { "category": "group", "year": "2025", "title": "Group Show Title", "venue": "Gallery Name, City" },
+    { "category": "group", "year": "2023", "title": "Group Show Title", "venue": "Gallery Name, City" },
+    { "category": "group", "year": "2020", "title": "The Speaker", "venue": "Gallery Name, City" },
+    { "category": "education", "year": "20XX", "title": "Degree, Program", "venue": "Institution, City" }
+  ]
+}

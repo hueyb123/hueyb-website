@@ -9,6 +9,8 @@
   --color-text: #f2f1ee;
   --color-text-muted: #8a8a86;
   --color-accent: #ccff33;
+  --color-project-accent: #39ff14;
+  --color-index-accent: #00e5ff;
   --radius: 2px;
   --max-width: 1200px;
   --transition: 200ms ease;
@@ -29,6 +31,27 @@ body {
   color: var(--color-text);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1 0 auto;
+  transition: opacity 420ms ease;
+}
+
+.page-enter {
+  opacity: 0;
+}
+
+.site-footer {
+  transition: opacity 420ms ease;
+}
+
+body.page-fade-out main,
+body.page-fade-out .site-footer {
+  opacity: 0;
 }
 
 img {
@@ -485,6 +508,260 @@ p {
   font-size: 0.68rem;
 }
 
+.tile-overlay .tile-sold-out {
+  margin-top: 12px;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+/* ==========================================================================
+   Projects page (fixed left index, full-viewport scroll-snap panels)
+   ========================================================================== */
+
+.project-index {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  width: 240px;
+  height: 100vh;
+  padding: 90px 24px 24px;
+  overflow-y: auto;
+}
+
+.project-index-title {
+  font-family: "Silkscreen", monospace;
+  font-weight: 400;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text);
+  margin: 0 0 20px;
+}
+
+.project-index ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.project-index-link {
+  display: block;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  transition: color var(--transition);
+}
+
+.project-index-link:hover,
+.project-index-link.is-active {
+  color: var(--color-index-accent);
+}
+
+.projects-scroll {
+  margin-left: 240px;
+  height: 100vh;
+  overflow-y: auto;
+  scroll-snap-type: y proximity;
+}
+
+.project-panel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  width: 100%;
+  scroll-snap-align: start;
+  overflow: hidden;
+  background-color: var(--color-bg-alt);
+  background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.035) 0 2px, transparent 2px 9px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.project-panel-overlay {
+  position: relative;
+  z-index: 2;
+  width: fit-content;
+  max-width: 50%;
+  margin-left: 64px;
+  padding: 24px 28px;
+  background-color: rgba(0, 0, 0, 0.55);
+  border-radius: var(--radius);
+  text-align: left;
+}
+
+@keyframes projectTitleFlicker {
+  0%, 100% { opacity: 1; }
+  4% { opacity: 0.3; }
+  6% { opacity: 1; }
+  7% { opacity: 0.5; }
+  9% { opacity: 1; }
+  41% { opacity: 1; }
+  43% { opacity: 0.4; }
+  45% { opacity: 1; }
+  77% { opacity: 1; }
+  78% { opacity: 0.6; }
+  80% { opacity: 1; }
+}
+
+.project-panel-overlay h3 {
+  font-family: "Silkscreen", monospace;
+  font-weight: 400;
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-project-accent);
+  text-shadow: 0 0 6px currentColor, 0 0 14px currentColor;
+  animation: projectTitleFlicker 3.4s infinite;
+  margin-bottom: 8px;
+}
+
+.project-panel-overlay p {
+  font-size: 0.95rem;
+  color: #cfcfcb;
+  margin: 0;
+}
+
+.project-panel-overlay .scramble-slot,
+.project-index-link .scramble-slot {
+  display: inline-block;
+  width: 1ch;
+  text-align: center;
+}
+
+@media (max-width: 860px) {
+  .project-index {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: 24px;
+  }
+
+  .project-index ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+  }
+
+  .projects-scroll {
+    margin-left: 0;
+    height: auto;
+    overflow-y: visible;
+    scroll-snap-type: none;
+  }
+
+  .project-panel {
+    height: 70vh;
+    scroll-snap-align: none;
+  }
+}
+
+/* ==========================================================================
+   Studio post page (back button + staggered vertical fade-in)
+   ========================================================================== */
+
+.back-button {
+  position: fixed;
+  top: 74px;
+  left: 24px;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-bg);
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.back-button svg {
+  width: 14px;
+  height: 14px;
+}
+
+.back-button:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+@keyframes studioFadeUp {
+  from { opacity: 0; transform: translateY(36px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in-item {
+  animation: studioFadeUp 4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.studio-post {
+  max-width: 760px;
+  padding-top: 40px;
+  padding-bottom: 100px;
+}
+
+.studio-post-date {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.studio-post-headline {
+  font-family: "Silkscreen", monospace;
+  font-weight: 400;
+  font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+}
+
+.studio-post-media {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.studio-media-image,
+.studio-media-video {
+  width: 100%;
+  border-radius: var(--radius);
+  display: block;
+}
+
+.studio-media-audio {
+  width: 100%;
+}
+
+.studio-media-caption {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin: -4px 0 4px;
+}
+
+.studio-post-body {
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid var(--color-border);
+}
+
+.studio-post-body p {
+  color: var(--color-text);
+  font-size: 1rem;
+}
+
 /* ==========================================================================
    Section heading (Projects page groupings)
    ========================================================================== */
@@ -571,10 +848,6 @@ p {
 /* ==========================================================================
    Project detail page
    ========================================================================== */
-
-.back-link:hover {
-  color: var(--color-accent);
-}
 
 .project-detail {
   max-width: 800px;

@@ -10,54 +10,18 @@ nav: products
 
     <section class="container">
       <div class="tile-grid">
-
-        <div class="tile reveal">
+        {% for product in collections.products %}
+        <div class="tile reveal"{% if product.data.image %} style="background-image:url('{{ product.data.image }}');background-size:cover;background-position:center;"{% endif %}>
           <div class="tile-overlay">
-            <h3>Product One</h3>
-            <div class="tile-price">$19.99</div>
+            <h3>{{ product.data.name }}</h3>
+            <div class="tile-price">{{ product.data.price }}</div>
+            {% if product.data.sold_out %}
+            <div class="tile-sold-out">Sold Out</div>
+            {% else %}
             <button class="btn">Add to Cart</button>
+            {% endif %}
           </div>
         </div>
-
-        <div class="tile reveal">
-          <div class="tile-overlay">
-            <h3>Product Two</h3>
-            <div class="tile-price">$29.99</div>
-            <button class="btn">Add to Cart</button>
-          </div>
-        </div>
-
-        <div class="tile reveal">
-          <div class="tile-overlay">
-            <h3>Product Three</h3>
-            <div class="tile-price">$14.99</div>
-            <button class="btn">Add to Cart</button>
-          </div>
-        </div>
-
-        <div class="tile reveal">
-          <div class="tile-overlay">
-            <h3>Product Four</h3>
-            <div class="tile-price">$39.99</div>
-            <button class="btn">Add to Cart</button>
-          </div>
-        </div>
-
-        <div class="tile reveal">
-          <div class="tile-overlay">
-            <h3>Product Five</h3>
-            <div class="tile-price">$24.99</div>
-            <button class="btn">Add to Cart</button>
-          </div>
-        </div>
-
-        <div class="tile reveal">
-          <div class="tile-overlay">
-            <h3>Product Six</h3>
-            <div class="tile-price">$9.99</div>
-            <button class="btn">Add to Cart</button>
-          </div>
-        </div>
-
+        {% endfor %}
       </div>
     </section>
