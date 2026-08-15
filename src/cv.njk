@@ -68,6 +68,25 @@ nav: cv
         </div>
         {% endif %}
 
+        {% if cv.entries | hasCategory("workshop") %}
+        <div class="cv-section reveal">
+          <h2>Workshops</h2>
+          <ul class="cv-list">
+            {% for entry in cv.entries | sort(true, false, "year") %}
+            {% if entry.category == "workshop" %}
+            <li>
+              <span class="cv-year">{{ entry.year }}</span>
+              <div class="cv-detail">
+                <div class="cv-title">{{ entry.title }}</div>
+                <div class="cv-venue">{{ entry.venue }}</div>
+              </div>
+            </li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
         {% if cv.entries | hasCategory("education") %}
         <div class="cv-section reveal">
           <h2>Education</h2>
