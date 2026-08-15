@@ -117,11 +117,10 @@ character via a custom `TextScramble` class in `script.js`:
 
 ## Known placeholders / things Huey still needs to supply
 
-- Projects now has one sample entry (`water-resistant-cowboy.md`, using a
-  placeholder pattern SVG as a stand-in image/cover) to prove the CMS
-  pipeline works end-to-end — replace or delete it via `/admin` once real
-  work is ready to publish. Studio/Products tile backgrounds are still
-  gradient/pattern placeholders (not yet moved onto the CMS pipeline).
+- Projects CMS pipeline is live and confirmed working end-to-end (first real
+  entry, "The Rock Scans", published 2026-08-14 via `/admin`). Studio/Products
+  tile backgrounds are still gradient/pattern placeholders (not yet moved
+  onto the CMS pipeline).
 - CV page has placeholder venue names, "20XX" dates, and a placeholder
   Education entry — needs real exhibition history.
 - Studio update tiles have placeholder titles/dates ("New Drawings — Aug
@@ -153,10 +152,9 @@ modal).
 - Auth is **Netlify Identity + Git Gateway**: Huey logs into `/admin` with
   email/password (no GitHub account needed on her end); Decap commits
   straight to the `main` branch on save, Netlify rebuilds automatically.
-- **Not yet done**: creating the GitHub repo, connecting it to Netlify, and
-  enabling Identity/Git Gateway — all require Huey's own accounts, see the
-  approved plan for exact steps. Once wired up, publishing a new project is
-  entirely form-filling at `<site>.netlify.app/admin/`, no code.
+- Live at `https://funny-sundae-85fef0.netlify.app/admin/`. GitHub repo,
+  Netlify site, and Identity/Git Gateway are all connected and working —
+  publishing a new project is entirely form-filling at that URL, no code.
 - **Watch for later**: project media lives in the git repo (same pattern as
   the hero videos). GitHub soft-caps files around 100MB and repos get
   unwieldy well before 1GB — if the body of work grows large/video-heavy,
