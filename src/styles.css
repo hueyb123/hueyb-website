@@ -569,6 +569,40 @@ p {
 }
 
 /* ==========================================================================
+   Project detail page
+   ========================================================================== */
+
+.back-link:hover {
+  color: var(--color-accent);
+}
+
+.project-detail {
+  max-width: 800px;
+  margin: 0 auto;
+  padding-bottom: 100px;
+}
+
+.project-media-image,
+.project-media-video,
+.project-media-audio {
+  width: 100%;
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+}
+
+.project-media-caption {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin: 0 0 32px;
+}
+
+.project-description {
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid var(--color-border);
+}
+
+/* ==========================================================================
    Buttons
    ========================================================================== */
 

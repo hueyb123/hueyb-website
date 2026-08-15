@@ -1,0 +1,34 @@
+---
+pagination:
+  data: collections.projects
+  size: 1
+  alias: project
+permalink: "projects/{{ project.fileSlug }}/index.html"
+layout: base.njk
+nav: projects
+eleventyComputed:
+  title: "{{ project.data.title }} | Huey B"
+---
+    <section class="page-header container">
+      <h1>{{ project.data.title }}</h1>
+      <p><a href="/projects/" class="back-link">&larr; Back to Projects</a></p>
+    </section>
+
+    <section class="container project-detail">
+      {% for item in project.data.media %}
+      {% if item.type == "image" %}
+      <img src="{{ item.file }}" alt="{{ item.caption or project.data.title }}" class="project-media-image">
+      {% elif item.type == "video" %}
+      <video src="{{ item.file }}" controls playsinline class="project-media-video"></video>
+      {% elif item.type == "audio" %}
+      <audio src="{{ item.file }}" controls class="project-media-audio"></audio>
+      {% endif %}
+      {% if item.caption %}
+      <p class="project-media-caption">{{ item.caption }}</p>
+      {% endif %}
+      {% endfor %}
+
+      <div class="project-description">
+        {{ project.templateContent | safe }}
+      </div>
+    </section>
