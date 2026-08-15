@@ -481,6 +481,13 @@ p {
   transform: translateY(0);
 }
 
+@media (hover: none) {
+  .tile-overlay {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .tile-overlay h3 {
   font-size: 0.92rem;
   text-transform: uppercase;
@@ -660,6 +667,14 @@ p {
   .project-panel {
     height: 70vh;
     scroll-snap-align: none;
+    background-size: cover !important;
+    background-position: center !important;
+  }
+
+  .project-panel-overlay {
+    max-width: calc(100% - 48px);
+    margin-left: 24px;
+    margin-right: 24px;
   }
 }
 
@@ -694,6 +709,13 @@ p {
 .back-button:hover {
   color: var(--color-accent);
   border-color: var(--color-accent);
+}
+
+@media (max-width: 640px) {
+  .back-button {
+    position: static;
+    margin: 16px 24px 0;
+  }
 }
 
 @keyframes studioFadeUp {
@@ -1075,6 +1097,34 @@ p {
 
 .cart-item-remove:hover {
   color: var(--color-accent);
+}
+
+@media (max-width: 480px) {
+  .cart-item {
+    grid-template-columns: 56px 1fr auto;
+    grid-template-areas:
+      "image info remove"
+      "image price remove";
+    row-gap: 6px;
+  }
+
+  .cart-item-image {
+    grid-area: image;
+    width: 56px;
+    height: 56px;
+  }
+
+  .cart-item-info {
+    grid-area: info;
+  }
+
+  .cart-item-price {
+    grid-area: price;
+  }
+
+  .cart-item-remove {
+    grid-area: remove;
+  }
 }
 
 .cart-total-row {
