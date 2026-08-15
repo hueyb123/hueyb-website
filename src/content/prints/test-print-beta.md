@@ -5,7 +5,7 @@ image: /assets/uploads/imag0081.jpg
 edition_type: open
 variants:
   - label: "8x10"
-    price: 40
+    price: 1
     sold_out: false
   - label: "11x14"
     price: 60

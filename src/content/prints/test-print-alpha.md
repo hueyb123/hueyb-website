@@ -5,6 +5,6 @@ image: /assets/uploads/imag0079.jpg
 edition_type: open
 variants:
   - label: "Standard"
-    price: 35
+    price: 1
     sold_out: false
 ---
