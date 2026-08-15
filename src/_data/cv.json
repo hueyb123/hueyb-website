@@ -1,11 +1,34 @@
 {
   "entries": [
-    { "category": "solo", "year": "2026", "title": "Corners", "venue": "Gallery Name, City" },
-    { "category": "solo", "year": "2024", "title": "Foldables", "venue": "Gallery Name, City" },
-    { "category": "solo", "year": "2021", "title": "LINES", "venue": "Gallery Name, City" },
-    { "category": "group", "year": "2025", "title": "Group Show Title", "venue": "Gallery Name, City" },
-    { "category": "group", "year": "2023", "title": "Group Show Title", "venue": "Gallery Name, City" },
-    { "category": "group", "year": "2020", "title": "The Speaker", "venue": "Gallery Name, City" },
-    { "category": "education", "year": "20XX", "title": "Degree, Program", "venue": "Institution, City" }
+    {
+      "category": "education",
+      "year": "2022-2025",
+      "title": "M.F.A. Painting ",
+      "venue": "Savannah College of Art and Design"
+    },
+    {
+      "category": "residency",
+      "year": "2026",
+      "title": "Arte Sumapaz",
+      "venue": "San Bernardo, Colombia"
+    },
+    {
+      "category": "solo",
+      "year": "2025",
+      "title": "Water Resistant Cowboy",
+      "venue": "Belulu Studios, Savannah, Georgia"
+    },
+    {
+      "category": "group",
+      "year": "2026",
+      "title": "Only Bread These Days",
+      "venue": "Cute Tomatoes Gallery, Savannah, Georgia"
+    },
+    {
+      "category": "group",
+      "year": "2026",
+      "title": "Caution! Unstable Conjunction",
+      "venue": "Arte Sumapaz Gallery, San Bernardo, Colombia "
+    }
   ]
 }
