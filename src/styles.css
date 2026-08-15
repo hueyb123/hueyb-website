@@ -327,6 +327,26 @@ p {
   animation: neonFlicker 6s infinite;
 }
 
+@media (max-width: 640px) {
+  .logo {
+    font-size: 0.95rem;
+    order: 1;
+  }
+
+  .nav-group {
+    display: contents;
+  }
+
+  .header-icons {
+    order: 2;
+  }
+
+  .main-nav {
+    order: 3;
+    width: 100%;
+  }
+}
+
 /* ==========================================================================
    Hero (full-bleed)
    ========================================================================== */
