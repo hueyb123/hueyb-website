@@ -240,11 +240,14 @@ context/reasoning lives in the plan history; summary of what's built:
   print detail page) — this is intentional and safe, Client IDs are meant
   to be public (unlike the Secret, which Phase 2 will need and which must
   go in a Netlify environment variable, never the repo).
-- Confirmed working end-to-end 2026-08-15: a real $1 test purchase on a
-  throwaway print completed successfully via the original single-item
-  checkout and appeared in Huey's PayPal account with a shipping address
-  attached; the cart rework happened afterward and hasn't had a fresh real
-  purchase run through it yet, only manual add/remove/badge verification.
+- Confirmed working end-to-end 2026-08-15, twice: first a real $1 purchase
+  on the original single-item checkout, then — after the cart rework — a
+  real 2-item, $2 combined purchase through `/cart/` (Test Print Alpha +
+  Test Print Beta's 8x10, both set to $1 for the test) completed
+  successfully as one PayPal order. Test prints and their $1 prices were
+  deliberately left in place afterward (Huey's call) rather than cleaned
+  up, so `src/content/prints/` currently has five test entries, two still
+  priced at $1 — reset or remove before real prints go live.
 - **Known limitation (by design, for now)**: entirely client-side. No
   server-side price validation (a tampered client could submit a lower
   price) and no real stock enforcement for `limited` edition_type variants
