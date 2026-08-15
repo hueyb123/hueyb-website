@@ -25,7 +25,8 @@ src/                  Eleventy input directory — everything here becomes the s
                        data-driven from src/content/prints/*.md. Renamed from "Products" 2026-08-15.
   cv.njk               Exhibition history — Solo, Group, Education — data-driven from
                        src/_data/cv.json
-  contact.njk          Contact form (name + email, not wired to a backend) — still placeholder
+  contact.njk          Contact form (name/email/message) — wired to Netlify Forms
+  contact/thank-you.njk Confirmation page the form redirects to on successful submission
   content/projects/    One markdown file per project (frontmatter + description) — edited via /admin
   content/studio/      One markdown file per studio post — edited via /admin
   content/prints/      One markdown file per print — edited via /admin
@@ -140,8 +141,8 @@ character via a custom `TextScramble` class in `script.js`:
     published and then deleted to prove the pipeline) — needs real items.
   - "Add to Cart" buttons remain decorative only — see the "Prints /
     e-commerce" section below for the real checkout plan.
-- Contact form does not submit anywhere yet (no backend, no Netlify Forms /
-  Formspree integration).
+- Contact form now wired to **Netlify Forms** (added 2026-08-15) — see
+  below.
 
 ## Projects CMS (added 2026-08-14)
 
@@ -267,6 +268,30 @@ context/reasoning lives in the plan history; summary of what's built:
   window instead. Also, brand-new PayPal Business accounts sometimes don't
   show the guest "Debit or Credit Card" option until PayPal finishes their
   own account verification/review — not something fixable from the code.
+
+## Custom domain + Contact form (2026-08-15)
+
+- **hueyb.com** is now connected — DNS moved off Squarespace's own A record
+  to Netlify's load balancer (`75.2.60.5` A record for the apex, `www` CNAME
+  to the Netlify subdomain), confirmed live with a valid cert. Squarespace
+  still owns the domain *registration* (that wasn't transferred, just the
+  DNS target) — the website-builder subscription is what Huey is canceling;
+  the annual domain renewal through Squarespace Domains is a separate,
+  smaller charge she can leave as-is or move to another registrar later,
+  no rush either way.
+- **Contact form** (`src/contact.njk`) now uses **Netlify Forms** —
+  `data-netlify="true"` + a `form-name` hidden input is all a static form
+  needs; Netlify's build bot detects it automatically from the built HTML,
+  no JS or backend code required. Added a honeypot field
+  (`netlify-honeypot="bot-field"`) for free spam filtering, and a real
+  **Message** textarea — the form previously only had name + email fields
+  with nowhere for an actual message, seemingly an oversight from the
+  original build (the CSS for `.field textarea` already existed, just never
+  used). Submissions redirect to `src/contact/thank-you.njk`
+  (`/contact/thank-you/`) instead of reloading the same page silently.
+- **Email notifications are a Netlify dashboard setting, not code**: Site
+  configuration → Forms → Form notifications → add an email notification
+  pointed at `huey.b.artist@gmail.com`. Nothing in the repo controls this.
 
 ## Hosting
 
