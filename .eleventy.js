@@ -25,9 +25,9 @@ module.exports = function (eleventyConfig) {
       });
   });
 
-  eleventyConfig.addCollection("products", function (collectionApi) {
+  eleventyConfig.addCollection("prints", function (collectionApi) {
     return collectionApi
-      .getFilteredByGlob("src/content/products/*.md")
+      .getFilteredByGlob("src/content/prints/*.md")
       .sort(function (a, b) {
         return a.data.name.localeCompare(b.data.name);
       });

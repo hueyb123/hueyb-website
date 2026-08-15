@@ -1,16 +1,16 @@
 ---
 layout: base.njk
-title: "Products | Huey B"
-nav: products
+title: "Prints | Huey B"
+nav: prints
 ---
     <section class="page-header container">
-      <h1>Products</h1>
-      <p>Items currently available for sale.</p>
+      <h1>Prints</h1>
+      <p>Fine art prints available for sale.</p>
     </section>
 
     <section class="container">
       <div class="tile-grid">
-        {% for product in collections.products %}
+        {% for product in collections.prints %}
         <div class="tile reveal"{% if product.data.image %} style="background-image:url('{{ product.data.image }}');background-size:cover;background-position:center;"{% endif %}>
           <div class="tile-overlay">
             <h3>{{ product.data.name }}</h3>

@@ -60,9 +60,9 @@ collections:
           - { label: "Caption", name: "caption", widget: "string", required: false }
       - { label: "Musing", name: "body", widget: "markdown", hint: "Thoughts, progress notes, whatever's on your mind about this." }
 
-  - name: "products"
-    label: "Products"
-    folder: "src/content/products"
+  - name: "prints"
+    label: "Prints"
+    folder: "src/content/prints"
     create: true
     slug: "{{slug}}"
     identifier_field: name

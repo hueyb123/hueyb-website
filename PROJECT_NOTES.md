@@ -21,25 +21,25 @@ src/                  Eleventy input directory — everything here becomes the s
   projects.njk        Projects tile grid — data-driven from src/content/projects/*.md (see below)
   projects/detail.njk Per-project detail page template — one HTML page generated per
                        project markdown file, at /projects/<slug>/
-  products.njk         Items for sale (decorative cart, not wired to checkout) — data-driven
-                       from src/content/products/*.md
+  prints.njk            Fine art prints for sale (decorative cart, not wired to checkout) —
+                       data-driven from src/content/prints/*.md. Renamed from "Products" 2026-08-15.
   cv.njk               Exhibition history — Solo, Group, Education — data-driven from
                        src/_data/cv.json
   contact.njk          Contact form (name + email, not wired to a backend) — still placeholder
   content/projects/    One markdown file per project (frontmatter + description) — edited via /admin
   content/studio/      One markdown file per studio post — edited via /admin
-  content/products/    One markdown file per product — edited via /admin
+  content/prints/      One markdown file per print — edited via /admin
   _data/cv.json         Single file, one JSON list of exhibition entries — edited via /admin
-                       (a Decap "file collection", not a folder — see "Products/CV/Home CMS" below)
+                       (a Decap "file collection", not a folder — see "Prints/CV/Home CMS" below)
   _data/home.json       Hero title, description, and the pool of background videos — edited via /admin
   admin/               Decap CMS: index.html (CMS shell) + config.yml (content schema for every
-                       collection: projects, studio, products, cv, home)
+                       collection: projects, studio, prints, cv, home)
   assets/uploads/      Where Decap CMS uploads media for every collection (images/video/audio)
   styles.css           All site styling
   script.js            Nav dropdown, scroll reveals, hero video picker, glitch text, accent randomizer
   index_videos/        The two original hero videos, still seeded into home.json's video pool
                        (new videos added via /admin upload into assets/uploads/ instead)
-.eleventy.js           Eleventy config: passthrough copies, collections for projects/studio/products,
+.eleventy.js           Eleventy config: passthrough copies, collections for projects/studio/prints,
                        plus the `dump`/`firstImage`/`readableDate` template filters
 netlify.toml           Netlify build command (`npm run build`) + publish dir (`_site`)
 package.json            `npm run build` (one-off) / `npm run serve` (local dev server, localhost:8080)
@@ -75,13 +75,13 @@ site at **hueyb.com**:
   keyframes) plus a `text-shadow` glow, since they're persistently
   accent-colored (not just on hover).
 - **Buttons**: flat, outlined, invert to solid accent fill on hover.
-- **Tiles** (Projects/Products/Studio grids): full-bleed placeholder boxes,
+- **Tiles** (Projects/Prints/Studio grids): full-bleed placeholder boxes,
   title/price revealed on hover via a dark gradient overlay — no real artwork
   images wired in yet, just gradient/pattern placeholders.
 
 ## Navigation
 
-Structure (same on every page): `Studio → Projects → Products → About ▾`
+Structure (same on every page): `Studio → Projects → Prints → About ▾`
 where **About** is a dropdown containing **CV** and **Contact**. No separate
 "Home" nav item — the logo (top-left, links to `/`) is the home link, so a
 dedicated nav entry was redundant and was removed.
@@ -130,15 +130,16 @@ character via a custom `TextScramble` class in `script.js`:
 
 ## Known placeholders / things Huey still needs to supply
 
-- Every content page (Projects, Studio, Products, CV, Home) is now CMS-driven
+- Every content page (Projects, Studio, Prints, CV, Home) is now CMS-driven
   end-to-end via `/admin` — no more hard-coded placeholder markup anywhere.
   What's still placeholder is the *content itself*, not the pipeline:
   - CV is seeded with the original placeholder venue names, "20XX" dates,
     and a placeholder Education entry — needs real exhibition history
     (editable as one list under the CV collection in `/admin`).
-  - Products currently has zero real entries (test placeholders were
+  - Prints currently has zero real entries (test placeholders were
     published and then deleted to prove the pipeline) — needs real items.
-  - "Add to Cart" buttons remain decorative only — no real cart/checkout.
+  - "Add to Cart" buttons remain decorative only — see the "Prints /
+    e-commerce" section below for the real checkout plan.
 - Contact form does not submit anywhere yet (no backend, no Netlify Forms /
   Formspree integration).
 
@@ -173,21 +174,24 @@ modal).
   swap `media.file` for an external host (Cloudinary free tier, YouTube/
   SoundCloud embeds) rather than continuing to commit large binaries.
 
-## Products / CV / Home CMS (added 2026-08-15)
+## Prints / CV / Home CMS (added 2026-08-15; page renamed Products → Prints same day)
 
 Extended the same `/admin` pipeline to the rest of the site. Two different
 Decap collection shapes are used depending on the content:
 
-- **Products** — a folder collection, same shape as Projects/Studio: one
-  markdown file per item in `src/content/products/`, frontmatter `name`,
-  `price` (plain string — "$24", "Inquire", whatever reads best, not a
-  number field), `image`, `sold_out` (boolean; true swaps the "Add to Cart"
-  button for a "Sold Out" label). No detail page — same simple hover-tile
-  interaction as before, just data-driven now.
+- **Prints** (originally built as "Products", renamed once Huey clarified
+  this page is specifically for selling art prints) — a folder collection,
+  same shape as Projects/Studio: one markdown file per item in
+  `src/content/prints/`, frontmatter `name`, `price` (plain string — "$24",
+  "Inquire", whatever reads best, not a number field), `image`, `sold_out`
+  (boolean; true swaps the "Add to Cart" button for a "Sold Out" label). No
+  detail page — same simple hover-tile interaction as before, just
+  data-driven now. **Real checkout is not wired up yet** — see "Prints /
+  e-commerce" below for the plan.
 - **CV** and **Home** — **file collections**, not folders. Both are a single
   JSON file (`src/_data/cv.json`, `src/_data/home.json`) exposed to every
   template automatically via Eleventy's `_data` directory convention (no
-  custom collection code needed, unlike Products/Projects/Studio). CV holds
+  custom collection code needed, unlike Prints/Projects/Studio). CV holds
   one `entries` list (category/year/title/venue per exhibition) editable as
   one screen in `/admin` with native drag-to-reorder — deliberately not
   folder-per-entry, since CV lines have no media/detail page and would
