@@ -81,8 +81,10 @@ site at **hueyb.com**:
 
 ## Navigation
 
-Structure (same on every page): `Home → Studio → Projects → Products → About ▾`
-where **About** is a dropdown containing **CV** and **Contact**.
+Structure (same on every page): `Studio → Projects → Products → About ▾`
+where **About** is a dropdown containing **CV** and **Contact**. No separate
+"Home" nav item — the logo (top-left, links to `/`) is the home link, so a
+dedicated nav entry was redundant and was removed.
 
 - Portfolio and Gallery pages were removed entirely per explicit request —
   only pages in the layout above should exist.
