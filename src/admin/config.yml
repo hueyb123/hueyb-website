@@ -39,7 +39,7 @@ collections:
     folder: "src/content/studio"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}{{second}}"
-    identifier_field: date
+    summary: "{{headline}}"
     fields:
       - { label: "Date", name: "date", widget: "datetime", hint: "Used to sort posts, newest first." }
       - { label: "Headline (optional)", name: "headline", widget: "string", required: false, hint: "Most posts can skip this and just lead with the date." }
