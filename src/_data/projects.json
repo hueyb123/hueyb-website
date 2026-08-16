@@ -198,6 +198,17 @@
       "title": "test",
       "slug": "w",
       "cover": "/assets/uploads/IMAG0075.JPG"
+    },
+    {
+      "ongoing": false,
+      "title": "test",
+      "cover": "/assets/uploads/IMAG0075.JPG",
+      "media": [
+        {
+          "type": "image",
+          "file": "/assets/uploads/IMAG0074.JPG"
+        }
+      ]
     }
   ]
 }
