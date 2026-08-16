@@ -167,6 +167,12 @@
           "file": "/assets/uploads/swimmer.jpg"
         }
       ]
+    },
+    {
+      "ongoing": false,
+      "title": "test",
+      "cover": "/assets/uploads/IMAG0072.JPG",
+      "slug": "w"
     }
   ]
 }
