@@ -403,9 +403,16 @@ document.addEventListener("DOMContentLoaded", function () {
       target._scrambler.setText(fullText, stagger);
     };
 
+    var randomTitleColor = function () {
+      var hue = Math.floor(Math.random() * 360);
+      return "hsl(" + hue + ", 95%, 58%)";
+    };
+
     projectPanels.forEach(function (panel) {
       var slug = panel.id;
       var entry = {};
+      var titleEl = panel.querySelector(".project-panel-overlay h3");
+      if (titleEl) titleEl.style.color = randomTitleColor();
       var titleTarget = panel.querySelector(".project-panel-overlay h3 .scramble-target");
       var captionTarget = panel.querySelector(".project-panel-overlay p .scramble-target");
       var linkTarget = document.querySelector('.project-index-link[href="#' + slug + '"] .scramble-target');
