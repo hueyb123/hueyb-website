@@ -10,9 +10,22 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/admin");
   eleventyConfig.ignores.add("src/admin/index.html");
 
+  function slugify(str) {
+    return String(str || "")
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+  }
+
   eleventyConfig.addCollection("projects", function () {
-    return (projectsData.entries || []).map(function (entry) {
-      return { data: entry, fileSlug: entry.slug };
+    var usedSlugs = {};
+    return (projectsData.entries || []).map(function (entry, index) {
+      var slug = entry.slug ? slugify(entry.slug) : "";
+      if (!slug) slug = slugify(entry.title) || "untitled-" + (index + 1);
+      while (usedSlugs[slug]) slug = slug + "-" + (index + 1);
+      usedSlugs[slug] = true;
+      return { data: entry, fileSlug: slug };
     });
   });
 
