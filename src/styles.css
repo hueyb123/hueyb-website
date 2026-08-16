@@ -595,7 +595,9 @@ p {
   margin-left: 240px;
   height: 100vh;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
   scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
 }
 
 .project-panel {
