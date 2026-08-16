@@ -5,7 +5,12 @@ CMS.registerPreviewStyle("/styles.css");
 
 function assetUrl(getAsset, path) {
   if (!path) return "";
-  return getAsset(path).toString();
+  try {
+    var asset = getAsset(path);
+    return asset ? asset.toString() : "";
+  } catch (e) {
+    return "";
+  }
 }
 
 function renderMedia(getAsset, media, imgClass) {
