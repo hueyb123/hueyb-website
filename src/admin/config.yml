@@ -8,33 +8,39 @@ public_folder: "/assets/uploads"
 collections:
   - name: "projects"
     label: "Projects"
-    folder: "src/content/projects"
-    create: true
-    slug: "{{slug}}"
-    identifier_field: title
-    fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Date", name: "date", widget: "string", pattern: ['^\d{4}(-\d{2}-\d{2})?$', "Enter a year (e.g. 2024) or a full date (e.g. 2024-03-15)."], hint: "A year is enough — add the full date only if you want more precision. Used to sort projects, newest first." }
-      - { label: "Ongoing", name: "ongoing", widget: "boolean", default: false, hint: "Check this if the project is still in progress. Ongoing projects always sort to the top, ahead of everything else." }
-      - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding the date sort. Leave blank to sort automatically by date instead. Tip: use a decimal like 1.5 to slot a project between two others without renumbering everything." }
-      - { label: "Tile Caption", name: "caption", widget: "string", required: false, hint: "Optional short line shown on the project tile — a year, a phrase, or leave blank." }
-      - { label: "Cover Image", name: "cover", widget: "image", hint: "Shown as the background of the project tile." }
-      - label: "Media"
-        name: "media"
-        widget: "list"
-        summary: "{{fields.type}} — {{fields.caption}}"
-        hint: "Add as many images, videos, or sound files as this piece needs."
+    files:
+      - name: "projects"
+        label: "Projects"
+        file: "src/_data/projects.json"
         fields:
-          - label: "Type"
-            name: "type"
-            widget: "select"
-            options:
-              - { label: "Image", value: "image" }
-              - { label: "Video", value: "video" }
-              - { label: "Audio", value: "audio" }
-          - { label: "File", name: "file", widget: "file" }
-          - { label: "Caption", name: "caption", widget: "string", required: false }
-      - { label: "Description", name: "body", widget: "markdown" }
+          - label: "Entries"
+            name: "entries"
+            widget: "list"
+            summary: "{{fields.title}}"
+            hint: "Drag the handle on the left of each project to reorder — that order is exactly what shows on the site, top to bottom."
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "URL Slug", name: "slug", widget: "string", hint: "Used in the page address, e.g. \"the-rock-scans\" becomes hueyb.com/projects/the-rock-scans/. Avoid changing this after publishing — it breaks any links people already have." }
+              - { label: "Date", name: "date", widget: "string", required: false, pattern: ['^\d{4}(-\d{2}-\d{2})?$', "Enter a year (e.g. 2024) or a full date (e.g. 2024-03-15)."], hint: "Optional, just for your own reference — the order above is what controls display order now, not the date." }
+              - { label: "Ongoing", name: "ongoing", widget: "boolean", default: false, required: false, hint: "Optional label for your own reference." }
+              - { label: "Tile Caption", name: "caption", widget: "string", required: false, hint: "Optional short line shown on the project tile — a year, a phrase, or leave blank." }
+              - { label: "Cover Image", name: "cover", widget: "image", hint: "Shown as the background of the project tile." }
+              - label: "Media"
+                name: "media"
+                widget: "list"
+                summary: "{{fields.type}} — {{fields.caption}}"
+                hint: "Add as many images, videos, or sound files as this piece needs."
+                fields:
+                  - label: "Type"
+                    name: "type"
+                    widget: "select"
+                    options:
+                      - { label: "Image", value: "image" }
+                      - { label: "Video", value: "video" }
+                      - { label: "Audio", value: "audio" }
+                  - { label: "File", name: "file", widget: "file" }
+                  - { label: "Caption", name: "caption", widget: "string", required: false }
+              - { label: "Description", name: "description", widget: "markdown", required: false }
 
   - name: "studio"
     label: "Studio"

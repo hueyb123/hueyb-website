@@ -1,3 +1,6 @@
+var projectsData = require("./src/_data/projects.json");
+var markdownIt = require("markdown-it")({ html: true });
+
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/styles.css");
   eleventyConfig.addPassthroughCopy("src/script.js");
@@ -7,29 +10,11 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/admin");
   eleventyConfig.ignores.add("src/admin/index.html");
 
-  function toSortableDate(value) {
-    if (value instanceof Date) return value.getTime();
-    return new Date(String(value)).getTime();
-  }
-
-  function getProjects(collectionApi) {
-    return collectionApi
-      .getFilteredByGlob("src/content/projects/*.md")
-      .sort(function (a, b) {
-        var aOrder = typeof a.data.order === "number" ? a.data.order : null;
-        var bOrder = typeof b.data.order === "number" ? b.data.order : null;
-        if (aOrder !== null && bOrder !== null) return aOrder - bOrder;
-        if (aOrder !== null) return -1;
-        if (bOrder !== null) return 1;
-
-        var aOngoing = !!a.data.ongoing;
-        var bOngoing = !!b.data.ongoing;
-        if (aOngoing !== bOngoing) return aOngoing ? -1 : 1;
-        return toSortableDate(b.data.date) - toSortableDate(a.data.date);
-      });
-  }
-
-  eleventyConfig.addCollection("projects", getProjects);
+  eleventyConfig.addCollection("projects", function () {
+    return (projectsData.entries || []).map(function (entry) {
+      return { data: entry, fileSlug: entry.slug };
+    });
+  });
 
   eleventyConfig.addCollection("studioPosts", function (collectionApi) {
     return collectionApi
@@ -49,6 +34,11 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addFilter("dump", function (value) {
     return JSON.stringify(value);
+  });
+
+  eleventyConfig.addFilter("markdown", function (value) {
+    if (!value) return "";
+    return markdownIt.render(value);
   });
 
   eleventyConfig.addFilter("firstImage", function (media) {
