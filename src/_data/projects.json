@@ -195,21 +195,23 @@
     },
     {
       "ongoing": false,
-      "title": "test",
-      "slug": "w",
-      "cover": "/assets/uploads/IMAG0075.JPG"
-    },
-    {
-      "ongoing": false,
-      "title": "test 2",
-      "cover": "/assets/uploads/IMAG0075.JPG",
+      "title": "The Middle Room",
+      "date": "2026",
+      "cover": "/assets/uploads/img_2599.jpg",
       "media": [
         {
           "type": "image",
-          "file": "/assets/uploads/IMAG0074.JPG"
+          "file": "/assets/uploads/img_2599.jpg"
+        },
+        {
+          "type": "image",
+          "file": "/assets/uploads/img_2439.jpg"
+        },
+        {
+          "type": "image",
+          "file": "/assets/uploads/img_2521.jpg"
         }
-      ],
-      "slug": "ff"
+      ]
     }
   ]
 }
