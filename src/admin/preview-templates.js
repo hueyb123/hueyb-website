@@ -13,6 +13,10 @@ function assetUrl(getAsset, path) {
   }
 }
 
+function renderHeading(text) {
+  return h("section", { className: "page-header" }, h("h1", {}, text));
+}
+
 function renderMedia(getAsset, media, imgClass) {
   return (media || []).map(function (item, i) {
     var src = assetUrl(getAsset, item.file);
@@ -36,13 +40,13 @@ var ProjectsPreview = createClass({
 
     return h(
       "div",
-      { className: "container", style: { paddingTop: "40px", paddingBottom: "40px" } },
+      { className: "container", style: { paddingTop: "40px", paddingBottom: "40px", textAlign: "center" } },
       h("p", { style: { color: "#8a8a86", marginBottom: "32px" } }, entries.length + " project(s), in display order:"),
       entries.map(function (project, i) {
         return h(
           "div",
           { key: i, style: { marginBottom: "56px", paddingBottom: "40px", borderBottom: "1px solid #262626" } },
-          h("h1", {}, project.title || "Untitled"),
+          renderHeading(project.title || "Untitled"),
           project.ongoing ? h("p", { style: { color: "#39ff14" } }, "Ongoing") : null,
           project.description
             ? h("div", { className: "project-description", dangerouslySetInnerHTML: { __html: md.render(project.description) } })
@@ -64,8 +68,8 @@ var StudioPreview = createClass({
 
     return h(
       "div",
-      { className: "container", style: { paddingTop: "40px", paddingBottom: "40px" } },
-      h("h1", {}, data.headline || dateLabel || "Untitled"),
+      { className: "container", style: { paddingTop: "40px", paddingBottom: "40px", textAlign: "center" } },
+      renderHeading(data.headline || dateLabel || "Untitled"),
       data.headline && dateLabel ? h("p", { style: { color: "#8a8a86" } }, dateLabel) : null,
       renderMedia(getAsset, data.media, "studio-media-image"),
       data.body ? h("div", { dangerouslySetInnerHTML: { __html: md.render(data.body) } }) : null
@@ -83,13 +87,13 @@ var PrintsPreview = createClass({
 
     return h(
       "div",
-      { className: "container", style: { paddingTop: "40px", paddingBottom: "40px", maxWidth: "640px" } },
-      h("h1", {}, data.name || "Untitled"),
+      { className: "container", style: { paddingTop: "40px", paddingBottom: "40px", maxWidth: "640px", textAlign: "center" } },
+      renderHeading(data.name || "Untitled"),
       imgSrc ? h("img", { src: imgSrc, style: { width: "100%", marginBottom: "16px" } }) : null,
       data.description ? h("p", {}, data.description) : null,
       h(
         "ul",
-        {},
+        { style: { listStyle: "none", padding: 0 } },
         variants.map(function (v, i) {
           return h(
             "li",
@@ -111,12 +115,12 @@ var HomePreview = createClass({
 
     return h(
       "div",
-      { className: "container", style: { paddingTop: "40px", paddingBottom: "40px" } },
-      h("h1", {}, data.title || "Untitled"),
+      { className: "container", style: { paddingTop: "40px", paddingBottom: "40px", textAlign: "center" } },
+      renderHeading(data.title || "Untitled"),
       data.description ? h("p", {}, data.description) : null,
       h(
         "div",
-        { style: { display: "flex", flexWrap: "wrap", gap: "12px" } },
+        { style: { display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "12px" } },
         videos.map(function (v, i) {
           var src = assetUrl(getAsset, v.file);
           return src ? h("video", { key: i, src: src, controls: true, style: { width: "260px" } }) : null;
@@ -134,11 +138,11 @@ var CvPreview = createClass({
 
     return h(
       "div",
-      { className: "container", style: { paddingTop: "40px", paddingBottom: "40px" } },
-      h("h1", {}, "CV"),
+      { className: "container", style: { paddingTop: "40px", paddingBottom: "40px", textAlign: "center" } },
+      renderHeading("CV"),
       h(
         "ul",
-        {},
+        { style: { listStyle: "none", padding: 0 } },
         entries.map(function (e, i) {
           return h(
             "li",
