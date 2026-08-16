@@ -192,6 +192,17 @@
         }
       ],
       "slug": "caution"
+    },
+    {
+      "ongoing": false,
+      "title": "test",
+      "cover": "/assets/uploads/IMAG0073.JPG",
+      "media": [
+        {
+          "type": "image",
+          "file": "/assets/uploads/IMAG0074.JPG"
+        }
+      ]
     }
   ]
 }
