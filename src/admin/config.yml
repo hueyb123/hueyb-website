@@ -15,6 +15,7 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, hint: "Used to sort projects, newest first." }
+      - { label: "Ongoing", name: "ongoing", widget: "boolean", default: false, hint: "Check this if the project is still in progress. Ongoing projects always sort to the top, ahead of everything else." }
       - { label: "Tile Caption", name: "caption", widget: "string", required: false, hint: "Optional short line shown on the project tile — a year, a phrase, or leave blank." }
       - { label: "Cover Image", name: "cover", widget: "image", hint: "Shown as the background of the project tile." }
       - label: "Media"

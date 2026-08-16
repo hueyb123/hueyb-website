@@ -11,6 +11,9 @@ module.exports = function (eleventyConfig) {
     return collectionApi
       .getFilteredByGlob("src/content/projects/*.md")
       .sort(function (a, b) {
+        var aOngoing = !!a.data.ongoing;
+        var bOngoing = !!b.data.ongoing;
+        if (aOngoing !== bOngoing) return aOngoing ? -1 : 1;
         return b.data.date - a.data.date;
       });
   }
