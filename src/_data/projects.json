@@ -212,6 +212,17 @@
           "file": "/assets/uploads/img_2521.jpg"
         }
       ]
+    },
+    {
+      "ongoing": false,
+      "title": "Paint Pond",
+      "cover": "/assets/uploads/img_1304.jpg",
+      "media": [
+        {
+          "type": "image",
+          "file": "/assets/uploads/img_1304.jpg"
+        }
+      ]
     }
   ]
 }
