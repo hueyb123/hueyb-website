@@ -154,12 +154,28 @@ can carry several images, a video, and audio, more than a hover tile can
 show, and Huey wanted real shareable per-project URLs rather than an in-page
 modal).
 
-- Each project is one markdown file in `src/content/projects/`, with
-  frontmatter: `title`, `date` (sort key), `status` (`current`/`past` —
-  drives the two-section split on the Projects page), `caption` (free-text
-  tile subtitle, e.g. "2026 — Ongoing"), `cover` (tile background image),
-  and `media` (a list of `{type: image|video|audio, file, caption}` items
-  shown in order on the detail page). The markdown body is the description.
+- **Restructured 2026-08-16**: Projects moved from a folder collection (one
+  markdown file per project) to a single `src/_data/projects.json` with one
+  `entries` list field, because Decap CMS only supports drag-and-drop
+  reordering *within* a list widget — it has no way to reorder separate
+  files in a folder collection. This matches the pattern CV already used.
+  List position in the admin (drag the handle on each entry) is now the
+  sole source of display order — there's no more date/ongoing-based
+  auto-sort.
+- Each entry has: `title`, `slug` (used directly in the URL, e.g.
+  `/projects/<slug>/` — changing it after publishing breaks existing
+  links), `date` and `ongoing` (both optional, informational only now),
+  `caption` (free-text tile subtitle), `cover` (tile background image),
+  `media` (a list of `{type: image|video|audio, file, caption}` items shown
+  in order on the detail page), and `description` (markdown text, rendered
+  at build time via a `markdown` filter backed by `markdown-it` — since
+  entries no longer have their own file/template body, this isn't Eleventy's
+  automatic `templateContent` rendering anymore).
+- `.eleventy.js` builds `collections.projects` by mapping
+  `projectsData.entries` (required from `src/_data/projects.json` at config
+  load time) into `{ data: entry, fileSlug: entry.slug }` objects — the
+  `fileSlug` alias exists purely so `src/projects.njk` and
+  `src/projects/detail.njk` (pagination + permalink) didn't need to change.
 - `src/admin/config.yml` defines this schema for Decap's form UI — if a field
   is added/renamed there, `src/projects.njk` and `src/projects/detail.njk`
   need matching updates since they read `project.data.<field>` directly.
