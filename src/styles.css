@@ -911,6 +911,7 @@ p {
 .project-media-video,
 .project-media-audio {
   width: 100%;
+  padding: 12px;
   border-radius: var(--radius);
   margin-bottom: 8px;
 }
