@@ -7,5 +7,7 @@ media:
   - file: /assets/uploads/imag0079.jpg
     type: image
     caption: rock scan 1
+  - type: image
+    file: /assets/uploads/imag0072.jpg
 ---
 A project to find the digital soul of an ancient rock that fell to Earth in the deep past.
