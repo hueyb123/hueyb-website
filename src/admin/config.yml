@@ -115,19 +115,6 @@ collections:
               - { label: "Title", name: "title", widget: "string" }
               - { label: "Venue", name: "venue", widget: "string" }
 
-  - name: "bulk_upload"
-    label: "Bulk Upload"
-    files:
-      - name: "bulk_upload"
-        label: "Bulk Upload"
-        file: "src/_data/bulk_upload.json"
-        fields:
-          - label: "Files"
-            name: "files"
-            widget: "file"
-            multiple: true
-            hint: "Select many files at once (Ctrl+click or Shift+click in the picker) to upload them all in one go. This entry isn't used anywhere on the site - it's just a fast way to get a batch of files into the shared library. Afterward, go to your Project/Studio entry, add each Media item as usual, and pick the file from the library grid instead of uploading fresh."
-
   - name: "home"
     label: "Home"
     files:
