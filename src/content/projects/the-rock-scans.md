@@ -1,7 +1,7 @@
 ---
 title: The Rock Scans
 date: 2026-07-22
-caption: "Scans taken of 'The Rock' at Arte Sumapaz "
+caption: ""
 cover: /assets/uploads/imag0081.jpg
 media:
   - file: /assets/uploads/imag0079.jpg
