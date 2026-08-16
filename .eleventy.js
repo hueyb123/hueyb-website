@@ -7,6 +7,11 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/admin");
   eleventyConfig.ignores.add("src/admin/index.html");
 
+  function toSortableDate(value) {
+    if (value instanceof Date) return value.getTime();
+    return new Date(String(value)).getTime();
+  }
+
   function getProjects(collectionApi) {
     return collectionApi
       .getFilteredByGlob("src/content/projects/*.md")
@@ -14,7 +19,7 @@ module.exports = function (eleventyConfig) {
         var aOngoing = !!a.data.ongoing;
         var bOngoing = !!b.data.ongoing;
         if (aOngoing !== bOngoing) return aOngoing ? -1 : 1;
-        return b.data.date - a.data.date;
+        return toSortableDate(b.data.date) - toSortableDate(a.data.date);
       });
   }
 
