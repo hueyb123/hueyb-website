@@ -19,6 +19,10 @@ eleventyComputed:
     </section>
 
     <section class="container project-detail">
+      <div class="project-description">
+        {{ project.templateContent | safe }}
+      </div>
+
       {% for item in project.data.media %}
       {% if item.type == "image" %}
       <img src="{{ item.file }}" alt="{{ item.caption or project.data.title }}" class="project-media-image">
@@ -31,8 +35,4 @@ eleventyComputed:
       <p class="project-media-caption">{{ item.caption }}</p>
       {% endif %}
       {% endfor %}
-
-      <div class="project-description">
-        {{ project.templateContent | safe }}
-      </div>
     </section>
