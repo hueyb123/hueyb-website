@@ -16,6 +16,12 @@ module.exports = function (eleventyConfig) {
     return collectionApi
       .getFilteredByGlob("src/content/projects/*.md")
       .sort(function (a, b) {
+        var aOrder = typeof a.data.order === "number" ? a.data.order : null;
+        var bOrder = typeof b.data.order === "number" ? b.data.order : null;
+        if (aOrder !== null && bOrder !== null) return aOrder - bOrder;
+        if (aOrder !== null) return -1;
+        if (bOrder !== null) return 1;
+
         var aOngoing = !!a.data.ongoing;
         var bOngoing = !!b.data.ongoing;
         if (aOngoing !== bOngoing) return aOngoing ? -1 : 1;

@@ -16,6 +16,7 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "string", pattern: ['^\d{4}(-\d{2}-\d{2})?$', "Enter a year (e.g. 2024) or a full date (e.g. 2024-03-15)."], hint: "A year is enough — add the full date only if you want more precision. Used to sort projects, newest first." }
       - { label: "Ongoing", name: "ongoing", widget: "boolean", default: false, hint: "Check this if the project is still in progress. Ongoing projects always sort to the top, ahead of everything else." }
+      - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding the date sort. Leave blank to sort automatically by date instead. Tip: use a decimal like 1.5 to slot a project between two others without renumbering everything." }
       - { label: "Tile Caption", name: "caption", widget: "string", required: false, hint: "Optional short line shown on the project tile — a year, a phrase, or leave blank." }
       - { label: "Cover Image", name: "cover", widget: "image", hint: "Shown as the background of the project tile." }
       - label: "Media"
