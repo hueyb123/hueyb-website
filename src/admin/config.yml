@@ -51,7 +51,8 @@ collections:
     slug: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}{{second}}"
     summary: "{{headline}}"
     fields:
-      - { label: "Date", name: "date", widget: "datetime", hint: "Used to sort posts, newest first." }
+      - { label: "Date", name: "date", widget: "datetime", hint: "Used to sort posts, newest first, unless Display Order below is set." }
+      - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding the date. Leave blank to sort by date instead. Tip: use a decimal like 1.5 to slot a post between two others without renumbering everything." }
       - { label: "Headline (optional)", name: "headline", widget: "string", required: false, hint: "Most posts can skip this and just lead with the date." }
       - label: "Media"
         name: "media"

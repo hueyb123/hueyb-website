@@ -40,6 +40,11 @@ module.exports = function (eleventyConfig) {
     return collectionApi
       .getFilteredByGlob("src/content/studio/*.md")
       .sort(function (a, b) {
+        var aOrder = typeof a.data.order === "number" ? a.data.order : null;
+        var bOrder = typeof b.data.order === "number" ? b.data.order : null;
+        if (aOrder !== null && bOrder !== null) return aOrder - bOrder;
+        if (aOrder !== null) return -1;
+        if (bOrder !== null) return 1;
         return b.data.date - a.data.date;
       });
   });
