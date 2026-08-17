@@ -1316,6 +1316,10 @@ p {
   text-transform: uppercase;
 }
 
+.site-footer .container > p {
+  margin-top: 20px;
+}
+
 .site-footer a:hover {
   color: var(--color-accent);
 }
