@@ -19,9 +19,11 @@ eleventyComputed:
     </section>
 
     <section class="container project-detail">
+      {% if project.templateContent %}
       <div class="project-description">
         {{ project.templateContent | safe }}
       </div>
+      {% endif %}
 
       {% for item in project.data.media %}
       {% if item.type == "image" %}
