@@ -11,11 +11,11 @@ nav: cv
     <section class="container">
       <div class="cv-wrap">
 
-        {% if cv.entries | hasCategory("solo") %}
+        {% if collections.cv | hasCategory("solo") %}
         <div class="cv-section reveal">
           <h2>Solo Exhibitions</h2>
           <ul class="cv-list">
-            {% for entry in cv.entries | sort(true, false, "year") %}
+            {% for entry in collections.cv %}
             {% if entry.category == "solo" %}
             <li>
               <span class="cv-year">{{ entry.year }}</span>
@@ -30,11 +30,11 @@ nav: cv
         </div>
         {% endif %}
 
-        {% if cv.entries | hasCategory("group") %}
+        {% if collections.cv | hasCategory("group") %}
         <div class="cv-section reveal">
           <h2>Group Exhibitions</h2>
           <ul class="cv-list">
-            {% for entry in cv.entries | sort(true, false, "year") %}
+            {% for entry in collections.cv %}
             {% if entry.category == "group" %}
             <li>
               <span class="cv-year">{{ entry.year }}</span>
@@ -49,11 +49,11 @@ nav: cv
         </div>
         {% endif %}
 
-        {% if cv.entries | hasCategory("residency") %}
+        {% if collections.cv | hasCategory("residency") %}
         <div class="cv-section reveal">
           <h2>Residencies</h2>
           <ul class="cv-list">
-            {% for entry in cv.entries | sort(true, false, "year") %}
+            {% for entry in collections.cv %}
             {% if entry.category == "residency" %}
             <li>
               <span class="cv-year">{{ entry.year }}</span>
@@ -68,11 +68,11 @@ nav: cv
         </div>
         {% endif %}
 
-        {% if cv.entries | hasCategory("workshop") %}
+        {% if collections.cv | hasCategory("workshop") %}
         <div class="cv-section reveal">
           <h2>Workshops</h2>
           <ul class="cv-list">
-            {% for entry in cv.entries | sort(true, false, "year") %}
+            {% for entry in collections.cv %}
             {% if entry.category == "workshop" %}
             <li>
               <span class="cv-year">{{ entry.year }}</span>
@@ -87,11 +87,11 @@ nav: cv
         </div>
         {% endif %}
 
-        {% if cv.entries | hasCategory("education") %}
+        {% if collections.cv | hasCategory("education") %}
         <div class="cv-section reveal">
           <h2>Education</h2>
           <ul class="cv-list">
-            {% for entry in cv.entries | sort(true, false, "year") %}
+            {% for entry in collections.cv %}
             {% if entry.category == "education" %}
             <li>
               <span class="cv-year">{{ entry.year }}</span>

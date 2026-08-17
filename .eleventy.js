@@ -56,6 +56,19 @@ module.exports = function (eleventyConfig) {
       });
   });
 
+  eleventyConfig.addCollection("cv", function (collectionApi) {
+    return collectionApi
+      .getFilteredByGlob("src/content/cv/*.md")
+      .sort(function (a, b) {
+        return orderThenFallback(a, b, function () {
+          return String(b.data.year).localeCompare(String(a.data.year));
+        });
+      })
+      .map(function (item) {
+        return item.data;
+      });
+  });
+
   eleventyConfig.addFilter("dump", function (value) {
     return JSON.stringify(value);
   });

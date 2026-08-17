@@ -108,29 +108,25 @@ collections:
 
   - name: "cv"
     label: "CV"
-    files:
-      - name: "cv"
-        label: "CV"
-        file: "src/_data/cv.json"
-        fields:
-          - label: "Entries"
-            name: "entries"
-            widget: "list"
-            summary: "{{fields.year}} — {{fields.title}}"
-            hint: "Drag to reorder within the list. Category controls which section on the page it shows up in."
-            fields:
-              - label: "Category"
-                name: "category"
-                widget: "select"
-                options:
-                  - { label: "Solo Exhibition", value: "solo" }
-                  - { label: "Group Exhibition", value: "group" }
-                  - { label: "Residency", value: "residency" }
-                  - { label: "Workshop", value: "workshop" }
-                  - { label: "Education", value: "education" }
-              - { label: "Year", name: "year", widget: "string" }
-              - { label: "Title", name: "title", widget: "string" }
-              - { label: "Venue", name: "venue", widget: "string" }
+    folder: "src/content/cv"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{year}} — {{title}}"
+    fields:
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "Solo Exhibition", value: "solo" }
+          - { label: "Group Exhibition", value: "group" }
+          - { label: "Residency", value: "residency" }
+          - { label: "Workshop", value: "workshop" }
+          - { label: "Education", value: "education" }
+      - { label: "Year", name: "year", widget: "string" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Venue", name: "venue", widget: "string" }
+      - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first within their category section, overriding the year. Leave blank to sort by year (newest first) instead." }
 
   - name: "navigation"
     label: "Header Navigation"

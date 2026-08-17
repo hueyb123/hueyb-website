@@ -136,23 +136,13 @@ CMS.registerPreviewTemplate("home", HomePreview);
 var CvPreview = createClass({
   render: function () {
     var data = (this.props.entry.get("data") || {}).toJS ? this.props.entry.get("data").toJS() : {};
-    var entries = data.entries || [];
 
     return h(
       "div",
       { className: "container", style: { paddingTop: "40px", paddingBottom: "40px", textAlign: "center" } },
-      renderHeading("CV"),
-      h(
-        "ul",
-        { style: { listStyle: "none", padding: 0 } },
-        entries.map(function (e, i) {
-          return h(
-            "li",
-            { key: i, style: { marginBottom: "8px" } },
-            (e.year || "") + " — " + (e.title || "") + (e.venue ? " (" + e.venue + ")" : "") + "  [" + (e.category || "") + "]"
-          );
-        })
-      )
+      renderHeading(data.title || "Untitled"),
+      h("p", { style: { color: "#8a8a86" } }, (data.year || "") + (data.venue ? " — " + data.venue : "")),
+      data.category ? h("p", { style: { color: "#39ff14" } }, data.category) : null
     );
   },
 });
