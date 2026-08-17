@@ -42,8 +42,17 @@ collections:
                   - { label: "Caption", name: "caption", widget: "string", required: false }
               - { label: "Description", name: "description", widget: "markdown", required: false }
 
+  - name: "studio_settings"
+    label: "Studio Page"
+    files:
+      - name: "studio_settings"
+        label: "Studio Page"
+        file: "src/_data/studio.json"
+        fields:
+          - { label: "Tagline", name: "tagline", widget: "text", hint: "Shown under the STUDIO heading at the top of the page." }
+
   - name: "studio"
-    label: "Studio"
+    label: "Studio Posts"
     folder: "src/content/studio"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}{{second}}"
