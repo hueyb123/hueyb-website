@@ -1,4 +1,5 @@
 var projectsData = require("./src/_data/projects.json");
+var studioData = require("./src/_data/studio.json");
 var markdownIt = require("markdown-it")({ html: true });
 
 module.exports = function (eleventyConfig) {
@@ -18,23 +19,29 @@ module.exports = function (eleventyConfig) {
       .replace(/(^-|-$)/g, "");
   }
 
-  eleventyConfig.addCollection("projects", function () {
+  function buildSlugCollection(entries, fallbackTextFn) {
     var usedSlugs = {};
-    return (projectsData.entries || []).map(function (entry, index) {
+    return (entries || []).map(function (entry, index) {
       var slug = entry.slug ? slugify(entry.slug) : "";
-      if (!slug) slug = slugify(entry.title) || "untitled-" + (index + 1);
+      if (!slug) slug = slugify(fallbackTextFn(entry)) || "untitled-" + (index + 1);
       while (usedSlugs[slug]) slug = slug + "-" + (index + 1);
       usedSlugs[slug] = true;
       return { data: entry, fileSlug: slug };
     });
+  }
+
+  eleventyConfig.addCollection("projects", function () {
+    return buildSlugCollection(projectsData.entries, function (entry) {
+      return entry.title;
+    });
   });
 
-  eleventyConfig.addCollection("studioPosts", function (collectionApi) {
-    return collectionApi
-      .getFilteredByGlob("src/content/studio/*.md")
-      .sort(function (a, b) {
-        return b.data.date - a.data.date;
-      });
+  eleventyConfig.addCollection("studioPosts", function () {
+    return buildSlugCollection(studioData.entries, function (entry) {
+      return entry.headline || entry.date;
+    }).sort(function (a, b) {
+      return new Date(b.data.date) - new Date(a.data.date);
+    });
   });
 
   eleventyConfig.addCollection("prints", function (collectionApi) {
@@ -54,6 +61,13 @@ module.exports = function (eleventyConfig) {
     return markdownIt.render(value);
   });
 
+  eleventyConfig.addFilter("hasActiveChild", function (children, nav) {
+    if (!Array.isArray(children)) return false;
+    return children.some(function (child) {
+      return String(child.label).toLowerCase() === nav;
+    });
+  });
+
   eleventyConfig.addFilter("firstImage", function (media) {
     if (!Array.isArray(media)) return null;
     var found = media.find(function (m) {
@@ -64,7 +78,7 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addFilter("readableDate", function (date) {
     if (!date) return "";
-    return date.toLocaleDateString("en-US", {
+    return new Date(date).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",

@@ -1,0 +1,14 @@
+{
+  "items": [
+    { "label": "Studio", "url": "/studio/" },
+    { "label": "Projects", "url": "/projects/" },
+    { "label": "Prints", "url": "/prints/" },
+    {
+      "label": "About",
+      "children": [
+        { "label": "CV", "url": "/cv/" },
+        { "label": "Contact", "url": "/contact/" }
+      ]
+    }
+  ]
+}

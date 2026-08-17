@@ -1,3 +1,38 @@
 {
-  "tagline": "Day-to-day production — works and progress, happenings, and thought process from within the practice."
+  "tagline": "Day-to-day production — works and progress, happenings, and thought process from within the practice.",
+  "entries": [
+    {
+      "slug": "2026-08-17-005600",
+      "date": "2026-08-16T20:56:00.000-04:00",
+      "headline": "Im thinking of flowers floating over the horizon",
+      "media": [
+        { "type": "image", "file": "/assets/uploads/img_0294.jpg" },
+        { "type": "image", "file": "/assets/uploads/img_0328.jpg" },
+        { "type": "image", "file": "/assets/uploads/100_4579.jpg" },
+        { "type": "image", "file": "/assets/uploads/img_0698.jpg" },
+        { "type": "image", "file": "/assets/uploads/img_0275.jpg" }
+      ],
+      "description": "This marks the first studio post. Im thinking about this space as a collage between the past and the present, sometimes future? Ill try to push as far as I can with this space, but lets let it come naturally. blog?"
+    },
+    {
+      "slug": "test-thumb-1",
+      "date": "2026-08-10T00:00:00.000Z",
+      "headline": "Sketchbook scraps",
+      "media": [
+        { "type": "image", "file": "/assets/uploads/IMAG0072.JPG" },
+        { "type": "image", "file": "/assets/uploads/IMAG0073.JPG" }
+      ],
+      "description": "A couple of pages from the sketchbook this week, mostly warming up before the real work starts."
+    },
+    {
+      "slug": "test-thumb-2",
+      "date": "2026-08-12T00:00:00.000Z",
+      "headline": "",
+      "media": [
+        { "type": "image", "file": "/assets/uploads/img_2439.jpg" },
+        { "type": "image", "file": "/assets/uploads/img_2521.jpg" }
+      ],
+      "description": "Test post to check the new grid layout — no headline, just a date, same as a quick studio-floor snapshot."
+    }
+  ]
 }

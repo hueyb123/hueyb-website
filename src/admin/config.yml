@@ -42,40 +42,38 @@ collections:
                   - { label: "Caption", name: "caption", widget: "string", required: false }
               - { label: "Description", name: "description", widget: "markdown", required: false }
 
-  - name: "studio_settings"
-    label: "Studio Page"
+  - name: "studio"
+    label: "Studio"
     files:
-      - name: "studio_settings"
-        label: "Studio Page"
+      - name: "studio"
+        label: "Studio"
         file: "src/_data/studio.json"
         fields:
           - { label: "Tagline", name: "tagline", widget: "text", hint: "Shown under the STUDIO heading at the top of the page." }
-
-  - name: "studio"
-    label: "Studio Posts"
-    folder: "src/content/studio"
-    create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}{{second}}"
-    summary: "{{headline}}"
-    fields:
-      - { label: "Date", name: "date", widget: "datetime", hint: "Used to sort posts, newest first." }
-      - { label: "Headline (optional)", name: "headline", widget: "string", required: false, hint: "Most posts can skip this and just lead with the date." }
-      - label: "Media"
-        name: "media"
-        widget: "list"
-        summary: "{{fields.type}} — {{fields.caption}}"
-        hint: "Add as many images, videos, or sound files as this post needs. The first image becomes the tile thumbnail."
-        fields:
-          - label: "Type"
-            name: "type"
-            widget: "select"
-            options:
-              - { label: "Image", value: "image" }
-              - { label: "Video", value: "video" }
-              - { label: "Audio", value: "audio" }
-          - { label: "File", name: "file", widget: "file" }
-          - { label: "Caption", name: "caption", widget: "string", required: false }
-      - { label: "Musing", name: "body", widget: "markdown", hint: "Thoughts, progress notes, whatever's on your mind about this." }
+          - label: "Posts"
+            name: "entries"
+            widget: "list"
+            summary: "{{fields.date}} — {{fields.headline}}"
+            hint: "Posts always display newest-first by date on the site, regardless of the order here — drag to reorder is just for your own organizing while editing."
+            fields:
+              - { label: "Date", name: "date", widget: "datetime" }
+              - { label: "Headline (optional)", name: "headline", widget: "string", required: false, hint: "Most posts can skip this and just lead with the date." }
+              - label: "Media"
+                name: "media"
+                widget: "list"
+                summary: "{{fields.type}} — {{fields.caption}}"
+                hint: "Add as many images, videos, or sound files as this post needs. The first image becomes the tile thumbnail."
+                fields:
+                  - label: "Type"
+                    name: "type"
+                    widget: "select"
+                    options:
+                      - { label: "Image", value: "image" }
+                      - { label: "Video", value: "video" }
+                      - { label: "Audio", value: "audio" }
+                  - { label: "File", name: "file", widget: "file" }
+                  - { label: "Caption", name: "caption", widget: "string", required: false }
+              - { label: "Musing", name: "description", widget: "markdown", required: false, hint: "Thoughts, progress notes, whatever's on your mind about this." }
 
   - name: "prints"
     label: "Prints"
@@ -131,6 +129,31 @@ collections:
               - { label: "Year", name: "year", widget: "string" }
               - { label: "Title", name: "title", widget: "string" }
               - { label: "Venue", name: "venue", widget: "string" }
+
+  - name: "navigation"
+    label: "Header Navigation"
+    files:
+      - name: "navigation"
+        label: "Header Navigation"
+        file: "src/_data/navigation.json"
+        fields:
+          - label: "Links"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.label}}"
+            hint: "Drag to reorder — this controls the order links appear in the header. Leave Link URL blank and use Dropdown Links instead to make this item open a dropdown menu (like About)."
+            fields:
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "Link URL", name: "url", widget: "string", required: false, hint: "e.g. /studio/ — leave blank if this is a dropdown group instead." }
+              - label: "Dropdown Links"
+                name: "children"
+                widget: "list"
+                required: false
+                summary: "{{fields.label}}"
+                hint: "Only used if this item is a dropdown group (like About) rather than a direct link."
+                fields:
+                  - { label: "Label", name: "label", widget: "string" }
+                  - { label: "Link URL", name: "url", widget: "string" }
 
   - name: "home"
     label: "Home"
