@@ -48,11 +48,19 @@ main {
 .home-page .site-footer {
   flex: 1 0 auto;
   display: flex;
-  align-items: center;
 }
 
 .home-page .site-footer .container {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: center;
   width: 100%;
+}
+
+.home-page .site-footer .container > p {
+  align-self: end;
+  padding-bottom: 12px;
+  margin-top: 0;
 }
 
 .page-enter {
