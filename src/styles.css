@@ -1325,6 +1325,10 @@ p {
 
 .footer-subscribe .formkit-fields {
   flex-wrap: nowrap !important;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
 }
 
 .footer-subscribe .formkit-field,
@@ -1338,22 +1342,22 @@ p {
 }
 
 .footer-subscribe .formkit-input {
-  background: var(--color-bg-alt) !important;
-  border: 1px solid var(--color-border) !important;
-  border-radius: var(--radius) !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
   color: var(--color-text) !important;
   font-family: "Inter", sans-serif !important;
   font-size: 0.8rem !important;
-  padding: 8px 10px !important;
+  padding: 10px 12px !important;
 }
 
 .footer-subscribe .formkit-input:focus {
-  border-color: var(--color-accent) !important;
+  outline: none !important;
 }
 
 .footer-subscribe .formkit-submit {
   background-color: var(--color-accent) !important;
-  border-radius: var(--radius) !important;
+  border-radius: 0 !important;
 }
 
 .footer-subscribe .formkit-submit span {
@@ -1361,7 +1365,7 @@ p {
   font-size: 0.7rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  padding: 8px 14px !important;
+  padding: 10px 14px !important;
 }
 
 .footer-subscribe .formkit-alert-success {
