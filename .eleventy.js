@@ -1,5 +1,5 @@
 var projectsData = require("./src/_data/projects.json");
-var studioData = require("./src/_data/studio.json");
+var printsData = require("./src/_data/prints.json");
 var markdownIt = require("markdown-it")({ html: true });
 
 module.exports = function (eleventyConfig) {
@@ -36,20 +36,18 @@ module.exports = function (eleventyConfig) {
     });
   });
 
-  eleventyConfig.addCollection("studioPosts", function () {
-    return buildSlugCollection(studioData.entries, function (entry) {
-      return entry.headline || entry.date;
-    }).sort(function (a, b) {
-      return new Date(b.data.date) - new Date(a.data.date);
-    });
+  eleventyConfig.addCollection("studioPosts", function (collectionApi) {
+    return collectionApi
+      .getFilteredByGlob("src/content/studio/*.md")
+      .sort(function (a, b) {
+        return b.data.date - a.data.date;
+      });
   });
 
-  eleventyConfig.addCollection("prints", function (collectionApi) {
-    return collectionApi
-      .getFilteredByGlob("src/content/prints/*.md")
-      .sort(function (a, b) {
-        return a.data.name.localeCompare(b.data.name);
-      });
+  eleventyConfig.addCollection("prints", function () {
+    return buildSlugCollection(printsData.entries, function (entry) {
+      return entry.name;
+    });
   });
 
   eleventyConfig.addFilter("dump", function (value) {

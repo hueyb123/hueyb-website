@@ -45,66 +45,75 @@ collections:
               - { label: "Description", name: "description", widget: "markdown", required: false }
 
   - name: "studio"
-    label: "Studio"
+    label: "Studio Posts"
+    folder: "src/content/studio"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}{{second}}"
+    summary: "{{headline}}"
+    fields:
+      - { label: "Date", name: "date", widget: "datetime", hint: "Used to sort posts, newest first." }
+      - { label: "Headline (optional)", name: "headline", widget: "string", required: false, hint: "Most posts can skip this and just lead with the date." }
+      - label: "Media"
+        name: "media"
+        widget: "list"
+        summary: "{{fields.type}} — {{fields.caption}}"
+        hint: "Add as many images, videos, or sound files as this post needs. The first image becomes the tile thumbnail."
+        fields:
+          - label: "Type"
+            name: "type"
+            widget: "select"
+            options:
+              - { label: "Image", value: "image" }
+              - { label: "Video", value: "video" }
+              - { label: "Audio", value: "audio" }
+          - { label: "File", name: "file", widget: "file" }
+          - { label: "Caption", name: "caption", widget: "string", required: false }
+      - { label: "Musing", name: "body", widget: "markdown", hint: "Thoughts, progress notes, whatever's on your mind about this." }
+
+  - name: "studio_settings"
+    label: "Studio Settings"
     files:
-      - name: "studio"
-        label: "Studio"
+      - name: "studio_settings"
+        label: "Studio Settings"
         file: "src/_data/studio.json"
         fields:
           - { label: "Tagline", name: "tagline", widget: "text", hint: "Shown under the STUDIO heading at the top of the page." }
-          - label: "Posts"
-            name: "entries"
-            widget: "list"
-            summary: "{{fields.date}} — {{fields.headline}}"
-            hint: "Posts always display newest-first by date on the site, regardless of the order here — drag to reorder is just for your own organizing while editing."
-            fields:
-              - { label: "Date", name: "date", widget: "datetime" }
-              - { label: "Headline (optional)", name: "headline", widget: "string", required: false, hint: "Most posts can skip this and just lead with the date." }
-              - label: "Media"
-                name: "media"
-                widget: "list"
-                summary: "{{fields.type}} — {{fields.caption}}"
-                hint: "Add as many images, videos, or sound files as this post needs. The first image becomes the tile thumbnail."
-                fields:
-                  - label: "Type"
-                    name: "type"
-                    widget: "select"
-                    options:
-                      - { label: "Image", value: "image" }
-                      - { label: "Video", value: "video" }
-                      - { label: "Audio", value: "audio" }
-                  - { label: "File", name: "file", widget: "file" }
-                  - { label: "Caption", name: "caption", widget: "string", required: false }
-              - { label: "Musing", name: "description", widget: "markdown", required: false, hint: "Thoughts, progress notes, whatever's on your mind about this." }
 
   - name: "prints"
     label: "Prints"
-    folder: "src/content/prints"
-    create: true
-    slug: "{{slug}}"
-    identifier_field: name
-    fields:
-      - { label: "Name", name: "name", widget: "string" }
-      - { label: "Description", name: "description", widget: "text", required: false }
-      - { label: "Image", name: "image", widget: "image" }
-      - label: "Edition Type"
-        name: "edition_type"
-        widget: "select"
-        default: "open"
-        hint: "Open = you print it whenever it sells, no fixed count. Limited = a fixed number of copies exist."
-        options:
-          - { label: "Open / Print-on-Demand", value: "open" }
-          - { label: "Limited Edition", value: "limited" }
-      - label: "Sizes"
-        name: "variants"
-        widget: "list"
-        summary: "{{fields.label}} — ${{fields.price}}"
-        hint: "Add one entry even if there's only a single size. Each size has its own price and sold-out status."
+    files:
+      - name: "prints"
+        label: "Prints"
+        file: "src/_data/prints.json"
         fields:
-          - { label: "Size / Label", name: "label", widget: "string", hint: "e.g. \"8x10\", or \"Standard\" if there's only one." }
-          - { label: "Price (USD)", name: "price", widget: "number", value_type: "float", hint: "Include shipping in this number — nothing is added at checkout." }
-          - { label: "Total Copies", name: "quantity", widget: "number", value_type: "int", required: false, hint: "Only matters for Limited Edition prints — how many of this size exist." }
-          - { label: "Sold Out", name: "sold_out", widget: "boolean", default: false }
+          - label: "Entries"
+            name: "entries"
+            widget: "list"
+            summary: "{{fields.name}}"
+            hint: "Drag the handle on the left of each print to reorder — that order is exactly what shows on the site, top to bottom."
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "URL Slug", name: "slug", widget: "string", hint: "Used in the page address, e.g. \"ceramic-study\" becomes hueyb.com/prints/ceramic-study/. Avoid changing this after publishing — it breaks any links people already have." }
+              - { label: "Description", name: "description", widget: "text", required: false }
+              - { label: "Image", name: "image", widget: "image" }
+              - label: "Edition Type"
+                name: "edition_type"
+                widget: "select"
+                default: "open"
+                hint: "Open = you print it whenever it sells, no fixed count. Limited = a fixed number of copies exist."
+                options:
+                  - { label: "Open / Print-on-Demand", value: "open" }
+                  - { label: "Limited Edition", value: "limited" }
+              - label: "Sizes"
+                name: "variants"
+                widget: "list"
+                summary: "{{fields.label}} — ${{fields.price}}"
+                hint: "Add one entry even if there's only a single size. Each size has its own price and sold-out status."
+                fields:
+                  - { label: "Size / Label", name: "label", widget: "string", hint: "e.g. \"8x10\", or \"Standard\" if there's only one." }
+                  - { label: "Price (USD)", name: "price", widget: "number", value_type: "float", hint: "Include shipping in this number — nothing is added at checkout." }
+                  - { label: "Total Copies", name: "quantity", widget: "number", value_type: "int", required: false, hint: "Only matters for Limited Edition prints — how many of this size exist." }
+                  - { label: "Sold Out", name: "sold_out", widget: "boolean", default: false }
 
   - name: "cv"
     label: "CV"

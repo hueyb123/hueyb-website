@@ -38,6 +38,6 @@ eleventyComputed:
       </div>
 
       <div class="studio-post-body fade-in-item" style="animation-delay: 520ms;">
-        {{ post.data.description | markdown | safe }}
+        {{ post.templateContent | safe }}
       </div>
     </section>

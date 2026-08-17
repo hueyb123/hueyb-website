@@ -63,58 +63,66 @@ var StudioPreview = createClass({
   render: function () {
     var getAsset = this.props.getAsset;
     var data = (this.props.entry.get("data") || {}).toJS ? this.props.entry.get("data").toJS() : {};
-    var entries = data.entries || [];
     var md = window.markdownit();
-
-    var sorted = entries.slice().sort(function (a, b) {
-      return new Date(b.date || 0) - new Date(a.date || 0);
-    });
+    var dateLabel = data.date ? new Date(data.date).toDateString() : "";
 
     return h(
       "div",
       { className: "container", style: { paddingTop: "40px", paddingBottom: "40px", textAlign: "center" } },
-      renderHeading("Studio"),
-      data.tagline ? h("p", { style: { color: "#8a8a86", marginBottom: "32px" } }, data.tagline) : null,
-      sorted.map(function (post, i) {
-        var dateLabel = post.date ? new Date(post.date).toDateString() : "";
-        return h(
-          "div",
-          { key: i, style: { marginBottom: "56px", paddingBottom: "40px", borderBottom: "1px solid #262626" } },
-          h("h2", { style: { fontFamily: "Silkscreen, monospace", textTransform: "uppercase" } }, post.headline || dateLabel || "Untitled"),
-          post.headline && dateLabel ? h("p", { style: { color: "#8a8a86" } }, dateLabel) : null,
-          renderMedia(getAsset, post.media, "studio-media-image"),
-          post.description ? h("div", { dangerouslySetInnerHTML: { __html: md.render(post.description) } }) : null
-        );
-      })
+      renderHeading(data.headline || dateLabel || "Untitled"),
+      data.headline && dateLabel ? h("p", { style: { color: "#8a8a86" } }, dateLabel) : null,
+      renderMedia(getAsset, data.media, "studio-media-image"),
+      data.body ? h("div", { dangerouslySetInnerHTML: { __html: md.render(data.body) } }) : null
     );
   },
 });
 CMS.registerPreviewTemplate("studio", StudioPreview);
 
+var StudioSettingsPreview = createClass({
+  render: function () {
+    var data = (this.props.entry.get("data") || {}).toJS ? this.props.entry.get("data").toJS() : {};
+    return h(
+      "div",
+      { className: "container", style: { paddingTop: "40px", paddingBottom: "40px", textAlign: "center" } },
+      renderHeading("Studio"),
+      data.tagline ? h("p", { style: { color: "#8a8a86" } }, data.tagline) : null
+    );
+  },
+});
+CMS.registerPreviewTemplate("studio_settings", StudioSettingsPreview);
+
 var PrintsPreview = createClass({
   render: function () {
     var getAsset = this.props.getAsset;
     var data = (this.props.entry.get("data") || {}).toJS ? this.props.entry.get("data").toJS() : {};
-    var variants = data.variants || [];
-    var imgSrc = assetUrl(getAsset, data.image);
+    var entries = data.entries || [];
 
     return h(
       "div",
       { className: "container", style: { paddingTop: "40px", paddingBottom: "40px", maxWidth: "640px", textAlign: "center" } },
-      renderHeading(data.name || "Untitled"),
-      imgSrc ? h("img", { src: imgSrc, style: { width: "100%", marginBottom: "16px" } }) : null,
-      data.description ? h("p", {}, data.description) : null,
-      h(
-        "ul",
-        { style: { listStyle: "none", padding: 0 } },
-        variants.map(function (v, i) {
-          return h(
-            "li",
-            { key: i },
-            (v.label || "Size") + " — $" + (v.price != null ? v.price : "?") + (v.sold_out ? " (Sold Out)" : "")
-          );
-        })
-      )
+      h("p", { style: { color: "#8a8a86", marginBottom: "32px" } }, entries.length + " print(s), in display order:"),
+      entries.map(function (print, i) {
+        var imgSrc = assetUrl(getAsset, print.image);
+        var variants = print.variants || [];
+        return h(
+          "div",
+          { key: i, style: { marginBottom: "56px", paddingBottom: "40px", borderBottom: "1px solid #262626" } },
+          renderHeading(print.name || "Untitled"),
+          imgSrc ? h("img", { src: imgSrc, style: { width: "100%", marginBottom: "16px" } }) : null,
+          print.description ? h("p", {}, print.description) : null,
+          h(
+            "ul",
+            { style: { listStyle: "none", padding: 0 } },
+            variants.map(function (v, j) {
+              return h(
+                "li",
+                { key: j },
+                (v.label || "Size") + " — $" + (v.price != null ? v.price : "?") + (v.sold_out ? " (Sold Out)" : "")
+              );
+            })
+          )
+        );
+      })
     );
   },
 });
