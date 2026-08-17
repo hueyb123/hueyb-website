@@ -231,7 +231,7 @@
     {
       "ongoing": false,
       "title": "Packed Up",
-      "cover": "/assets/uploads/img_7934.jpg",
+      "cover": "/assets/uploads/img_9151.jpg",
       "media": [
         {
           "type": "image",
@@ -240,6 +240,14 @@
         {
           "type": "image",
           "file": "/assets/uploads/img_7935.jpg"
+        },
+        {
+          "type": "image",
+          "file": "/assets/uploads/img_8812.jpg"
+        },
+        {
+          "type": "image",
+          "file": "/assets/uploads/img_9151.jpg"
         }
       ]
     }
