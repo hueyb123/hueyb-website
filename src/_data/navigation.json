@@ -1,13 +1,28 @@
 {
   "items": [
-    { "label": "Studio", "url": "/studio/" },
-    { "label": "Projects", "url": "/projects/" },
-    { "label": "Prints", "url": "/prints/" },
+    {
+      "label": "Projects",
+      "url": "/projects/"
+    },
+    {
+      "label": "Studio",
+      "url": "/studio/"
+    },
+    {
+      "label": "Prints",
+      "url": "/prints/"
+    },
     {
       "label": "About",
       "children": [
-        { "label": "CV", "url": "/cv/" },
-        { "label": "Contact", "url": "/contact/" }
+        {
+          "label": "CV",
+          "url": "/cv/"
+        },
+        {
+          "label": "Contact",
+          "url": "/contact/"
+        }
       ]
     }
   ]
