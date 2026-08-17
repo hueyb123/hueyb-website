@@ -1,6 +1,8 @@
 var markdownIt = require("markdown-it")({ html: true });
 
 module.exports = function (eleventyConfig) {
+  eleventyConfig.addPlugin(require("@11ty/eleventy-plugin-rss").default);
+
   eleventyConfig.addPassthroughCopy("src/styles.css");
   eleventyConfig.addPassthroughCopy("src/script.js");
   eleventyConfig.addPassthroughCopy("src/favicon.svg");
@@ -67,6 +69,26 @@ module.exports = function (eleventyConfig) {
       .map(function (item) {
         return item.data;
       });
+  });
+
+  eleventyConfig.addCollection("feedItems", function (collectionApi) {
+    var projects = collectionApi.getFilteredByGlob("src/content/projects/*.md").map(function (item) {
+      return {
+        title: "New Project: " + item.data.title,
+        url: "/projects/" + item.fileSlug + "/",
+        date: item.date,
+      };
+    });
+    var studio = collectionApi.getFilteredByGlob("src/content/studio/*.md").map(function (item) {
+      return {
+        title: item.data.headline || "Studio update",
+        url: "/studio/" + item.fileSlug + "/",
+        date: item.date,
+      };
+    });
+    return projects.concat(studio).sort(function (a, b) {
+      return b.date - a.date;
+    });
   });
 
   eleventyConfig.addFilter("dump", function (value) {

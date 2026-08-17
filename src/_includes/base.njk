@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
+  <link rel="alternate" type="application/rss+xml" title="Huey B — New Posts" href="/feed.xml">
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
@@ -58,6 +59,11 @@
   <footer class="site-footer{% if revealFooter %} fade-in-item{% else %} page-enter{% endif %}"{% if revealFooter %} style="animation-delay: 600ms;"{% endif %}>
     <div class="container">
       <a href="https://www.instagram.com/huebeeeee/" target="_blank" rel="noopener">@huebeeeee</a>
+      <div class="footer-subscribe">
+        <p>Get an email when something new goes up:</p>
+        <a href="https://blogtrottr.com/" target="_blank" rel="noopener" class="footer-subscribe-link">Sign up for email updates</a>
+        <span class="footer-subscribe-hint">Paste this link when asked for a feed URL: <code>hueyb.com/feed.xml</code></span>
+      </div>
       <p>&copy; 2026 Huey B. All rights reserved.</p>
     </div>
   </footer>

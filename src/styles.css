@@ -1305,3 +1305,31 @@ p {
 .site-footer a:hover {
   color: var(--color-accent);
 }
+
+.footer-subscribe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-subscribe-link {
+  color: var(--color-accent);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.footer-subscribe-hint {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.footer-subscribe-hint code {
+  color: var(--color-text);
+  background: var(--color-bg-alt);
+  padding: 2px 6px;
+  border-radius: var(--radius);
+}

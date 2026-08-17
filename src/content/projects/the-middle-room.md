@@ -10,4 +10,10 @@ media:
     file: /assets/uploads/img_2439.jpg
   - type: image
     file: /assets/uploads/img_2521.jpg
+  - type: image
+    file: /assets/uploads/img_2743.jpg
+    caption: in front room works by Joanna Silver. In the Back room Works by
+      Alejandro Giraldo
+  - type: image
+    file: /assets/uploads/img_2841.jpg
 ---

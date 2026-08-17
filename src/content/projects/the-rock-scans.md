@@ -1,7 +1,8 @@
 ---
 title: The Rock Scans
-date: "2026-07-22"
+date: 2026-07-22
 ongoing: false
+order: 1
 caption: ""
 cover: /assets/uploads/imag0081.jpg
 media:
