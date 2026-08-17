@@ -1311,25 +1311,48 @@ p {
   flex-direction: column;
   align-items: center;
   gap: 6px;
+  width: 100%;
+  max-width: 360px;
 }
 
-.footer-subscribe-link {
-  color: var(--color-accent);
+.footer-subscribe .formkit-form {
+  max-width: 100% !important;
+}
+
+.footer-subscribe .formkit-input {
+  background: var(--color-bg-alt) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius) !important;
+  color: var(--color-text) !important;
+  font-family: "Inter", sans-serif !important;
+  font-size: 0.85rem !important;
+}
+
+.footer-subscribe .formkit-input:focus {
+  border-color: var(--color-accent) !important;
+}
+
+.footer-subscribe .formkit-submit {
+  background-color: var(--color-accent) !important;
+  border-radius: var(--radius) !important;
+}
+
+.footer-subscribe .formkit-submit span {
+  color: #0a0a0a !important;
   font-size: 0.78rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  padding: 10px 20px !important;
 }
 
-.footer-subscribe-hint {
-  font-size: 0.7rem;
-  color: var(--color-text-muted);
-  text-transform: none;
-  letter-spacing: normal;
+.footer-subscribe .formkit-alert-success {
+  background: var(--color-bg-alt) !important;
+  border-color: var(--color-accent) !important;
+  color: var(--color-text) !important;
 }
 
-.footer-subscribe-hint code {
-  color: var(--color-text);
-  background: var(--color-bg-alt);
-  padding: 2px 6px;
-  border-radius: var(--radius);
+.footer-subscribe .formkit-alert-error {
+  background: var(--color-bg-alt) !important;
+  border-color: #f2643b !important;
+  color: #f2643b !important;
 }

@@ -61,13 +61,13 @@
       <a href="https://www.instagram.com/huebeeeee/" target="_blank" rel="noopener">@huebeeeee</a>
       <div class="footer-subscribe">
         <p>Get an email when something new goes up:</p>
-        <a href="https://blogtrottr.com/" target="_blank" rel="noopener" class="footer-subscribe-link">Sign up for email updates</a>
-        <span class="footer-subscribe-hint">Paste this link when asked for a feed URL: <code>hueyb.com/feed.xml</code></span>
+        {% include "kit-form.njk" %}
       </div>
       <p>&copy; 2026 Huey B. All rights reserved.</p>
     </div>
   </footer>
 
+  <script src="https://f.convertkit.com/ckjs/ck.5.js"></script>
   <script src="/script.js"></script>
   <script>
     if (window.netlifyIdentity) {
