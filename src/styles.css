@@ -1401,22 +1401,5 @@ p {
 }
 
 .footer-subscribe .formkit-powered-by-convertkit-container {
-  width: auto !important;
-  margin: 4px 0 0 !important;
-}
-
-.footer-subscribe .formkit-powered-by-convertkit {
-  all: unset !important;
-  display: inline-block !important;
-  cursor: pointer !important;
-  color: var(--color-text-muted) !important;
-  font-size: 0.6rem !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.04em !important;
-  opacity: 0.6;
-}
-
-.footer-subscribe .formkit-powered-by-convertkit:hover {
-  opacity: 1;
-  color: var(--color-accent) !important;
+  display: none !important;
 }
