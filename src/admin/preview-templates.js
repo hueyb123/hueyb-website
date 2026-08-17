@@ -1,5 +1,5 @@
 CMS.registerPreviewStyle(
-  "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap"
+  "https://fonts.googleapis.com/css2?family=Blinker:wght@400;600;700&family=Silkscreen:wght@400;700&display=swap"
 );
 CMS.registerPreviewStyle("/styles.css");
 
