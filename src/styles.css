@@ -41,6 +41,20 @@ main {
   transition: opacity 420ms ease;
 }
 
+.home-page main {
+  flex: 0 0 auto;
+}
+
+.home-page .site-footer {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.home-page .site-footer .container {
+  width: 100%;
+}
+
 .page-enter {
   opacity: 0;
 }

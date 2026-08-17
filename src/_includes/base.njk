@@ -12,7 +12,7 @@
   <link rel="alternate" type="application/rss+xml" title="Huey B — New Posts" href="/feed.xml">
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
-<body>
+<body{% if nav == "home" %} class="home-page"{% endif %}>
 
   <header class="site-header">
     <div class="container">
