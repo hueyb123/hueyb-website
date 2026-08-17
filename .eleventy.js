@@ -1,5 +1,3 @@
-var projectsData = require("./src/_data/projects.json");
-var printsData = require("./src/_data/prints.json");
 var markdownIt = require("markdown-it")({ html: true });
 
 module.exports = function (eleventyConfig) {
@@ -11,48 +9,51 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/admin");
   eleventyConfig.ignores.add("src/admin/index.html");
 
-  function slugify(str) {
-    return String(str || "")
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
+  function orderThenFallback(a, b, fallback) {
+    var aOrder = typeof a.data.order === "number" ? a.data.order : null;
+    var bOrder = typeof b.data.order === "number" ? b.data.order : null;
+    if (aOrder !== null && bOrder !== null) return aOrder - bOrder;
+    if (aOrder !== null) return -1;
+    if (bOrder !== null) return 1;
+    return fallback(a, b);
   }
 
-  function buildSlugCollection(entries, fallbackTextFn) {
-    var usedSlugs = {};
-    return (entries || []).map(function (entry, index) {
-      var slug = entry.slug ? slugify(entry.slug) : "";
-      if (!slug) slug = slugify(fallbackTextFn(entry)) || "untitled-" + (index + 1);
-      while (usedSlugs[slug]) slug = slug + "-" + (index + 1);
-      usedSlugs[slug] = true;
-      return { data: entry, fileSlug: slug };
-    });
+  function toSortableDate(value) {
+    if (value instanceof Date) return value.getTime();
+    return new Date(String(value)).getTime();
   }
 
-  eleventyConfig.addCollection("projects", function () {
-    return buildSlugCollection(projectsData.entries, function (entry) {
-      return entry.title;
-    });
+  eleventyConfig.addCollection("projects", function (collectionApi) {
+    return collectionApi
+      .getFilteredByGlob("src/content/projects/*.md")
+      .sort(function (a, b) {
+        return orderThenFallback(a, b, function () {
+          var aOngoing = !!a.data.ongoing;
+          var bOngoing = !!b.data.ongoing;
+          if (aOngoing !== bOngoing) return aOngoing ? -1 : 1;
+          return toSortableDate(b.data.date) - toSortableDate(a.data.date);
+        });
+      });
   });
 
   eleventyConfig.addCollection("studioPosts", function (collectionApi) {
     return collectionApi
       .getFilteredByGlob("src/content/studio/*.md")
       .sort(function (a, b) {
-        var aOrder = typeof a.data.order === "number" ? a.data.order : null;
-        var bOrder = typeof b.data.order === "number" ? b.data.order : null;
-        if (aOrder !== null && bOrder !== null) return aOrder - bOrder;
-        if (aOrder !== null) return -1;
-        if (bOrder !== null) return 1;
-        return b.data.date - a.data.date;
+        return orderThenFallback(a, b, function () {
+          return b.data.date - a.data.date;
+        });
       });
   });
 
-  eleventyConfig.addCollection("prints", function () {
-    return buildSlugCollection(printsData.entries, function (entry) {
-      return entry.name;
-    });
+  eleventyConfig.addCollection("prints", function (collectionApi) {
+    return collectionApi
+      .getFilteredByGlob("src/content/prints/*.md")
+      .sort(function (a, b) {
+        return orderThenFallback(a, b, function () {
+          return a.data.name.localeCompare(b.data.name);
+        });
+      });
   });
 
   eleventyConfig.addFilter("dump", function (value) {

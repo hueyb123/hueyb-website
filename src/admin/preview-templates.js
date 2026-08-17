@@ -35,25 +35,14 @@ var ProjectsPreview = createClass({
   render: function () {
     var getAsset = this.props.getAsset;
     var data = (this.props.entry.get("data") || {}).toJS ? this.props.entry.get("data").toJS() : {};
-    var entries = data.entries || [];
-    var md = window.markdownit();
 
     return h(
       "div",
       { className: "container", style: { paddingTop: "40px", paddingBottom: "40px", textAlign: "center" } },
-      h("p", { style: { color: "#8a8a86", marginBottom: "32px" } }, entries.length + " project(s), in display order:"),
-      entries.map(function (project, i) {
-        return h(
-          "div",
-          { key: i, style: { marginBottom: "56px", paddingBottom: "40px", borderBottom: "1px solid #262626" } },
-          renderHeading(project.title || "Untitled"),
-          project.ongoing ? h("p", { style: { color: "#39ff14" } }, "Ongoing") : null,
-          project.description
-            ? h("div", { className: "project-description", dangerouslySetInnerHTML: { __html: md.render(project.description) } })
-            : null,
-          renderMedia(getAsset, project.media, "project-media-image")
-        );
-      })
+      renderHeading(data.title || "Untitled"),
+      data.ongoing ? h("p", { style: { color: "#39ff14" } }, "Ongoing") : null,
+      renderMedia(getAsset, data.media, "project-media-image"),
+      this.props.widgetFor("body")
     );
   },
 });
@@ -95,34 +84,26 @@ var PrintsPreview = createClass({
   render: function () {
     var getAsset = this.props.getAsset;
     var data = (this.props.entry.get("data") || {}).toJS ? this.props.entry.get("data").toJS() : {};
-    var entries = data.entries || [];
+    var imgSrc = assetUrl(getAsset, data.image);
+    var variants = data.variants || [];
 
     return h(
       "div",
       { className: "container", style: { paddingTop: "40px", paddingBottom: "40px", maxWidth: "640px", textAlign: "center" } },
-      h("p", { style: { color: "#8a8a86", marginBottom: "32px" } }, entries.length + " print(s), in display order:"),
-      entries.map(function (print, i) {
-        var imgSrc = assetUrl(getAsset, print.image);
-        var variants = print.variants || [];
-        return h(
-          "div",
-          { key: i, style: { marginBottom: "56px", paddingBottom: "40px", borderBottom: "1px solid #262626" } },
-          renderHeading(print.name || "Untitled"),
-          imgSrc ? h("img", { src: imgSrc, style: { width: "100%", marginBottom: "16px" } }) : null,
-          print.description ? h("p", {}, print.description) : null,
-          h(
-            "ul",
-            { style: { listStyle: "none", padding: 0 } },
-            variants.map(function (v, j) {
-              return h(
-                "li",
-                { key: j },
-                (v.label || "Size") + " — $" + (v.price != null ? v.price : "?") + (v.sold_out ? " (Sold Out)" : "")
-              );
-            })
-          )
-        );
-      })
+      renderHeading(data.name || "Untitled"),
+      imgSrc ? h("img", { src: imgSrc, style: { width: "100%", marginBottom: "16px" } }) : null,
+      data.description ? h("p", {}, data.description) : null,
+      h(
+        "ul",
+        { style: { listStyle: "none", padding: 0 } },
+        variants.map(function (v, j) {
+          return h(
+            "li",
+            { key: j },
+            (v.label || "Size") + " — $" + (v.price != null ? v.price : "?") + (v.sold_out ? " (Sold Out)" : "")
+          );
+        })
+      )
     );
   },
 });

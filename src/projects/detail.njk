@@ -20,7 +20,7 @@ eleventyComputed:
 
     <section class="container project-detail">
       <div class="project-description">
-        {{ project.data.description | markdown | safe }}
+        {{ project.templateContent | safe }}
       </div>
 
       {% for item in project.data.media %}
