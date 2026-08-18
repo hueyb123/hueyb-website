@@ -45,7 +45,7 @@ collections:
     folder: "src/content/painting"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}{{second}}"
-    summary: "{{headline}}"
+    summary: "{{headline | default(media.0.file)}}"
     fields:
       - { label: "Date", name: "date", widget: "datetime", required: false, hint: "Optional. Used to sort posts, newest first, unless Display Order below is set." }
       - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding the date. Leave blank to sort by date instead. Tip: use a decimal like 1.5 to slot a post between two others without renumbering everything." }
