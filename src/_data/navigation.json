@@ -1,12 +1,24 @@
 {
   "items": [
     {
-      "label": "Projects",
-      "url": "/projects/"
+      "label": "Photography",
+      "url": "/photography/"
     },
     {
-      "label": "Studio",
-      "url": "/studio/"
+      "label": "Painting",
+      "url": "/painting/"
+    },
+    {
+      "label": "Collage",
+      "url": "/collage/"
+    },
+    {
+      "label": "Installations",
+      "url": "/installations/"
+    },
+    {
+      "label": "Blog",
+      "url": "/blog/"
     },
     {
       "label": "Prints",

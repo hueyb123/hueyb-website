@@ -31,7 +31,7 @@ function renderMedia(getAsset, media, imgClass) {
   });
 }
 
-var ProjectsPreview = createClass({
+var GalleryPreview = createClass({
   render: function () {
     var getAsset = this.props.getAsset;
     var data = (this.props.entry.get("data") || {}).toJS ? this.props.entry.get("data").toJS() : {};
@@ -46,9 +46,12 @@ var ProjectsPreview = createClass({
     );
   },
 });
-CMS.registerPreviewTemplate("projects", ProjectsPreview);
+CMS.registerPreviewTemplate("photography", GalleryPreview);
+CMS.registerPreviewTemplate("painting", GalleryPreview);
+CMS.registerPreviewTemplate("collage", GalleryPreview);
+CMS.registerPreviewTemplate("installations", GalleryPreview);
 
-var StudioPreview = createClass({
+var BlogPreview = createClass({
   render: function () {
     var getAsset = this.props.getAsset;
     var data = (this.props.entry.get("data") || {}).toJS ? this.props.entry.get("data").toJS() : {};
@@ -65,20 +68,20 @@ var StudioPreview = createClass({
     );
   },
 });
-CMS.registerPreviewTemplate("studio", StudioPreview);
+CMS.registerPreviewTemplate("blog", BlogPreview);
 
-var StudioSettingsPreview = createClass({
+var BlogSettingsPreview = createClass({
   render: function () {
     var data = (this.props.entry.get("data") || {}).toJS ? this.props.entry.get("data").toJS() : {};
     return h(
       "div",
       { className: "container", style: { paddingTop: "40px", paddingBottom: "40px", textAlign: "center" } },
-      renderHeading("Studio"),
+      renderHeading("Blog"),
       data.tagline ? h("p", { style: { color: "#8a8a86" } }, data.tagline) : null
     );
   },
 });
-CMS.registerPreviewTemplate("studio_settings", StudioSettingsPreview);
+CMS.registerPreviewTemplate("blog_settings", BlogSettingsPreview);
 
 var PrintsPreview = createClass({
   render: function () {

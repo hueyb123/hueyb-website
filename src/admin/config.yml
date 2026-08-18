@@ -10,19 +10,19 @@ media_folder: "src/assets/uploads"
 public_folder: "/assets/uploads"
 
 collections:
-  - name: "projects"
-    label: "Projects"
-    folder: "src/content/projects"
+  - name: "photography"
+    label: "Photography"
+    folder: "src/content/photography"
     create: true
     slug: "{{slug}}"
     identifier_field: title
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "string", required: false, pattern: ['^\d{4}(-\d{2}-\d{2})?$', "Enter a year (e.g. 2024) or a full date (e.g. 2024-03-15)."], hint: "A year is enough — add the full date only if you want more precision." }
-      - { label: "Ongoing", name: "ongoing", widget: "boolean", default: false, hint: "Check this if the project is still in progress. Ongoing projects sort to the top ahead of everything else, unless Display Order below is set." }
-      - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding Ongoing and date. Leave blank to sort automatically instead. Tip: use a decimal like 1.5 to slot a project between two others without renumbering everything." }
-      - { label: "Tile Caption", name: "caption", widget: "string", required: false, hint: "Optional short line shown on the project tile — a year, a phrase, or leave blank." }
-      - { label: "Cover Image", name: "cover", widget: "image", hint: "Shown as the background of the project tile." }
+      - { label: "Ongoing", name: "ongoing", widget: "boolean", default: false, hint: "Check this if the piece is still in progress. Ongoing pieces sort to the top ahead of everything else, unless Display Order below is set." }
+      - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding Ongoing and date. Leave blank to sort automatically instead. Tip: use a decimal like 1.5 to slot a piece between two others without renumbering everything." }
+      - { label: "Tile Caption", name: "caption", widget: "string", required: false, hint: "Optional short line shown on the tile — a year, a phrase, or leave blank." }
+      - { label: "Cover Image", name: "cover", widget: "image", hint: "Shown as the background of the tile." }
       - label: "Media"
         name: "media"
         widget: "list"
@@ -40,9 +40,99 @@ collections:
           - { label: "Caption", name: "caption", widget: "string", required: false }
       - { label: "Description", name: "body", widget: "markdown", required: false }
 
-  - name: "studio"
-    label: "Studio Posts"
-    folder: "src/content/studio"
+  - name: "painting"
+    label: "Painting"
+    folder: "src/content/painting"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "string", required: false, pattern: ['^\d{4}(-\d{2}-\d{2})?$', "Enter a year (e.g. 2024) or a full date (e.g. 2024-03-15)."], hint: "A year is enough — add the full date only if you want more precision." }
+      - { label: "Ongoing", name: "ongoing", widget: "boolean", default: false, hint: "Check this if the piece is still in progress. Ongoing pieces sort to the top ahead of everything else, unless Display Order below is set." }
+      - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding Ongoing and date. Leave blank to sort automatically instead. Tip: use a decimal like 1.5 to slot a piece between two others without renumbering everything." }
+      - { label: "Tile Caption", name: "caption", widget: "string", required: false, hint: "Optional short line shown on the tile — a year, a phrase, or leave blank." }
+      - { label: "Cover Image", name: "cover", widget: "image", hint: "Shown as the background of the tile." }
+      - label: "Media"
+        name: "media"
+        widget: "list"
+        summary: "{{fields.type}} — {{fields.caption}}"
+        hint: "Add as many images, videos, or sound files as this piece needs."
+        fields:
+          - label: "Type"
+            name: "type"
+            widget: "select"
+            options:
+              - { label: "Image", value: "image" }
+              - { label: "Video", value: "video" }
+              - { label: "Audio", value: "audio" }
+          - { label: "File", name: "file", widget: "file" }
+          - { label: "Caption", name: "caption", widget: "string", required: false }
+      - { label: "Description", name: "body", widget: "markdown", required: false }
+
+  - name: "collage"
+    label: "Collage"
+    folder: "src/content/collage"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "string", required: false, pattern: ['^\d{4}(-\d{2}-\d{2})?$', "Enter a year (e.g. 2024) or a full date (e.g. 2024-03-15)."], hint: "A year is enough — add the full date only if you want more precision." }
+      - { label: "Ongoing", name: "ongoing", widget: "boolean", default: false, hint: "Check this if the piece is still in progress. Ongoing pieces sort to the top ahead of everything else, unless Display Order below is set." }
+      - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding Ongoing and date. Leave blank to sort automatically instead. Tip: use a decimal like 1.5 to slot a piece between two others without renumbering everything." }
+      - { label: "Tile Caption", name: "caption", widget: "string", required: false, hint: "Optional short line shown on the tile — a year, a phrase, or leave blank." }
+      - { label: "Cover Image", name: "cover", widget: "image", hint: "Shown as the background of the tile." }
+      - label: "Media"
+        name: "media"
+        widget: "list"
+        summary: "{{fields.type}} — {{fields.caption}}"
+        hint: "Add as many images, videos, or sound files as this piece needs."
+        fields:
+          - label: "Type"
+            name: "type"
+            widget: "select"
+            options:
+              - { label: "Image", value: "image" }
+              - { label: "Video", value: "video" }
+              - { label: "Audio", value: "audio" }
+          - { label: "File", name: "file", widget: "file" }
+          - { label: "Caption", name: "caption", widget: "string", required: false }
+      - { label: "Description", name: "body", widget: "markdown", required: false }
+
+  - name: "installations"
+    label: "Installations"
+    folder: "src/content/installations"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "string", required: false, pattern: ['^\d{4}(-\d{2}-\d{2})?$', "Enter a year (e.g. 2024) or a full date (e.g. 2024-03-15)."], hint: "A year is enough — add the full date only if you want more precision." }
+      - { label: "Ongoing", name: "ongoing", widget: "boolean", default: false, hint: "Check this if the piece is still in progress. Ongoing pieces sort to the top ahead of everything else, unless Display Order below is set." }
+      - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding Ongoing and date. Leave blank to sort automatically instead. Tip: use a decimal like 1.5 to slot a piece between two others without renumbering everything." }
+      - { label: "Tile Caption", name: "caption", widget: "string", required: false, hint: "Optional short line shown on the tile — a year, a phrase, or leave blank." }
+      - { label: "Cover Image", name: "cover", widget: "image", hint: "Shown as the background of the tile." }
+      - label: "Media"
+        name: "media"
+        widget: "list"
+        summary: "{{fields.type}} — {{fields.caption}}"
+        hint: "Add as many images, videos, or sound files as this piece needs."
+        fields:
+          - label: "Type"
+            name: "type"
+            widget: "select"
+            options:
+              - { label: "Image", value: "image" }
+              - { label: "Video", value: "video" }
+              - { label: "Audio", value: "audio" }
+          - { label: "File", name: "file", widget: "file" }
+          - { label: "Caption", name: "caption", widget: "string", required: false }
+      - { label: "Description", name: "body", widget: "markdown", required: false }
+
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "src/content/blog"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}{{second}}"
     summary: "{{headline}}"
@@ -67,14 +157,14 @@ collections:
           - { label: "Caption", name: "caption", widget: "string", required: false }
       - { label: "Musing", name: "body", widget: "markdown", hint: "Thoughts, progress notes, whatever's on your mind about this." }
 
-  - name: "studio_settings"
-    label: "Studio Settings"
+  - name: "blog_settings"
+    label: "Blog Settings"
     files:
-      - name: "studio_settings"
-        label: "Studio Settings"
-        file: "src/_data/studio.json"
+      - name: "blog_settings"
+        label: "Blog Settings"
+        file: "src/_data/blog.json"
         fields:
-          - { label: "Tagline", name: "tagline", widget: "text", hint: "Shown under the STUDIO heading at the top of the page." }
+          - { label: "Tagline", name: "tagline", widget: "text", hint: "Shown under the BLOG heading at the top of the page." }
 
   - name: "prints"
     label: "Prints"
@@ -142,7 +232,7 @@ collections:
             hint: "Drag to reorder — this controls the order links appear in the header. Leave Link URL blank and use Dropdown Links instead to make this item open a dropdown menu (like About)."
             fields:
               - { label: "Label", name: "label", widget: "string" }
-              - { label: "Link URL", name: "url", widget: "string", required: false, hint: "e.g. /studio/ — leave blank if this is a dropdown group instead." }
+              - { label: "Link URL", name: "url", widget: "string", required: false, hint: "e.g. /blog/ — leave blank if this is a dropdown group instead." }
               - label: "Dropdown Links"
                 name: "children"
                 widget: "list"

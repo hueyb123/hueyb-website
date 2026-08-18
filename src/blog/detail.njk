@@ -1,18 +1,18 @@
 ---
 pagination:
-  data: collections.studioPosts
+  data: collections.blogPosts
   size: 1
   alias: post
-permalink: "studio/{{ post.fileSlug }}/index.html"
+permalink: "blog/{{ post.fileSlug }}/index.html"
 layout: base.njk
-nav: studio
+nav: blog
 revealFooter: true
 eleventyComputed:
   title: "{% if post.data.headline %}{{ post.data.headline }}{% else %}{{ post.data.date | readableDate }}{% endif %} | Huey B"
 ---
-    <a href="/studio/" class="back-button">
+    <a href="/blog/" class="back-button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      Studio
+      Blog
     </a>
 
     <section class="container studio-post">

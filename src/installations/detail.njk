@@ -1,17 +1,17 @@
 ---
 pagination:
-  data: collections.projects
+  data: collections.installations
   size: 1
   alias: project
-permalink: "projects/{{ project.fileSlug }}/index.html"
+permalink: "installations/{{ project.fileSlug }}/index.html"
 layout: base.njk
-nav: projects
+nav: installations
 eleventyComputed:
   title: "{{ project.data.title }} | Huey B"
 ---
-    <a href="/projects/" class="back-button">
+    <a href="/installations/" class="back-button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      Projects
+      Installations
     </a>
 
     <section class="page-header container">

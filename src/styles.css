@@ -497,12 +497,12 @@ p {
   padding: 2px 0 96px;
 }
 
-#studio-grid {
+#blog-grid {
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 4px;
 }
 
-#studio-grid .tile {
+#blog-grid .tile {
   aspect-ratio: 1 / 1;
 }
 

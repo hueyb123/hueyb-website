@@ -25,22 +25,29 @@ module.exports = function (eleventyConfig) {
     return new Date(String(value)).getTime();
   }
 
-  eleventyConfig.addCollection("projects", function (collectionApi) {
-    return collectionApi
-      .getFilteredByGlob("src/content/projects/*.md")
-      .sort(function (a, b) {
-        return orderThenFallback(a, b, function () {
-          var aOngoing = !!a.data.ongoing;
-          var bOngoing = !!b.data.ongoing;
-          if (aOngoing !== bOngoing) return aOngoing ? -1 : 1;
-          return toSortableDate(b.data.date) - toSortableDate(a.data.date);
+  function addProjectStyleCollection(name, folder) {
+    eleventyConfig.addCollection(name, function (collectionApi) {
+      return collectionApi
+        .getFilteredByGlob("src/content/" + folder + "/*.md")
+        .sort(function (a, b) {
+          return orderThenFallback(a, b, function () {
+            var aOngoing = !!a.data.ongoing;
+            var bOngoing = !!b.data.ongoing;
+            if (aOngoing !== bOngoing) return aOngoing ? -1 : 1;
+            return toSortableDate(b.data.date) - toSortableDate(a.data.date);
+          });
         });
-      });
-  });
+    });
+  }
 
-  eleventyConfig.addCollection("studioPosts", function (collectionApi) {
+  addProjectStyleCollection("photography", "photography");
+  addProjectStyleCollection("painting", "painting");
+  addProjectStyleCollection("collage", "collage");
+  addProjectStyleCollection("installations", "installations");
+
+  eleventyConfig.addCollection("blogPosts", function (collectionApi) {
     return collectionApi
-      .getFilteredByGlob("src/content/studio/*.md")
+      .getFilteredByGlob("src/content/blog/*.md")
       .sort(function (a, b) {
         return orderThenFallback(a, b, function () {
           return b.data.date - a.data.date;
@@ -72,21 +79,30 @@ module.exports = function (eleventyConfig) {
   });
 
   eleventyConfig.addCollection("feedItems", function (collectionApi) {
-    var projects = collectionApi.getFilteredByGlob("src/content/projects/*.md").map(function (item) {
-      return {
-        title: "New Project: " + item.data.title,
-        url: "/projects/" + item.fileSlug + "/",
-        date: item.date,
-      };
+    var galleryFolders = [
+      { folder: "photography", label: "Photography" },
+      { folder: "painting", label: "Painting" },
+      { folder: "collage", label: "Collage" },
+      { folder: "installations", label: "Installations" },
+    ];
+    var items = [];
+    galleryFolders.forEach(function (entry) {
+      collectionApi.getFilteredByGlob("src/content/" + entry.folder + "/*.md").forEach(function (item) {
+        items.push({
+          title: "New " + entry.label + ": " + item.data.title,
+          url: "/" + entry.folder + "/" + item.fileSlug + "/",
+          date: item.date,
+        });
+      });
     });
-    var studio = collectionApi.getFilteredByGlob("src/content/studio/*.md").map(function (item) {
-      return {
-        title: item.data.headline || "Studio update",
-        url: "/studio/" + item.fileSlug + "/",
+    collectionApi.getFilteredByGlob("src/content/blog/*.md").forEach(function (item) {
+      items.push({
+        title: item.data.headline || "Blog update",
+        url: "/blog/" + item.fileSlug + "/",
         date: item.date,
-      };
+      });
     });
-    return projects.concat(studio).sort(function (a, b) {
+    return items.sort(function (a, b) {
       return b.date - a.date;
     });
   });
