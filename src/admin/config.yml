@@ -74,7 +74,7 @@ collections:
         label: "Painting Settings"
         file: "src/_data/painting_settings.json"
         fields:
-          - { label: "Tagline", name: "tagline", widget: "text", hint: "Shown under the PAINTING heading at the top of the page." }
+          - { label: "Tagline", name: "tagline", widget: "text", required: false, hint: "Shown under the PAINTING heading at the top of the page." }
 
   - name: "installations"
     label: "Installations"

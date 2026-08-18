@@ -5,7 +5,7 @@ nav: painting
 ---
     <section class="page-header container">
       <h1>Painting</h1>
-      <p>{{ painting_settings.tagline }}</p>
+      {% if painting_settings.tagline %}<p>{{ painting_settings.tagline }}</p>{% endif %}
     </section>
 
     <section class="container">
