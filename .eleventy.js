@@ -11,13 +11,23 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/admin");
   eleventyConfig.ignores.add("src/admin/index.html");
 
-  function orderThenFallback(a, b, fallback) {
-    var aOrder = typeof a.data.order === "number" ? a.data.order : null;
-    var bOrder = typeof b.data.order === "number" ? b.data.order : null;
-    if (aOrder !== null && bOrder !== null) return aOrder - bOrder;
-    if (aOrder !== null) return -1;
-    if (bOrder !== null) return 1;
-    return fallback(a, b);
+  // Items with an explicit "order" get that exact position. Items without one
+  // are ranked by the fallback comparator (date, ongoing, name, etc.) and
+  // that natural rank (1, 2, 3...) becomes their position for comparison
+  // purposes - so a manually-set order slots in relative to everything else,
+  // rather than any explicit order always jumping ahead of every unordered
+  // item regardless of the number chosen.
+  function sortWithManualOrder(items, fallbackComparator) {
+    var naturallySorted = items.slice().sort(fallbackComparator);
+    var naturalRank = new Map();
+    naturallySorted.forEach(function (item, index) {
+      naturalRank.set(item, index + 1);
+    });
+    return items.slice().sort(function (a, b) {
+      var aOrder = typeof a.data.order === "number" ? a.data.order : naturalRank.get(a);
+      var bOrder = typeof b.data.order === "number" ? b.data.order : naturalRank.get(b);
+      return aOrder - bOrder;
+    });
   }
 
   function toSortableDate(value) {
@@ -27,28 +37,22 @@ module.exports = function (eleventyConfig) {
 
   function addProjectStyleCollection(name, folder) {
     eleventyConfig.addCollection(name, function (collectionApi) {
-      return collectionApi
-        .getFilteredByGlob("src/content/" + folder + "/*.md")
-        .sort(function (a, b) {
-          return orderThenFallback(a, b, function () {
-            var aOngoing = !!a.data.ongoing;
-            var bOngoing = !!b.data.ongoing;
-            if (aOngoing !== bOngoing) return aOngoing ? -1 : 1;
-            return toSortableDate(b.data.date) - toSortableDate(a.data.date);
-          });
-        });
+      var items = collectionApi.getFilteredByGlob("src/content/" + folder + "/*.md");
+      return sortWithManualOrder(items, function (a, b) {
+        var aOngoing = !!a.data.ongoing;
+        var bOngoing = !!b.data.ongoing;
+        if (aOngoing !== bOngoing) return aOngoing ? -1 : 1;
+        return toSortableDate(b.data.date) - toSortableDate(a.data.date);
+      });
     });
   }
 
   function addBlogStyleCollection(name, folder) {
     eleventyConfig.addCollection(name, function (collectionApi) {
-      return collectionApi
-        .getFilteredByGlob("src/content/" + folder + "/*.md")
-        .sort(function (a, b) {
-          return orderThenFallback(a, b, function () {
-            return b.data.date - a.data.date;
-          });
-        });
+      var items = collectionApi.getFilteredByGlob("src/content/" + folder + "/*.md");
+      return sortWithManualOrder(items, function (a, b) {
+        return toSortableDate(b.data.date) - toSortableDate(a.data.date);
+      });
     });
   }
 
@@ -58,26 +62,19 @@ module.exports = function (eleventyConfig) {
   addBlogStyleCollection("blogPosts", "blog");
 
   eleventyConfig.addCollection("prints", function (collectionApi) {
-    return collectionApi
-      .getFilteredByGlob("src/content/prints/*.md")
-      .sort(function (a, b) {
-        return orderThenFallback(a, b, function () {
-          return a.data.name.localeCompare(b.data.name);
-        });
-      });
+    var items = collectionApi.getFilteredByGlob("src/content/prints/*.md");
+    return sortWithManualOrder(items, function (a, b) {
+      return a.data.name.localeCompare(b.data.name);
+    });
   });
 
   eleventyConfig.addCollection("cv", function (collectionApi) {
-    return collectionApi
-      .getFilteredByGlob("src/content/cv/*.md")
-      .sort(function (a, b) {
-        return orderThenFallback(a, b, function () {
-          return String(b.data.year).localeCompare(String(a.data.year));
-        });
-      })
-      .map(function (item) {
-        return item.data;
-      });
+    var items = collectionApi.getFilteredByGlob("src/content/cv/*.md");
+    return sortWithManualOrder(items, function (a, b) {
+      return String(b.data.year).localeCompare(String(a.data.year));
+    }).map(function (item) {
+      return item.data;
+    });
   });
 
   eleventyConfig.addCollection("feedItems", function (collectionApi) {
