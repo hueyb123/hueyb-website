@@ -41,23 +41,20 @@ collections:
       - { label: "Description", name: "body", widget: "markdown", required: false }
 
   - name: "painting"
-    label: "Painting"
+    label: "Painting Posts"
     folder: "src/content/painting"
     create: true
-    slug: "{{slug}}"
-    identifier_field: title
+    slug: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}{{second}}"
+    summary: "{{headline}}"
     fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Date", name: "date", widget: "string", required: false, pattern: ['^\d{4}(-\d{2}-\d{2})?$', "Enter a year (e.g. 2024) or a full date (e.g. 2024-03-15)."], hint: "A year is enough — add the full date only if you want more precision." }
-      - { label: "Ongoing", name: "ongoing", widget: "boolean", default: false, hint: "Check this if the piece is still in progress. Ongoing pieces sort to the top ahead of everything else, unless Display Order below is set." }
-      - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding Ongoing and date. Leave blank to sort automatically instead. Tip: use a decimal like 1.5 to slot a piece between two others without renumbering everything." }
-      - { label: "Tile Caption", name: "caption", widget: "string", required: false, hint: "Optional short line shown on the tile — a year, a phrase, or leave blank." }
-      - { label: "Cover Image", name: "cover", widget: "image", hint: "Shown as the background of the tile." }
+      - { label: "Date", name: "date", widget: "datetime", hint: "Used to sort posts, newest first, unless Display Order below is set." }
+      - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding the date. Leave blank to sort by date instead. Tip: use a decimal like 1.5 to slot a post between two others without renumbering everything." }
+      - { label: "Headline (optional)", name: "headline", widget: "string", required: false, hint: "Most posts can skip this and just lead with the date." }
       - label: "Media"
         name: "media"
         widget: "list"
         summary: "{{fields.type}} — {{fields.caption}}"
-        hint: "Add as many images, videos, or sound files as this piece needs."
+        hint: "Add as many images, videos, or sound files as this post needs. The first image becomes the tile thumbnail."
         fields:
           - label: "Type"
             name: "type"
@@ -68,7 +65,16 @@ collections:
               - { label: "Audio", value: "audio" }
           - { label: "File", name: "file", widget: "file" }
           - { label: "Caption", name: "caption", widget: "string", required: false }
-      - { label: "Description", name: "body", widget: "markdown", required: false }
+      - { label: "Musing", name: "body", widget: "markdown", hint: "Thoughts, progress notes, whatever's on your mind about this." }
+
+  - name: "painting_settings"
+    label: "Painting Settings"
+    files:
+      - name: "painting_settings"
+        label: "Painting Settings"
+        file: "src/_data/painting_settings.json"
+        fields:
+          - { label: "Tagline", name: "tagline", widget: "text", hint: "Shown under the PAINTING heading at the top of the page." }
 
   - name: "installations"
     label: "Installations"

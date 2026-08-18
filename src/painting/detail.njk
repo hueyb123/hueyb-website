@@ -2,39 +2,42 @@
 pagination:
   data: collections.painting
   size: 1
-  alias: project
-permalink: "painting/{{ project.fileSlug }}/index.html"
+  alias: post
+permalink: "painting/{{ post.fileSlug }}/index.html"
 layout: base.njk
 nav: painting
+revealFooter: true
 eleventyComputed:
-  title: "{{ project.data.title }} | Huey B"
+  title: "{% if post.data.headline %}{{ post.data.headline }}{% else %}{{ post.data.date | readableDate }}{% endif %} | Huey B"
 ---
     <a href="/painting/" class="back-button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       Painting
     </a>
 
-    <section class="page-header container">
-      <h1>{{ project.data.title }}</h1>
-    </section>
+    <section class="container studio-post">
+      <p class="studio-post-date fade-in-item" style="animation-delay: 0ms;">{{ post.data.date | readableDate }}</p>
+      {% if post.data.headline %}
+      <h1 class="studio-post-headline fade-in-item" style="animation-delay: 70ms;">{{ post.data.headline }}</h1>
+      {% endif %}
 
-    <section class="container project-detail">
-      {% if project.templateContent %}
-      <div class="project-description">
-        {{ project.templateContent | safe }}
+      <div class="studio-post-media">
+        {% for item in post.data.media %}
+        {% set delay = 160 + loop.index0 * 90 %}
+        {% if item.type == "image" %}
+        <img src="{{ item.file }}" alt="{{ item.caption or post.data.headline or (post.data.date | readableDate) }}" class="studio-media-image fade-in-item" style="animation-delay: {{ delay }}ms;">
+        {% elif item.type == "video" %}
+        <video src="{{ item.file }}" controls playsinline class="studio-media-video fade-in-item" style="animation-delay: {{ delay }}ms;"></video>
+        {% elif item.type == "audio" %}
+        <audio src="{{ item.file }}" controls class="studio-media-audio fade-in-item" style="animation-delay: {{ delay }}ms;"></audio>
+        {% endif %}
+        {% if item.caption %}
+        <p class="studio-media-caption fade-in-item" style="animation-delay: {{ delay }}ms;">{{ item.caption }}</p>
+        {% endif %}
+        {% endfor %}
       </div>
-      {% endif %}
 
-      {% for item in project.data.media %}
-      {% if item.type == "image" %}
-      <img src="{{ item.file }}" alt="{{ item.caption or project.data.title }}" class="project-media-image">
-      {% elif item.type == "video" %}
-      <video src="{{ item.file }}" controls playsinline class="project-media-video"></video>
-      {% elif item.type == "audio" %}
-      <audio src="{{ item.file }}" controls class="project-media-audio"></audio>
-      {% endif %}
-      {% if item.caption %}
-      <p class="project-media-caption">{{ item.caption }}</p>
-      {% endif %}
-      {% endfor %}
+      <div class="studio-post-body fade-in-item" style="animation-delay: 520ms;">
+        {{ post.templateContent | safe }}
+      </div>
     </section>

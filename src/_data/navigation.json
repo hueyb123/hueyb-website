@@ -13,12 +13,12 @@
       "url": "/painting/"
     },
     {
-      "label": "Prints",
-      "url": "/prints/"
-    },
-    {
       "label": "Blog",
       "url": "/blog/"
+    },
+    {
+      "label": "Prints",
+      "url": "/prints/"
     },
     {
       "label": "About",

@@ -40,19 +40,22 @@ module.exports = function (eleventyConfig) {
     });
   }
 
-  addProjectStyleCollection("photography", "photography");
-  addProjectStyleCollection("painting", "painting");
-  addProjectStyleCollection("installations", "installations");
-
-  eleventyConfig.addCollection("blogPosts", function (collectionApi) {
-    return collectionApi
-      .getFilteredByGlob("src/content/blog/*.md")
-      .sort(function (a, b) {
-        return orderThenFallback(a, b, function () {
-          return b.data.date - a.data.date;
+  function addBlogStyleCollection(name, folder) {
+    eleventyConfig.addCollection(name, function (collectionApi) {
+      return collectionApi
+        .getFilteredByGlob("src/content/" + folder + "/*.md")
+        .sort(function (a, b) {
+          return orderThenFallback(a, b, function () {
+            return b.data.date - a.data.date;
+          });
         });
-      });
-  });
+    });
+  }
+
+  addProjectStyleCollection("photography", "photography");
+  addProjectStyleCollection("installations", "installations");
+  addBlogStyleCollection("painting", "painting");
+  addBlogStyleCollection("blogPosts", "blog");
 
   eleventyConfig.addCollection("prints", function (collectionApi) {
     return collectionApi
@@ -80,8 +83,11 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addCollection("feedItems", function (collectionApi) {
     var galleryFolders = [
       { folder: "photography", label: "Photography" },
-      { folder: "painting", label: "Painting" },
       { folder: "installations", label: "Installations" },
+    ];
+    var postFolders = [
+      { folder: "painting", label: "Painting" },
+      { folder: "blog", label: "Blog" },
     ];
     var items = [];
     galleryFolders.forEach(function (entry) {
@@ -93,11 +99,13 @@ module.exports = function (eleventyConfig) {
         });
       });
     });
-    collectionApi.getFilteredByGlob("src/content/blog/*.md").forEach(function (item) {
-      items.push({
-        title: item.data.headline || "Blog update",
-        url: "/blog/" + item.fileSlug + "/",
-        date: item.date,
+    postFolders.forEach(function (entry) {
+      collectionApi.getFilteredByGlob("src/content/" + entry.folder + "/*.md").forEach(function (item) {
+        items.push({
+          title: item.data.headline || entry.label + " update",
+          url: "/" + entry.folder + "/" + item.fileSlug + "/",
+          date: item.date,
+        });
       });
     });
     return items.sort(function (a, b) {

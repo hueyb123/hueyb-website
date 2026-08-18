@@ -9,7 +9,7 @@ nav: blog
     </section>
 
     <section class="container">
-      <div class="tile-grid" id="blog-grid">
+      <div class="tile-grid compact-tile-grid">
         {% for post in collections.blogPosts %}
         {% set cover = post.data.media | firstImage %}
         <a href="/blog/{{ post.fileSlug }}/" class="tile reveal"{% if cover %} style="background-image:url('{{ cover }}');background-size:cover;background-position:center;"{% endif %}>

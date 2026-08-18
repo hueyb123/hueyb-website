@@ -47,10 +47,9 @@ var GalleryPreview = createClass({
   },
 });
 CMS.registerPreviewTemplate("photography", GalleryPreview);
-CMS.registerPreviewTemplate("painting", GalleryPreview);
 CMS.registerPreviewTemplate("installations", GalleryPreview);
 
-var BlogPreview = createClass({
+var PostPreview = createClass({
   render: function () {
     var getAsset = this.props.getAsset;
     var data = (this.props.entry.get("data") || {}).toJS ? this.props.entry.get("data").toJS() : {};
@@ -67,20 +66,24 @@ var BlogPreview = createClass({
     );
   },
 });
-CMS.registerPreviewTemplate("blog", BlogPreview);
+CMS.registerPreviewTemplate("blog", PostPreview);
+CMS.registerPreviewTemplate("painting", PostPreview);
 
-var BlogSettingsPreview = createClass({
-  render: function () {
-    var data = (this.props.entry.get("data") || {}).toJS ? this.props.entry.get("data").toJS() : {};
-    return h(
-      "div",
-      { className: "container", style: { paddingTop: "40px", paddingBottom: "40px", textAlign: "center" } },
-      renderHeading("Blog"),
-      data.tagline ? h("p", { style: { color: "#8a8a86" } }, data.tagline) : null
-    );
-  },
-});
-CMS.registerPreviewTemplate("blog_settings", BlogSettingsPreview);
+function makeSettingsPreview(heading) {
+  return createClass({
+    render: function () {
+      var data = (this.props.entry.get("data") || {}).toJS ? this.props.entry.get("data").toJS() : {};
+      return h(
+        "div",
+        { className: "container", style: { paddingTop: "40px", paddingBottom: "40px", textAlign: "center" } },
+        renderHeading(heading),
+        data.tagline ? h("p", { style: { color: "#8a8a86" } }, data.tagline) : null
+      );
+    },
+  });
+}
+CMS.registerPreviewTemplate("blog_settings", makeSettingsPreview("Blog"));
+CMS.registerPreviewTemplate("painting_settings", makeSettingsPreview("Painting"));
 
 var PrintsPreview = createClass({
   render: function () {
