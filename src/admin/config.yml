@@ -47,9 +47,9 @@ collections:
     slug: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}{{second}}"
     summary: "{{headline}}"
     fields:
-      - { label: "Date", name: "date", widget: "datetime", hint: "Used to sort posts, newest first, unless Display Order below is set." }
+      - { label: "Date", name: "date", widget: "datetime", required: false, hint: "Optional. Used to sort posts, newest first, unless Display Order below is set." }
       - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding the date. Leave blank to sort by date instead. Tip: use a decimal like 1.5 to slot a post between two others without renumbering everything." }
-      - { label: "Headline (optional)", name: "headline", widget: "string", required: false, hint: "Most posts can skip this and just lead with the date." }
+      - { label: "Title", name: "headline", widget: "string", required: false, hint: "Optional." }
       - label: "Media"
         name: "media"
         widget: "list"
@@ -65,7 +65,7 @@ collections:
               - { label: "Audio", value: "audio" }
           - { label: "File", name: "file", widget: "file" }
           - { label: "Caption", name: "caption", widget: "string", required: false }
-      - { label: "Musing", name: "body", widget: "markdown", hint: "Thoughts, progress notes, whatever's on your mind about this." }
+      - { label: "Details", name: "body", widget: "markdown", required: false, hint: "Optional." }
 
   - name: "painting_settings"
     label: "Painting Settings"

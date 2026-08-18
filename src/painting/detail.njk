@@ -8,7 +8,7 @@ layout: base.njk
 nav: painting
 revealFooter: true
 eleventyComputed:
-  title: "{% if post.data.headline %}{{ post.data.headline }}{% else %}{{ post.data.date | readableDate }}{% endif %} | Huey B"
+  title: "{% if post.data.headline %}{{ post.data.headline }}{% elif post.data.date %}{{ post.data.date | readableDate }}{% else %}Untitled{% endif %} | Huey B"
 ---
     <a href="/painting/" class="back-button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
@@ -16,7 +16,9 @@ eleventyComputed:
     </a>
 
     <section class="container studio-post">
+      {% if post.data.date %}
       <p class="studio-post-date fade-in-item" style="animation-delay: 0ms;">{{ post.data.date | readableDate }}</p>
+      {% endif %}
       {% if post.data.headline %}
       <h1 class="studio-post-headline fade-in-item" style="animation-delay: 70ms;">{{ post.data.headline }}</h1>
       {% endif %}
@@ -37,7 +39,9 @@ eleventyComputed:
         {% endfor %}
       </div>
 
+      {% if post.templateContent %}
       <div class="studio-post-body fade-in-item" style="animation-delay: 520ms;">
         {{ post.templateContent | safe }}
       </div>
+      {% endif %}
     </section>

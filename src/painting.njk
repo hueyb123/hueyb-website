@@ -12,10 +12,11 @@ nav: painting
       <div class="tile-grid compact-tile-grid">
         {% for post in collections.painting %}
         {% set cover = post.data.media | firstImage %}
+        {% set label = post.data.headline or (post.data.date | readableDate) %}
         <a href="/painting/{{ post.fileSlug }}/" class="tile reveal"{% if cover %} style="background-image:url('{{ cover }}');background-size:cover;background-position:center;"{% endif %}>
           <div class="tile-overlay">
-            <h3>{% if post.data.headline %}{{ post.data.headline }}{% else %}{{ post.data.date | readableDate }}{% endif %}</h3>
-            {% if post.data.headline %}<p>{{ post.data.date | readableDate }}</p>{% endif %}
+            {% if label %}<h3>{{ label }}</h3>{% endif %}
+            {% if post.data.headline and post.data.date %}<p>{{ post.data.date | readableDate }}</p>{% endif %}
           </div>
         </a>
         {% endfor %}
