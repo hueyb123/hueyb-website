@@ -48,7 +48,6 @@ var GalleryPreview = createClass({
 });
 CMS.registerPreviewTemplate("photography", GalleryPreview);
 CMS.registerPreviewTemplate("painting", GalleryPreview);
-CMS.registerPreviewTemplate("collage", GalleryPreview);
 CMS.registerPreviewTemplate("installations", GalleryPreview);
 
 var BlogPreview = createClass({

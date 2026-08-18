@@ -42,7 +42,6 @@ module.exports = function (eleventyConfig) {
 
   addProjectStyleCollection("photography", "photography");
   addProjectStyleCollection("painting", "painting");
-  addProjectStyleCollection("collage", "collage");
   addProjectStyleCollection("installations", "installations");
 
   eleventyConfig.addCollection("blogPosts", function (collectionApi) {
@@ -82,7 +81,6 @@ module.exports = function (eleventyConfig) {
     var galleryFolders = [
       { folder: "photography", label: "Photography" },
       { folder: "painting", label: "Painting" },
-      { folder: "collage", label: "Collage" },
       { folder: "installations", label: "Installations" },
     ];
     var items = [];
