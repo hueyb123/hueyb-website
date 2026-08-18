@@ -1,6 +1,14 @@
 {
   "items": [
     {
+      "label": "Installations",
+      "url": "/installations/"
+    },
+    {
+      "label": "Collage",
+      "url": "/collage/"
+    },
+    {
       "label": "Photography",
       "url": "/photography/"
     },
@@ -9,20 +17,12 @@
       "url": "/painting/"
     },
     {
-      "label": "Collage",
-      "url": "/collage/"
-    },
-    {
-      "label": "Installations",
-      "url": "/installations/"
+      "label": "Prints",
+      "url": "/prints/"
     },
     {
       "label": "Blog",
       "url": "/blog/"
-    },
-    {
-      "label": "Prints",
-      "url": "/prints/"
     },
     {
       "label": "About",
