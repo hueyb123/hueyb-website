@@ -492,6 +492,137 @@ p {
 }
 
 /* ==========================================================================
+   Painting page (thumbnail sidebar + large viewer)
+   ========================================================================== */
+
+.painting-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  padding-bottom: 96px;
+}
+
+.painting-thumbs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 110px;
+  flex-shrink: 0;
+  max-height: calc(100vh - 130px);
+  overflow-y: auto;
+  position: sticky;
+  top: 100px;
+  padding-right: 4px;
+}
+
+.painting-thumb {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-bg-alt);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity var(--transition), border-color var(--transition);
+}
+
+.painting-thumb:hover {
+  opacity: 0.85;
+}
+
+.painting-thumb.is-active {
+  opacity: 1;
+  border-color: var(--color-accent);
+}
+
+.painting-viewer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.painting-panel {
+  display: none;
+  width: 100%;
+  max-width: 720px;
+  text-align: center;
+}
+
+.painting-panel.is-active {
+  display: block;
+  animation: paintingPanelIn 420ms ease both;
+}
+
+@keyframes paintingPanelIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.painting-panel-date {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 4px;
+}
+
+.painting-panel-title {
+  font-family: "Silkscreen", monospace;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+}
+
+.painting-panel-media img,
+.painting-panel-media video {
+  width: 100%;
+  border-radius: var(--radius);
+  margin-bottom: 10px;
+}
+
+.painting-panel-caption {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin: -4px 0 16px;
+}
+
+.painting-panel-details {
+  text-align: left;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+@media (max-width: 860px) {
+  .painting-layout {
+    flex-direction: column;
+  }
+
+  .painting-thumbs {
+    flex-direction: row;
+    width: 100%;
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: visible;
+    position: static;
+  }
+
+  .painting-thumb {
+    width: 72px;
+    flex-shrink: 0;
+  }
+
+  .painting-viewer {
+    width: 100%;
+  }
+}
+
+/* ==========================================================================
    Full-bleed tile grid (index links, portfolio, products)
    ========================================================================== */
 

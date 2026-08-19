@@ -8,17 +8,40 @@ nav: painting
       {% if painting_settings.tagline %}<p>{{ painting_settings.tagline }}</p>{% endif %}
     </section>
 
-    <section class="container">
-      <div class="tile-grid compact-tile-grid">
+    <div class="painting-layout container">
+      <nav class="painting-thumbs" aria-label="Painting posts">
         {% for post in collections.painting %}
         {% set cover = post.data.media | firstImage %}
-        {% set label = post.data.headline or (post.data.date | readableDate) %}
-        <a href="/painting/{{ post.fileSlug }}/" class="tile reveal"{% if cover %} style="background-image:url('{{ cover }}');background-size:cover;background-position:center;"{% endif %}>
-          <div class="tile-overlay">
-            {% if label %}<h3>{{ label }}</h3>{% endif %}
-            {% if post.data.headline and post.data.date %}<p>{{ post.data.date | readableDate }}</p>{% endif %}
+        {% set label = post.data.headline or (post.data.date | readableDate) or "Untitled" %}
+        <button type="button" class="painting-thumb{% if loop.first %} is-active{% endif %}" data-target="painting-panel-{{ loop.index0 }}" aria-label="{{ label }}"{% if cover %} style="background-image:url('{{ cover }}')"{% endif %}></button>
+        {% endfor %}
+      </nav>
+
+      <div class="painting-viewer">
+        {% for post in collections.painting %}
+        <div class="painting-panel{% if loop.first %} is-active{% endif %}" id="painting-panel-{{ loop.index0 }}">
+          {% if post.data.date %}<p class="painting-panel-date">{{ post.data.date | readableDate }}</p>{% endif %}
+          {% if post.data.headline %}<h2 class="painting-panel-title">{{ post.data.headline }}</h2>{% endif %}
+          <div class="painting-panel-media">
+            {% for item in post.data.media %}
+            {% if item.type == "image" %}
+            <img src="{{ item.file }}" alt="{{ item.caption or post.data.headline or (post.data.date | readableDate) }}">
+            {% elif item.type == "video" %}
+            <video src="{{ item.file }}" controls autoplay muted loop playsinline></video>
+            {% elif item.type == "audio" %}
+            <audio src="{{ item.file }}" controls></audio>
+            {% endif %}
+            {% if item.caption %}
+            <p class="painting-panel-caption">{{ item.caption }}</p>
+            {% endif %}
+            {% endfor %}
           </div>
-        </a>
+          {% if post.templateContent %}
+          <div class="painting-panel-details">
+            {{ post.templateContent | safe }}
+          </div>
+          {% endif %}
+        </div>
         {% endfor %}
       </div>
-    </section>
+    </div>

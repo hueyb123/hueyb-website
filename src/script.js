@@ -481,4 +481,33 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   }
+
+  var paintingThumbs = document.querySelectorAll(".painting-thumb");
+  if (paintingThumbs.length) {
+    paintingThumbs.forEach(function (thumb) {
+      thumb.addEventListener("click", function () {
+        if (thumb.classList.contains("is-active")) return;
+        var targetId = thumb.getAttribute("data-target");
+        var targetPanel = document.getElementById(targetId);
+        if (!targetPanel) return;
+
+        document.querySelectorAll(".painting-thumb.is-active").forEach(function (el) {
+          el.classList.remove("is-active");
+        });
+        document.querySelectorAll(".painting-panel.is-active").forEach(function (el) {
+          el.classList.remove("is-active");
+          el.querySelectorAll("video").forEach(function (video) {
+            video.pause();
+          });
+        });
+
+        thumb.classList.add("is-active");
+        targetPanel.classList.add("is-active");
+        targetPanel.querySelectorAll("video").forEach(function (video) {
+          video.currentTime = 0;
+          video.play().catch(function () {});
+        });
+      });
+    });
+  }
 });
