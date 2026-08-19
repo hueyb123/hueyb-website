@@ -14,7 +14,7 @@ nav: photography
           {% for project in collections.photography %}
           <li>
             <a href="#{{ project.fileSlug }}" class="project-index-link">
-              <span class="scramble-target project-scramble" aria-hidden="true"></span>
+              <span class="scramble-target project-scramble" aria-hidden="true">{{ project.data.title }}</span>
               <span class="visually-hidden">{{ project.data.title }}</span>
             </a>
           </li>
@@ -28,12 +28,12 @@ nav: photography
         <a href="/photography/{{ project.fileSlug }}/" id="{{ project.fileSlug }}" class="project-panel">
           <div class="project-panel-overlay">
             <h3>
-              <span class="scramble-target project-scramble" aria-hidden="true"></span>
+              <span class="scramble-target project-scramble" aria-hidden="true">{{ project.data.title }}</span>
               <span class="visually-hidden">{{ project.data.title }}</span>
             </h3>
             {% if project.data.caption %}
             <p>
-              <span class="scramble-target project-scramble" aria-hidden="true"></span>
+              <span class="scramble-target project-scramble" aria-hidden="true">{{ project.data.caption }}</span>
               <span class="visually-hidden">{{ project.data.caption }}</span>
             </p>
             {% endif %}
