@@ -3,20 +3,19 @@ layout: base.njk
 title: "Painting | Huey B"
 nav: painting
 ---
-    <section class="page-header container">
-      <h1>Painting</h1>
-      {% if painting_settings.tagline %}<p>{{ painting_settings.tagline }}</p>{% endif %}
-    </section>
+    <nav class="painting-thumbs" aria-label="Painting posts">
+      <div class="painting-thumbs-header">
+        <h1>Painting</h1>
+        {% if painting_settings.tagline %}<p>{{ painting_settings.tagline }}</p>{% endif %}
+      </div>
+      {% for post in collections.painting %}
+      {% set cover = post.data.media | firstImage %}
+      {% set label = post.data.headline or (post.data.date | readableDate) or "Untitled" %}
+      <button type="button" class="painting-thumb{% if loop.first %} is-active{% endif %}" data-target="painting-panel-{{ loop.index0 }}" aria-label="{{ label }}"{% if cover %} style="background-image:url('{{ cover }}')"{% endif %}></button>
+      {% endfor %}
+    </nav>
 
-    <div class="painting-layout container">
-      <nav class="painting-thumbs" aria-label="Painting posts">
-        {% for post in collections.painting %}
-        {% set cover = post.data.media | firstImage %}
-        {% set label = post.data.headline or (post.data.date | readableDate) or "Untitled" %}
-        <button type="button" class="painting-thumb{% if loop.first %} is-active{% endif %}" data-target="painting-panel-{{ loop.index0 }}" aria-label="{{ label }}"{% if cover %} style="background-image:url('{{ cover }}')"{% endif %}></button>
-        {% endfor %}
-      </nav>
-
+    <div class="painting-layout">
       <div class="painting-viewer">
         {% for post in collections.painting %}
         <div class="painting-panel{% if loop.first %} is-active{% endif %}" id="painting-panel-{{ loop.index0 }}">

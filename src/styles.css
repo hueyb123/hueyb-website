@@ -495,24 +495,40 @@ p {
    Painting page (thumbnail sidebar + large viewer)
    ========================================================================== */
 
-.painting-layout {
-  display: flex;
-  align-items: flex-start;
-  gap: 32px;
-  padding-bottom: 96px;
+.painting-thumbs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  width: 190px;
+  height: 100vh;
+  padding: 90px 16px 24px;
+  overflow-y: auto;
 }
 
-.painting-thumbs {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 110px;
-  flex-shrink: 0;
-  max-height: calc(100vh - 130px);
-  overflow-y: auto;
-  position: sticky;
-  top: 100px;
-  padding-right: 4px;
+.painting-thumbs-header {
+  grid-column: 1 / -1;
+  text-align: left;
+  margin-bottom: 12px;
+}
+
+.painting-thumbs-header h1 {
+  font-family: "Silkscreen", monospace;
+  font-weight: 400;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text);
+  margin: 0 0 6px;
+}
+
+.painting-thumbs-header p {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  margin: 0;
 }
 
 .painting-thumb {
@@ -539,10 +555,15 @@ p {
   border-color: var(--color-accent);
 }
 
+.painting-layout {
+  margin-left: 190px;
+  padding-bottom: 96px;
+}
+
 .painting-viewer {
-  flex: 1;
   display: flex;
   justify-content: center;
+  padding: 0 24px;
 }
 
 .painting-panel {
@@ -599,26 +620,21 @@ p {
 }
 
 @media (max-width: 860px) {
-  .painting-layout {
-    flex-direction: column;
-  }
-
   .painting-thumbs {
-    flex-direction: row;
-    width: 100%;
-    max-height: none;
-    overflow-x: auto;
-    overflow-y: visible;
     position: static;
+    width: 100%;
+    height: auto;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+    padding: 24px 16px;
   }
 
-  .painting-thumb {
-    width: 72px;
-    flex-shrink: 0;
+  .painting-layout {
+    margin-left: 0;
   }
 
   .painting-viewer {
     width: 100%;
+    padding: 0 16px;
   }
 }
 
