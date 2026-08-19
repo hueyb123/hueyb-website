@@ -173,7 +173,7 @@ module.exports = function (eleventyConfig) {
 
   var THUMBNAIL_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".avif"];
 
-  eleventyConfig.addAsyncFilter("thumbnail", async function (src, width) {
+  async function generateThumbnail(src, width) {
     if (!src) return null;
     if (THUMBNAIL_EXTENSIONS.indexOf(path.extname(src).toLowerCase()) === -1) return null;
     var targetWidth = width || 240;
@@ -188,11 +188,25 @@ module.exports = function (eleventyConfig) {
           return name + "-" + targetWidth + "w." + format;
         },
       });
-      return metadata.jpeg[metadata.jpeg.length - 1].url;
+      return metadata.jpeg[metadata.jpeg.length - 1];
     } catch (e) {
-      console.warn("thumbnail filter failed for " + src + ": " + e.message);
+      console.warn("thumbnail generation failed for " + src + ": " + e.message);
       return null;
     }
+  }
+
+  eleventyConfig.addAsyncFilter("thumbnail", async function (src, width) {
+    var img = await generateThumbnail(src, width);
+    return img ? img.url : null;
+  });
+
+  // Same as "thumbnail" but returns {url, width, height} so a template can
+  // set real width/height attributes on the <img> - lets the browser reserve
+  // layout space and start decoding immediately instead of only discovering
+  // the image's size (and starting to fetch/decode it) once it scrolls into
+  // view.
+  eleventyConfig.addAsyncFilter("thumbnailData", async function (src, width) {
+    return await generateThumbnail(src, width);
   });
 
   eleventyConfig.addFilter("readableDate", function (date) {

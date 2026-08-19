@@ -3,6 +3,10 @@ layout: base.njk
 title: "Photography | Huey B"
 nav: photography
 ---
+    {% for project in collections.photography %}
+    {% set coverImage = project.data.cover | thumbnailData(1200) %}
+    {% if coverImage %}<link rel="preload" as="image" href="{{ coverImage.url }}">{% endif %}
+    {% endfor %}
     <div class="projects-layout">
       <nav class="project-index" aria-label="Jump to piece">
         <h2 class="project-index-title">Photography</h2>
@@ -20,7 +24,7 @@ nav: photography
 
       <div class="projects-scroll">
         {% for project in collections.photography %}
-        {% set coverImage = project.data.cover | thumbnail(1200) %}
+        {% set coverImage = project.data.cover | thumbnailData(1200) %}
         <a href="/photography/{{ project.fileSlug }}/" id="{{ project.fileSlug }}" class="project-panel">
           <div class="project-panel-overlay">
             <h3>
@@ -36,7 +40,7 @@ nav: photography
           </div>
           {% if coverImage %}
           <div class="project-panel-image">
-            <img src="{{ coverImage }}" alt="">
+            <img src="{{ coverImage.url }}" width="{{ coverImage.width }}" height="{{ coverImage.height }}" alt="">
           </div>
           {% endif %}
         </a>
