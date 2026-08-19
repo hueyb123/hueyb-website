@@ -337,16 +337,25 @@ document.addEventListener("DOMContentLoaded", function () {
     this.el.innerHTML = "";
     this.queue = [];
     this.spans = [];
-    for (var i = 0; i < newText.length; i++) {
-      var to = newText[i];
-      var span = document.createElement("span");
-      span.className = "scramble-slot";
-      span.textContent = to;
-      this.el.appendChild(span);
-      this.spans.push(span);
-      var start = Math.floor((i / newText.length) * staggerFrames);
-      var end = start + 10 + Math.floor(Math.random() * 12);
-      this.queue.push({ to: to, start: start, end: end, char: null });
+    var words = newText.split(" ");
+    for (var w = 0; w < words.length; w++) {
+      var wordSpan = document.createElement("span");
+      wordSpan.className = "scramble-word";
+      for (var j = 0; j < words[w].length; j++) {
+        var to = words[w][j];
+        var span = document.createElement("span");
+        span.className = "scramble-slot";
+        span.textContent = to;
+        wordSpan.appendChild(span);
+        this.spans.push(span);
+        var start = Math.floor((this.spans.length / newText.length) * staggerFrames);
+        var end = start + 10 + Math.floor(Math.random() * 12);
+        this.queue.push({ to: to, start: start, end: end, char: null });
+      }
+      this.el.appendChild(wordSpan);
+      if (w < words.length - 1) {
+        this.el.appendChild(document.createTextNode(" "));
+      }
     }
     cancelAnimationFrame(this.frameRequest);
     this.frame = 0;

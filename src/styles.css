@@ -433,6 +433,11 @@ p {
   -webkit-box-decoration-break: clone;
 }
 
+.scramble-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
 .scramble-slot {
   display: inline;
   opacity: 0;
@@ -682,7 +687,6 @@ p {
   text-shadow: 0 0 6px currentColor, 0 0 14px currentColor;
   animation: projectTitleFlicker 3.4s infinite;
   margin-bottom: 8px;
-  overflow-wrap: break-word;
 }
 
 .project-panel-overlay p {
