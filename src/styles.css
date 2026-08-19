@@ -742,11 +742,11 @@ p {
 .project-index {
   position: fixed;
   top: 0;
-  right: 0;
+  left: 0;
   z-index: 40;
-  width: 130px;
+  width: 240px;
   height: 100vh;
-  padding: 90px 20px 24px;
+  padding: 90px 24px 24px;
   overflow-y: auto;
 }
 
@@ -757,8 +757,7 @@ p {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--color-text);
-  margin: 0 0 12px;
-  text-align: right;
+  margin: 0 0 8px;
 }
 
 .project-index ul {
@@ -767,32 +766,25 @@ p {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 }
 
 .project-index-link {
   display: block;
-  aspect-ratio: 1 / 1;
-  width: 100%;
-  padding: 0;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  background-color: var(--color-bg-alt);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.55;
-  transition: opacity var(--transition), border-color var(--transition);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  transition: color var(--transition);
 }
 
 .project-index-link:hover,
 .project-index-link.is-active {
-  opacity: 1;
-  border-color: var(--color-index-accent);
+  color: var(--color-index-accent);
 }
 
 .projects-scroll {
-  margin-right: 130px;
+  margin-left: 240px;
   height: 100vh;
   overflow-y: auto;
   overscroll-behavior-y: contain;
@@ -858,7 +850,8 @@ p {
   margin: 0;
 }
 
-.project-panel-overlay .scramble-slot {
+.project-panel-overlay .scramble-slot,
+.project-index-link .scramble-slot {
   display: inline-block;
   width: 1ch;
   text-align: center;
@@ -872,23 +865,14 @@ p {
     padding: 24px;
   }
 
-  .project-index-title {
-    text-align: left;
-  }
-
   .project-index ul {
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .project-index-link {
-    width: 72px;
-    flex-shrink: 0;
+    gap: 12px 20px;
   }
 
   .projects-scroll {
-    margin-right: 0;
+    margin-left: 0;
     height: auto;
     overflow-y: visible;
     scroll-snap-type: none;
