@@ -14,27 +14,43 @@ eleventyComputed:
       Installations
     </a>
 
-    <section class="page-header container">
-      <h1>{{ project.data.title }}</h1>
-    </section>
+    <nav class="thumb-sidebar" aria-label="{{ project.data.title }} media">
+      <div class="thumb-sidebar-header">
+        <h1>{{ project.data.title }}</h1>
+        {% if project.data.caption %}<p>{{ project.data.caption }}</p>{% endif %}
+      </div>
+      {% for item in project.data.media %}
+      {% set thumbCover = item.file | thumbnail %}
+      <button type="button" class="thumb-button{% if loop.first %} is-active{% endif %}" data-target="thumb-panel-{{ loop.index0 }}" aria-label="{{ item.caption or project.data.title }}"{% if thumbCover %} style="background-image:url('{{ thumbCover }}')"{% endif %}>
+        {% if item.type == "video" %}<span class="thumb-icon" aria-hidden="true">&#9654;</span>{% elif item.type == "audio" %}<span class="thumb-icon" aria-hidden="true">&#9834;</span>{% endif %}
+      </button>
+      {% endfor %}
+    </nav>
 
-    <section class="container project-detail">
+    <div class="thumb-layout">
+      <div class="thumb-viewer">
+        {% for item in project.data.media %}
+        {% set isActivePanel = loop.first %}
+        <div class="thumb-panel{% if isActivePanel %} is-active{% endif %}" id="thumb-panel-{{ loop.index0 }}">
+          <div class="thumb-panel-media">
+            {% if item.type == "image" %}
+            <img src="{{ item.file }}" alt="{{ item.caption or project.data.title }}" loading="{% if isActivePanel %}eager{% else %}lazy{% endif %}">
+            {% elif item.type == "video" %}
+            <video src="{{ item.file }}" controls{% if isActivePanel %} autoplay{% endif %} muted loop playsinline preload="{% if isActivePanel %}metadata{% else %}none{% endif %}"></video>
+            {% elif item.type == "audio" %}
+            <audio src="{{ item.file }}" controls preload="none"></audio>
+            {% endif %}
+            {% if item.caption %}
+            <p class="thumb-panel-caption">{{ item.caption }}</p>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
       {% if project.templateContent %}
-      <div class="project-description">
+      <div class="thumb-description container">
         {{ project.templateContent | safe }}
       </div>
       {% endif %}
-
-      {% for item in project.data.media %}
-      {% if item.type == "image" %}
-      <img src="{{ item.file }}" alt="{{ item.caption or project.data.title }}" class="project-media-image">
-      {% elif item.type == "video" %}
-      <video src="{{ item.file }}" controls autoplay muted loop playsinline class="project-media-video"></video>
-      {% elif item.type == "audio" %}
-      <audio src="{{ item.file }}" controls class="project-media-audio"></audio>
-      {% endif %}
-      {% if item.caption %}
-      <p class="project-media-caption">{{ item.caption }}</p>
-      {% endif %}
-      {% endfor %}
-    </section>
+    </div>

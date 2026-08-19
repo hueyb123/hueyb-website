@@ -492,10 +492,11 @@ p {
 }
 
 /* ==========================================================================
-   Painting page (thumbnail sidebar + large viewer)
+   Thumbnail sidebar + large viewer
+   (shared: Painting gallery, Photography/Installations detail pages)
    ========================================================================== */
 
-.painting-thumbs {
+.thumb-sidebar {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 6px;
@@ -509,13 +510,13 @@ p {
   overflow-y: auto;
 }
 
-.painting-thumbs-header {
+.thumb-sidebar-header {
   grid-column: 1 / -1;
   text-align: left;
   margin-bottom: 12px;
 }
 
-.painting-thumbs-header h1 {
+.thumb-sidebar-header h1 {
   font-family: "Silkscreen", monospace;
   font-weight: 400;
   font-size: 16px;
@@ -525,13 +526,17 @@ p {
   margin: 0 0 6px;
 }
 
-.painting-thumbs-header p {
+.thumb-sidebar-header p {
   font-size: 0.72rem;
   color: var(--color-text-muted);
   margin: 0;
 }
 
-.painting-thumb {
+.thumb-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   aspect-ratio: 1 / 1;
   width: 100%;
   padding: 0;
@@ -546,21 +551,28 @@ p {
   transition: opacity var(--transition), border-color var(--transition);
 }
 
-.painting-thumb:hover {
+.thumb-button:hover {
   opacity: 0.85;
 }
 
-.painting-thumb.is-active {
+.thumb-button.is-active {
   opacity: 1;
   border-color: var(--color-accent);
 }
 
-.painting-layout {
+.thumb-icon {
+  color: rgba(242, 241, 238, 0.85);
+  font-size: 1rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+}
+
+.thumb-layout {
   margin-left: 190px;
   padding-bottom: 96px;
 }
 
-.painting-viewer {
+.thumb-viewer {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -569,24 +581,24 @@ p {
   box-sizing: border-box;
 }
 
-.painting-panel {
+.thumb-panel {
   display: none;
   width: 100%;
   max-width: 1100px;
   text-align: center;
 }
 
-.painting-panel.is-active {
+.thumb-panel.is-active {
   display: block;
-  animation: paintingPanelIn 420ms ease both;
+  animation: thumbPanelIn 420ms ease both;
 }
 
-@keyframes paintingPanelIn {
+@keyframes thumbPanelIn {
   from { opacity: 0; transform: scale(0.96); }
   to { opacity: 1; transform: scale(1); }
 }
 
-.painting-panel-date {
+.thumb-panel-date {
   font-size: 0.78rem;
   color: var(--color-text-muted);
   text-transform: uppercase;
@@ -594,7 +606,7 @@ p {
   margin: 0 0 4px;
 }
 
-.painting-panel-title {
+.thumb-panel-title {
   font-family: "Silkscreen", monospace;
   font-size: 1.4rem;
   text-transform: uppercase;
@@ -602,8 +614,8 @@ p {
   margin-bottom: 20px;
 }
 
-.painting-panel-media img,
-.painting-panel-media video {
+.thumb-panel-media img,
+.thumb-panel-media video {
   display: block;
   width: auto;
   height: auto;
@@ -614,21 +626,29 @@ p {
   object-fit: contain;
 }
 
-.painting-panel-caption {
+.thumb-panel-caption {
   font-size: 0.8rem;
   color: var(--color-text-muted);
   margin: -4px 0 16px;
 }
 
-.painting-panel-details {
+.thumb-panel-details {
   text-align: left;
   margin-top: 16px;
   padding-top: 16px;
   border-top: 1px solid var(--color-border);
 }
 
+.thumb-description {
+  max-width: 640px;
+  margin: 32px auto 0;
+  padding-top: 16px;
+  text-align: left;
+  border-top: 1px solid var(--color-border);
+}
+
 @media (max-width: 860px) {
-  .painting-thumbs {
+  .thumb-sidebar {
     position: static;
     width: 100%;
     height: auto;
@@ -636,11 +656,11 @@ p {
     padding: 24px 16px;
   }
 
-  .painting-layout {
+  .thumb-layout {
     margin-left: 0;
   }
 
-  .painting-viewer {
+  .thumb-viewer {
     width: 100%;
     padding: 0 16px;
   }
@@ -1132,38 +1152,6 @@ p {
 .cv-detail .cv-venue {
   color: var(--color-text-muted);
   font-size: 0.85rem;
-}
-
-/* ==========================================================================
-   Project detail page
-   ========================================================================== */
-
-.project-detail {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding-bottom: 100px;
-}
-
-.project-media-image,
-.project-media-video,
-.project-media-audio {
-  width: 100%;
-  padding: 12px;
-  border-radius: var(--radius);
-  margin-bottom: 8px;
-}
-
-.project-media-caption {
-  font-size: 0.8rem;
-  color: var(--color-text-muted);
-  margin: 0 0 32px;
-  text-align: center;
-}
-
-.project-description {
-  max-width: 640px;
-  margin: 0 auto 48px;
-  text-align: center;
 }
 
 /* ==========================================================================

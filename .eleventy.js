@@ -136,8 +136,11 @@ module.exports = function (eleventyConfig) {
     return found ? found.file : null;
   });
 
+  var THUMBNAIL_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".avif"];
+
   eleventyConfig.addAsyncFilter("thumbnail", async function (src) {
-    if (!src) return src;
+    if (!src) return null;
+    if (THUMBNAIL_EXTENSIONS.indexOf(path.extname(src).toLowerCase()) === -1) return null;
     try {
       var metadata = await Image(path.join("src", src), {
         widths: [240],
@@ -152,7 +155,7 @@ module.exports = function (eleventyConfig) {
       return metadata.jpeg[metadata.jpeg.length - 1].url;
     } catch (e) {
       console.warn("thumbnail filter failed for " + src + ": " + e.message);
-      return src;
+      return null;
     }
   });
 

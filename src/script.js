@@ -482,19 +482,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  var paintingThumbs = document.querySelectorAll(".painting-thumb");
-  if (paintingThumbs.length) {
-    paintingThumbs.forEach(function (thumb) {
+  var thumbButtons = document.querySelectorAll(".thumb-button");
+  if (thumbButtons.length) {
+    thumbButtons.forEach(function (thumb) {
       thumb.addEventListener("click", function () {
         if (thumb.classList.contains("is-active")) return;
         var targetId = thumb.getAttribute("data-target");
         var targetPanel = document.getElementById(targetId);
         if (!targetPanel) return;
 
-        document.querySelectorAll(".painting-thumb.is-active").forEach(function (el) {
+        document.querySelectorAll(".thumb-button.is-active").forEach(function (el) {
           el.classList.remove("is-active");
         });
-        document.querySelectorAll(".painting-panel.is-active").forEach(function (el) {
+        document.querySelectorAll(".thumb-panel.is-active").forEach(function (el) {
           el.classList.remove("is-active");
           el.querySelectorAll("video").forEach(function (video) {
             video.pause();
