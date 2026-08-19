@@ -29,7 +29,7 @@ eleventyComputed:
       {% if item.type == "image" %}
       <img src="{{ item.file }}" alt="{{ item.caption or project.data.title }}" class="project-media-image">
       {% elif item.type == "video" %}
-      <video src="{{ item.file }}" controls playsinline class="project-media-video"></video>
+      <video src="{{ item.file }}" controls autoplay muted loop playsinline class="project-media-video"></video>
       {% elif item.type == "audio" %}
       <audio src="{{ item.file }}" controls class="project-media-audio"></audio>
       {% endif %}

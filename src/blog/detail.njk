@@ -27,7 +27,7 @@ eleventyComputed:
         {% if item.type == "image" %}
         <img src="{{ item.file }}" alt="{{ item.caption or post.data.headline or (post.data.date | readableDate) }}" class="studio-media-image fade-in-item" style="animation-delay: {{ delay }}ms;">
         {% elif item.type == "video" %}
-        <video src="{{ item.file }}" controls playsinline class="studio-media-video fade-in-item" style="animation-delay: {{ delay }}ms;"></video>
+        <video src="{{ item.file }}" controls autoplay muted loop playsinline class="studio-media-video fade-in-item" style="animation-delay: {{ delay }}ms;"></video>
         {% elif item.type == "audio" %}
         <audio src="{{ item.file }}" controls class="studio-media-audio fade-in-item" style="animation-delay: {{ delay }}ms;"></audio>
         {% endif %}
