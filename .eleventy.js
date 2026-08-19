@@ -61,7 +61,7 @@ module.exports = function (eleventyConfig) {
   function addPaintingMoodCollection(name, mood) {
     eleventyConfig.addCollection(name, function (collectionApi) {
       var items = collectionApi.getFilteredByGlob("src/content/painting/*.md").filter(function (item) {
-        return (item.data.mood || "good_times") === mood;
+        return (item.data.mood || "Good Times") === mood;
       });
       return sortWithManualOrder(items, function (a, b) {
         return toSortableDate(b.data.date) - toSortableDate(a.data.date);
@@ -72,8 +72,8 @@ module.exports = function (eleventyConfig) {
   addProjectStyleCollection("photography", "photography");
   addProjectStyleCollection("installations", "installations");
   addBlogStyleCollection("painting", "painting");
-  addPaintingMoodCollection("paintingGoodTimes", "good_times");
-  addPaintingMoodCollection("paintingBadTimes", "bad_times");
+  addPaintingMoodCollection("paintingGoodTimes", "Good Times");
+  addPaintingMoodCollection("paintingBadTimes", "Bad Times");
   addBlogStyleCollection("blogPosts", "blog");
 
   eleventyConfig.addCollection("prints", function (collectionApi) {
