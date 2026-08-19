@@ -742,15 +742,12 @@ p {
 .project-index {
   position: fixed;
   top: 0;
-  left: 0;
+  right: 0;
   z-index: 40;
-  width: 106px;
+  width: 130px;
   height: 100vh;
-  padding: 90px 16px 24px;
+  padding: 90px 20px 24px;
   overflow-y: auto;
-  overscroll-behavior-y: contain;
-  background-color: var(--color-bg);
-  border-right: 1px solid var(--color-border);
 }
 
 .project-index-title {
@@ -761,7 +758,7 @@ p {
   letter-spacing: 0.06em;
   color: var(--color-text);
   margin: 0 0 12px;
-  text-align: left;
+  text-align: right;
 }
 
 .project-index ul {
@@ -770,7 +767,7 @@ p {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .project-index-link {
@@ -795,7 +792,7 @@ p {
 }
 
 .projects-scroll {
-  margin-left: 106px;
+  margin-right: 130px;
   height: 100vh;
   overflow-y: auto;
   overscroll-behavior-y: contain;
@@ -873,8 +870,6 @@ p {
     width: 100%;
     height: auto;
     padding: 24px;
-    border-right: none;
-    border-bottom: 1px solid var(--color-border);
   }
 
   .project-index-title {
@@ -884,16 +879,16 @@ p {
   .project-index ul {
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
   }
 
   .project-index-link {
-    width: 56px;
+    width: 72px;
     flex-shrink: 0;
   }
 
   .projects-scroll {
-    margin-left: 0;
+    margin-right: 0;
     height: auto;
     overflow-y: visible;
     scroll-snap-type: none;
