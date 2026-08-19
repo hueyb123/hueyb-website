@@ -4,38 +4,34 @@ title: "Good Times | Huey B"
 nav: painting
 permalink: "painting/good-times/index.html"
 ---
+{% set post = collections.paintingGoodTimes | first %}
     <a href="/painting/" class="back-button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       Painting
     </a>
 
-    <nav class="thumb-sidebar" aria-label="Good Times posts">
+    {% if post %}
+    <nav class="thumb-sidebar" aria-label="Good Times media">
       <div class="thumb-sidebar-header">
-        <h1>Good Times</h1>
+        <h1>{{ post.data.headline or "Good Times" }}</h1>
         {% if painting_settings.tagline %}<p>{{ painting_settings.tagline }}</p>{% endif %}
       </div>
-      {% for post in collections.paintingGoodTimes %}
-      {% set cover = post.data.media | firstImage %}
-      {% set coverThumb = cover | thumbnail %}
-      {% set label = post.data.headline or (post.data.date | readableDate) or "Untitled" %}
-      <button type="button" class="thumb-button{% if loop.first %} is-active{% endif %}" data-target="thumb-panel-{{ loop.index0 }}" aria-label="{{ label }}"{% if coverThumb %} style="background-image:url('{{ coverThumb }}')"{% endif %}></button>
+      {% for item in post.data.media %}
+      {% set thumbCover = item.file | thumbnail %}
+      <button type="button" class="thumb-button{% if loop.first %} is-active{% endif %}" data-target="thumb-panel-{{ loop.index0 }}" aria-label="{{ item.caption or post.data.headline or 'Good Times' }}"{% if thumbCover %} style="background-image:url('{{ thumbCover }}')"{% endif %}>
+        {% if item.type == "video" %}<span class="thumb-icon" aria-hidden="true">&#9654;</span>{% elif item.type == "audio" %}<span class="thumb-icon" aria-hidden="true">&#9834;</span>{% endif %}
+      </button>
       {% endfor %}
     </nav>
 
     <div class="thumb-layout">
       <div class="thumb-viewer">
-        {% if collections.paintingGoodTimes.length == 0 %}
-        <p class="thumb-empty">No posts yet — check back soon.</p>
-        {% endif %}
-        {% for post in collections.paintingGoodTimes %}
+        {% for item in post.data.media %}
         {% set isActivePanel = loop.first %}
         <div class="thumb-panel{% if isActivePanel %} is-active{% endif %}" id="thumb-panel-{{ loop.index0 }}">
-          {% if post.data.date %}<p class="thumb-panel-date">{{ post.data.date | readableDate }}</p>{% endif %}
-          {% if post.data.headline %}<h2 class="thumb-panel-title">{{ post.data.headline }}</h2>{% endif %}
           <div class="thumb-panel-media">
-            {% for item in post.data.media %}
             {% if item.type == "image" %}
-            <img src="{{ item.file }}" alt="{{ item.caption or post.data.headline or (post.data.date | readableDate) }}" loading="{% if isActivePanel %}eager{% else %}lazy{% endif %}">
+            <img src="{{ item.file }}" alt="{{ item.caption or post.data.headline or 'Good Times' }}" loading="{% if isActivePanel %}eager{% else %}lazy{% endif %}">
             {% elif item.type == "video" %}
             <video src="{{ item.file }}" controls{% if isActivePanel %} autoplay{% endif %} muted loop playsinline preload="{% if isActivePanel %}metadata{% else %}none{% endif %}"></video>
             {% elif item.type == "audio" %}
@@ -44,14 +40,17 @@ permalink: "painting/good-times/index.html"
             {% if item.caption %}
             <p class="thumb-panel-caption">{{ item.caption }}</p>
             {% endif %}
-            {% endfor %}
           </div>
-          {% if post.templateContent %}
-          <div class="thumb-panel-details">
-            {{ post.templateContent | safe }}
-          </div>
-          {% endif %}
         </div>
         {% endfor %}
       </div>
+
+      {% if post.templateContent %}
+      <div class="thumb-description container">
+        {{ post.templateContent | safe }}
+      </div>
+      {% endif %}
     </div>
+    {% else %}
+    <p class="thumb-empty">No posts yet — check back soon.</p>
+    {% endif %}
