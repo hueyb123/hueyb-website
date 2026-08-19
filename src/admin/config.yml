@@ -71,7 +71,7 @@ collections:
       - { label: "Description", name: "body", widget: "markdown", required: false }
 
   - name: "painting"
-    label: "Good Times Posts"
+    label: "Painting Posts"
     folder: "src/content/painting"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}{{second}}"
@@ -79,6 +79,14 @@ collections:
     fields:
       - { label: "Date", name: "date", widget: "datetime", required: false, hint: "Optional. Used to sort posts, newest first, unless Display Order below is set." }
       - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding the date. Leave blank to sort by date instead. Tip: use a decimal like 1.5 to slot a post between two others without renumbering everything." }
+      - label: "Section"
+        name: "mood"
+        widget: "select"
+        default: "good_times"
+        hint: "Which gallery this post shows up in."
+        options:
+          - { label: "Good Times", value: "good_times" }
+          - { label: "Bad Times", value: "bad_times" }
       - { label: "Title", name: "headline", widget: "string", required: false, hint: "Optional." }
       - label: "Media"
         name: "media"
@@ -98,13 +106,13 @@ collections:
       - { label: "Details", name: "body", widget: "markdown", required: false, hint: "Optional." }
 
   - name: "painting_settings"
-    label: "Good Times Settings"
+    label: "Painting Settings"
     files:
       - name: "painting_settings"
-        label: "Good Times Settings"
+        label: "Painting Settings"
         file: "src/_data/painting_settings.json"
         fields:
-          - { label: "Tagline", name: "tagline", widget: "text", required: false, hint: "Shown under the GOOD TIMES heading, on both the landing panel and the post gallery." }
+          - { label: "Tagline", name: "tagline", widget: "text", required: false, hint: "Shown under the GOOD TIMES heading only (not Bad Times), on both the landing panel and the Good Times gallery." }
 
   - name: "blog"
     label: "Blog Posts"

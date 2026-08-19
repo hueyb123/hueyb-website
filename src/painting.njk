@@ -1,25 +1,33 @@
 ---
 layout: base.njk
-title: "Good Times | Huey B"
+title: "Painting | Huey B"
 nav: painting
 ---
-{% set latestPost = collections.painting | first %}
-{% set cover = latestPost.data.media | firstImage if latestPost else null %}
+{% set goodTimesLatest = collections.paintingGoodTimes | first %}
+{% set badTimesLatest = collections.paintingBadTimes | first %}
+{% set goodTimesCover = goodTimesLatest.data.media | firstImage if goodTimesLatest else null %}
+{% set badTimesCover = badTimesLatest.data.media | firstImage if badTimesLatest else null %}
     <div class="projects-layout">
       <nav class="project-index" aria-label="Jump to piece">
-        <h2 class="project-index-title">Good Times</h2>
+        <h2 class="project-index-title">Painting</h2>
         <ul>
           <li>
-            <a href="#painting" class="project-index-link">
+            <a href="#good-times" class="project-index-link">
               <span class="scramble-target project-scramble" aria-hidden="true"></span>
               <span class="visually-hidden">Good Times</span>
+            </a>
+          </li>
+          <li>
+            <a href="#bad-times" class="project-index-link">
+              <span class="scramble-target project-scramble" aria-hidden="true"></span>
+              <span class="visually-hidden">Bad Times</span>
             </a>
           </li>
         </ul>
       </nav>
 
       <div class="projects-scroll">
-        <a href="/painting/gallery/" id="painting" class="project-panel"{% if cover %} style="background-image:url('{{ cover }}');background-size:45%;background-repeat:no-repeat;background-position:75% center;"{% endif %}>
+        <a href="/painting/good-times/" id="good-times" class="project-panel"{% if goodTimesCover %} style="background-image:url('{{ goodTimesCover }}');background-size:45%;background-repeat:no-repeat;background-position:75% center;"{% endif %}>
           <div class="project-panel-overlay">
             <h3>
               <span class="scramble-target project-scramble" aria-hidden="true"></span>
@@ -31,6 +39,14 @@ nav: painting
               <span class="visually-hidden">{{ painting_settings.tagline }}</span>
             </p>
             {% endif %}
+          </div>
+        </a>
+        <a href="/painting/bad-times/" id="bad-times" class="project-panel"{% if badTimesCover %} style="background-image:url('{{ badTimesCover }}');background-size:45%;background-repeat:no-repeat;background-position:75% center;"{% endif %}>
+          <div class="project-panel-overlay">
+            <h3>
+              <span class="scramble-target project-scramble" aria-hidden="true"></span>
+              <span class="visually-hidden">Bad Times</span>
+            </h3>
           </div>
         </a>
       </div>

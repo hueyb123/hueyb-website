@@ -1,20 +1,19 @@
 ---
 layout: base.njk
-title: "Good Times | Huey B"
+title: "Bad Times | Huey B"
 nav: painting
-permalink: "painting/gallery/index.html"
+permalink: "painting/bad-times/index.html"
 ---
     <a href="/painting/" class="back-button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-      Good Times
+      Painting
     </a>
 
-    <nav class="thumb-sidebar" aria-label="Good Times posts">
+    <nav class="thumb-sidebar" aria-label="Bad Times posts">
       <div class="thumb-sidebar-header">
-        <h1>Good Times</h1>
-        {% if painting_settings.tagline %}<p>{{ painting_settings.tagline }}</p>{% endif %}
+        <h1>Bad Times</h1>
       </div>
-      {% for post in collections.painting %}
+      {% for post in collections.paintingBadTimes %}
       {% set cover = post.data.media | firstImage %}
       {% set coverThumb = cover | thumbnail %}
       {% set label = post.data.headline or (post.data.date | readableDate) or "Untitled" %}
@@ -24,7 +23,10 @@ permalink: "painting/gallery/index.html"
 
     <div class="thumb-layout">
       <div class="thumb-viewer">
-        {% for post in collections.painting %}
+        {% if collections.paintingBadTimes.length == 0 %}
+        <p class="thumb-empty">No posts yet — check back soon.</p>
+        {% endif %}
+        {% for post in collections.paintingBadTimes %}
         {% set isActivePanel = loop.first %}
         <div class="thumb-panel{% if isActivePanel %} is-active{% endif %}" id="thumb-panel-{{ loop.index0 }}">
           {% if post.data.date %}<p class="thumb-panel-date">{{ post.data.date | readableDate }}</p>{% endif %}
