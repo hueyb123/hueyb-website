@@ -173,18 +173,19 @@ module.exports = function (eleventyConfig) {
 
   var THUMBNAIL_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".avif"];
 
-  eleventyConfig.addAsyncFilter("thumbnail", async function (src) {
+  eleventyConfig.addAsyncFilter("thumbnail", async function (src, width) {
     if (!src) return null;
     if (THUMBNAIL_EXTENSIONS.indexOf(path.extname(src).toLowerCase()) === -1) return null;
+    var targetWidth = width || 240;
     try {
       var metadata = await Image(path.join("src", src), {
-        widths: [240],
+        widths: [targetWidth],
         formats: ["jpeg"],
         outputDir: "_site/assets/thumbs",
         urlPath: "/assets/thumbs/",
-        filenameFormat: function (id, inputPath, width, format) {
+        filenameFormat: function (id, inputPath, targetWidth, format) {
           var name = path.basename(inputPath, path.extname(inputPath));
-          return name + "-" + width + "w." + format;
+          return name + "-" + targetWidth + "w." + format;
         },
       });
       return metadata.jpeg[metadata.jpeg.length - 1].url;

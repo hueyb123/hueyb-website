@@ -20,6 +20,7 @@ nav: installations
 
       <div class="projects-scroll">
         {% for project in collections.installations %}
+        {% set coverImage = project.data.cover | thumbnail(1200) %}
         <a href="/installations/{{ project.fileSlug }}/" id="{{ project.fileSlug }}" class="project-panel">
           <div class="project-panel-overlay">
             <h3>
@@ -33,9 +34,9 @@ nav: installations
             </p>
             {% endif %}
           </div>
-          {% if project.data.cover %}
+          {% if coverImage %}
           <div class="project-panel-image">
-            <img src="{{ project.data.cover }}" alt="">
+            <img src="{{ coverImage }}" alt="">
           </div>
           {% endif %}
         </a>
