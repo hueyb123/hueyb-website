@@ -13,28 +13,50 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/admin");
   eleventyConfig.ignores.add("src/admin/index.html");
 
-  // Items with an explicit "order" get that exact position. Items without one
-  // are ranked by the fallback comparator (date, ongoing, name, etc.) and
-  // that natural rank (1, 2, 3...) becomes their position for comparison
-  // purposes - so a manually-set order slots in relative to everything else,
-  // rather than any explicit order always jumping ahead of every unordered
-  // item regardless of the number chosen.
+  // Items with an explicit "order" get inserted at that literal 1-indexed
+  // position in the final list (order: 1 is always first, full stop).
+  // Items without one fill the remaining slots, in their relative order from
+  // the fallback comparator (date, ongoing, name, etc.), around whichever
+  // slots the explicitly-ordered items claimed.
   function sortWithManualOrder(items, fallbackComparator) {
-    var naturallySorted = items.slice().sort(fallbackComparator);
-    var naturalRank = new Map();
-    naturallySorted.forEach(function (item, index) {
-      naturalRank.set(item, index + 1);
-    });
-    return items.slice().sort(function (a, b) {
-      var aOrder = typeof a.data.order === "number" ? a.data.order : naturalRank.get(a);
-      var bOrder = typeof b.data.order === "number" ? b.data.order : naturalRank.get(b);
-      return aOrder - bOrder;
-    });
+    var explicit = items
+      .filter(function (item) {
+        return typeof item.data.order === "number";
+      })
+      .sort(function (a, b) {
+        return a.data.order - b.data.order;
+      });
+    var natural = items
+      .filter(function (item) {
+        return typeof item.data.order !== "number";
+      })
+      .sort(fallbackComparator);
+
+    var result = [];
+    var explicitIndex = 0;
+    var naturalIndex = 0;
+    var position = 1;
+    while (explicitIndex < explicit.length || naturalIndex < natural.length) {
+      if (explicitIndex < explicit.length && explicit[explicitIndex].data.order <= position) {
+        result.push(explicit[explicitIndex]);
+        explicitIndex++;
+      } else if (naturalIndex < natural.length) {
+        result.push(natural[naturalIndex]);
+        naturalIndex++;
+      } else {
+        result.push(explicit[explicitIndex]);
+        explicitIndex++;
+      }
+      position++;
+    }
+    return result;
   }
 
   function toSortableDate(value) {
     if (value instanceof Date) return value.getTime();
-    return new Date(String(value)).getTime();
+    if (!value) return -Infinity;
+    var parsed = new Date(String(value)).getTime();
+    return isNaN(parsed) ? -Infinity : parsed;
   }
 
   function addProjectStyleCollection(name, folder) {
@@ -58,18 +80,23 @@ module.exports = function (eleventyConfig) {
     });
   }
 
+  function addPaintingMoodCollection(name, mood) {
+    eleventyConfig.addCollection(name, function (collectionApi) {
+      var items = collectionApi.getFilteredByGlob("src/content/painting/*.md").filter(function (item) {
+        return (item.data.mood || "Good Times") === mood;
+      });
+      return sortWithManualOrder(items, function (a, b) {
+        return toSortableDate(b.data.date) - toSortableDate(a.data.date);
+      });
+    });
+  }
+
   addProjectStyleCollection("photography", "photography");
   addProjectStyleCollection("installations", "installations");
-  addBlogStyleCollection("paintingGoodTimes", "good-times");
-  addBlogStyleCollection("paintingBadTimes", "bad-times");
+  addBlogStyleCollection("painting", "painting");
+  addPaintingMoodCollection("paintingGoodTimes", "Good Times");
+  addPaintingMoodCollection("paintingBadTimes", "Bad Times");
   addBlogStyleCollection("blogPosts", "blog");
-
-  eleventyConfig.addCollection("painting", function (collectionApi) {
-    var items = collectionApi.getFilteredByGlob(["src/content/good-times/*.md", "src/content/bad-times/*.md"]);
-    return sortWithManualOrder(items, function (a, b) {
-      return toSortableDate(b.data.date) - toSortableDate(a.data.date);
-    });
-  });
 
   eleventyConfig.addCollection("prints", function (collectionApi) {
     var items = collectionApi.getFilteredByGlob("src/content/prints/*.md");
@@ -93,8 +120,7 @@ module.exports = function (eleventyConfig) {
       { folder: "installations", label: "Installations" },
     ];
     var postFolders = [
-      { folder: "good-times", label: "Good Times", urlFolder: "painting" },
-      { folder: "bad-times", label: "Bad Times", urlFolder: "painting" },
+      { folder: "painting", label: "Painting" },
       { folder: "blog", label: "Blog" },
     ];
     var items = [];
@@ -111,7 +137,7 @@ module.exports = function (eleventyConfig) {
       collectionApi.getFilteredByGlob("src/content/" + entry.folder + "/*.md").forEach(function (item) {
         items.push({
           title: item.data.headline || entry.label + " update",
-          url: "/" + (entry.urlFolder || entry.folder) + "/" + item.fileSlug + "/",
+          url: "/" + entry.folder + "/" + item.fileSlug + "/",
           date: item.date,
         });
       });
@@ -128,10 +154,6 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter("markdown", function (value) {
     if (!value) return "";
     return markdownIt.render(value);
-  });
-
-  eleventyConfig.addFilter("paintingSection", function (inputPath) {
-    return inputPath && inputPath.indexOf("/bad-times/") !== -1 ? "bad-times" : "good-times";
   });
 
   eleventyConfig.addFilter("hasActiveChild", function (children, nav) {
