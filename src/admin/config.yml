@@ -70,25 +70,42 @@ collections:
           - { label: "Caption", name: "caption", widget: "string", required: false }
       - { label: "Description", name: "body", widget: "markdown", required: false }
 
-  - name: "painting"
-    label: "Painting Posts"
-    folder: "src/content/painting"
+  - name: "good-times"
+    label: "Good Times Posts"
+    folder: "src/content/good-times"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}{{second}}"
-    summary: "{{mood | default('Good Times')}} — {{headline | default('Untitled')}}"
-    view_groups:
-      - { label: "Section", field: mood }
+    summary: "{{headline | default('Untitled')}}"
     fields:
       - { label: "Date", name: "date", widget: "datetime", required: false, hint: "Optional. Used to sort posts, newest first, unless Display Order below is set." }
       - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding the date. Leave blank to sort by date instead. Tip: use a decimal like 1.5 to slot a post between two others without renumbering everything." }
-      - label: "Section"
-        name: "mood"
-        widget: "select"
-        default: "Good Times"
-        hint: "Which gallery this post shows up in."
-        options:
-          - { label: "Good Times", value: "Good Times" }
-          - { label: "Bad Times", value: "Bad Times" }
+      - { label: "Title", name: "headline", widget: "string", required: false, hint: "Optional." }
+      - label: "Media"
+        name: "media"
+        widget: "list"
+        summary: "{{fields.type}} — {{fields.caption}}"
+        hint: "Add as many images, videos, or sound files as this post needs. The first image becomes the tile thumbnail."
+        fields:
+          - label: "Type"
+            name: "type"
+            widget: "select"
+            options:
+              - { label: "Image", value: "image" }
+              - { label: "Video", value: "video" }
+              - { label: "Audio", value: "audio" }
+          - { label: "File", name: "file", widget: "file" }
+          - { label: "Caption", name: "caption", widget: "string", required: false }
+      - { label: "Details", name: "body", widget: "markdown", required: false, hint: "Optional." }
+
+  - name: "bad-times"
+    label: "Bad Times Posts"
+    folder: "src/content/bad-times"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}{{second}}"
+    summary: "{{headline | default('Untitled')}}"
+    fields:
+      - { label: "Date", name: "date", widget: "datetime", required: false, hint: "Optional. Used to sort posts, newest first, unless Display Order below is set." }
+      - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding the date. Leave blank to sort by date instead. Tip: use a decimal like 1.5 to slot a post between two others without renumbering everything." }
       - { label: "Title", name: "headline", widget: "string", required: false, hint: "Optional." }
       - label: "Media"
         name: "media"

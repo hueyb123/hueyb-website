@@ -67,7 +67,8 @@ var PostPreview = createClass({
   },
 });
 CMS.registerPreviewTemplate("blog", PostPreview);
-CMS.registerPreviewTemplate("painting", PostPreview);
+CMS.registerPreviewTemplate("good-times", PostPreview);
+CMS.registerPreviewTemplate("bad-times", PostPreview);
 
 function makeSettingsPreview(heading) {
   return createClass({

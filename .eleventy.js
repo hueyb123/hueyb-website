@@ -58,23 +58,18 @@ module.exports = function (eleventyConfig) {
     });
   }
 
-  function addPaintingMoodCollection(name, mood) {
-    eleventyConfig.addCollection(name, function (collectionApi) {
-      var items = collectionApi.getFilteredByGlob("src/content/painting/*.md").filter(function (item) {
-        return (item.data.mood || "Good Times") === mood;
-      });
-      return sortWithManualOrder(items, function (a, b) {
-        return toSortableDate(b.data.date) - toSortableDate(a.data.date);
-      });
-    });
-  }
-
   addProjectStyleCollection("photography", "photography");
   addProjectStyleCollection("installations", "installations");
-  addBlogStyleCollection("painting", "painting");
-  addPaintingMoodCollection("paintingGoodTimes", "Good Times");
-  addPaintingMoodCollection("paintingBadTimes", "Bad Times");
+  addBlogStyleCollection("paintingGoodTimes", "good-times");
+  addBlogStyleCollection("paintingBadTimes", "bad-times");
   addBlogStyleCollection("blogPosts", "blog");
+
+  eleventyConfig.addCollection("painting", function (collectionApi) {
+    var items = collectionApi.getFilteredByGlob(["src/content/good-times/*.md", "src/content/bad-times/*.md"]);
+    return sortWithManualOrder(items, function (a, b) {
+      return toSortableDate(b.data.date) - toSortableDate(a.data.date);
+    });
+  });
 
   eleventyConfig.addCollection("prints", function (collectionApi) {
     var items = collectionApi.getFilteredByGlob("src/content/prints/*.md");
@@ -98,7 +93,8 @@ module.exports = function (eleventyConfig) {
       { folder: "installations", label: "Installations" },
     ];
     var postFolders = [
-      { folder: "painting", label: "Painting" },
+      { folder: "good-times", label: "Good Times", urlFolder: "painting" },
+      { folder: "bad-times", label: "Bad Times", urlFolder: "painting" },
       { folder: "blog", label: "Blog" },
     ];
     var items = [];
@@ -115,7 +111,7 @@ module.exports = function (eleventyConfig) {
       collectionApi.getFilteredByGlob("src/content/" + entry.folder + "/*.md").forEach(function (item) {
         items.push({
           title: item.data.headline || entry.label + " update",
-          url: "/" + entry.folder + "/" + item.fileSlug + "/",
+          url: "/" + (entry.urlFolder || entry.folder) + "/" + item.fileSlug + "/",
           date: item.date,
         });
       });
@@ -132,6 +128,10 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter("markdown", function (value) {
     if (!value) return "";
     return markdownIt.render(value);
+  });
+
+  eleventyConfig.addFilter("paintingSection", function (inputPath) {
+    return inputPath && inputPath.indexOf("/bad-times/") !== -1 ? "bad-times" : "good-times";
   });
 
   eleventyConfig.addFilter("hasActiveChild", function (children, nav) {
