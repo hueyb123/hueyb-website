@@ -438,7 +438,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var target = document.getElementById(href.slice(1));
         if (!target) return;
         e.preventDefault();
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        target.scrollIntoView({ behavior: "auto", block: "start" });
       });
     });
 
