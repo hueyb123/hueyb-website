@@ -10,8 +10,9 @@ nav: painting
       </div>
       {% for post in collections.painting %}
       {% set cover = post.data.media | firstImage %}
+      {% set coverThumb = cover | thumbnail %}
       {% set label = post.data.headline or (post.data.date | readableDate) or "Untitled" %}
-      <button type="button" class="painting-thumb{% if loop.first %} is-active{% endif %}" data-target="painting-panel-{{ loop.index0 }}" aria-label="{{ label }}"{% if cover %} style="background-image:url('{{ cover }}')"{% endif %}></button>
+      <button type="button" class="painting-thumb{% if loop.first %} is-active{% endif %}" data-target="painting-panel-{{ loop.index0 }}" aria-label="{{ label }}"{% if coverThumb %} style="background-image:url('{{ coverThumb }}')"{% endif %}></button>
       {% endfor %}
     </nav>
 

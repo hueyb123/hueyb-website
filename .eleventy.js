@@ -1,4 +1,6 @@
 var markdownIt = require("markdown-it")({ html: true });
+var Image = require("@11ty/eleventy-img").default;
+var path = require("path");
 
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(require("@11ty/eleventy-plugin-rss").default);
@@ -132,6 +134,26 @@ module.exports = function (eleventyConfig) {
       return m.type === "image";
     });
     return found ? found.file : null;
+  });
+
+  eleventyConfig.addAsyncFilter("thumbnail", async function (src) {
+    if (!src) return src;
+    try {
+      var metadata = await Image(path.join("src", src), {
+        widths: [240],
+        formats: ["jpeg"],
+        outputDir: "_site/assets/thumbs",
+        urlPath: "/assets/thumbs/",
+        filenameFormat: function (id, inputPath, width, format) {
+          var name = path.basename(inputPath, path.extname(inputPath));
+          return name + "-" + width + "w." + format;
+        },
+      });
+      return metadata.jpeg[metadata.jpeg.length - 1].url;
+    } catch (e) {
+      console.warn("thumbnail filter failed for " + src + ": " + e.message);
+      return src;
+    }
   });
 
   eleventyConfig.addFilter("readableDate", function (date) {
