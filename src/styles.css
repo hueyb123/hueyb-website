@@ -673,7 +673,7 @@ p {
   color: var(--color-text-muted);
   opacity: 0.6;
   cursor: pointer;
-  transition: opacity var(--transition), color var(--transition), border-color var(--transition);
+  transition: opacity var(--transition), color var(--transition), border-color var(--transition), background-color var(--transition);
 }
 
 .thumb-nav-arrow svg {
@@ -683,8 +683,9 @@ p {
 
 .thumb-nav-arrow:hover {
   opacity: 1;
-  color: var(--color-accent);
-  border-color: var(--color-accent);
+  background-color: rgba(255, 255, 255, 0.14);
+  color: var(--color-text);
+  border-color: var(--color-border);
 }
 
 .thumb-nav-arrow.is-disabled {
@@ -693,11 +694,11 @@ p {
 }
 
 .thumb-nav-prev {
-  left: 214px;
+  left: calc(190px + 16%);
 }
 
 .thumb-nav-next {
-  right: 24px;
+  right: 16%;
 }
 
 @media (max-width: 860px) {
