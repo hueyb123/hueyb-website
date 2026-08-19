@@ -1,12 +1,20 @@
 {
   "titles": [
     {
-      "text": "Huey B"
+      "text": "Huey B",
+      "hidden": false
+    },
+    {
+      "hidden": true,
+      "text": "Henry McDonald"
     }
   ],
   "descriptions": [
     {
-      "text": "A multidisciplinary artist bumbling about time and space."
+      "text": "bumbling about time and space."
+    },
+    {
+      "text": "working out how to be human"
     }
   ],
   "videos": [
@@ -30,6 +38,60 @@
     },
     {
       "file": "/assets/uploads/video_2023-11-08_14-14-47.mp4"
+    },
+    {
+      "file": "/assets/uploads/img-0150.mp4"
+    },
+    {
+      "file": "/assets/uploads/img-0406.mp4"
+    },
+    {
+      "file": "/assets/uploads/img-0421.mp4"
+    },
+    {
+      "file": "/assets/uploads/img-6053.mp4"
+    },
+    {
+      "file": "/assets/uploads/img-9687.mp4"
+    },
+    {
+      "file": "/assets/uploads/img-9743.mp4"
+    },
+    {
+      "file": "/assets/uploads/img-9744.mp4"
+    },
+    {
+      "file": "/assets/uploads/img-9745.mp4"
+    },
+    {
+      "file": "/assets/uploads/img-9855.mp4"
+    },
+    {
+      "file": "/assets/uploads/img-9865.mp4"
+    },
+    {
+      "file": "/assets/uploads/gushing-water.mp4"
+    },
+    {
+      "file": "/assets/uploads/video_2020-10-15_11-52-40_2_1_2.mp4"
+    },
+    {
+      "file": "/assets/uploads/video_2020-10-26_15-51-57_8.mp4"
+    },
+    {
+      "file": "/assets/uploads/video_2020-10-29_10-50-05_5_1_3.mp4"
+    },
+    {
+      "file": "/assets/uploads/video_2020-11-16_12-35-26.mp4"
+    },
+    {
+      "file": "/assets/uploads/video_2022-05-08_22-21-55.mp4"
+    },
+    {
+      "file": "/assets/uploads/video_2024-03-09_14-42-09.mp4"
+    },
+    {
+      "file": "/assets/uploads/video_2024-10-07_21-12-06.mp4"
     }
   ]
 }
