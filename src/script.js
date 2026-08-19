@@ -482,32 +482,65 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  var thumbButtons = document.querySelectorAll(".thumb-button");
-  if (thumbButtons.length) {
-    thumbButtons.forEach(function (thumb) {
-      thumb.addEventListener("click", function () {
-        if (thumb.classList.contains("is-active")) return;
-        var targetId = thumb.getAttribute("data-target");
-        var targetPanel = document.getElementById(targetId);
-        if (!targetPanel) return;
+  var thumbButtonList = Array.prototype.slice.call(document.querySelectorAll(".thumb-button"));
+  if (thumbButtonList.length) {
+    var activateThumb = function (thumb) {
+      if (thumb.classList.contains("is-active")) return;
+      var targetId = thumb.getAttribute("data-target");
+      var targetPanel = document.getElementById(targetId);
+      if (!targetPanel) return;
 
-        document.querySelectorAll(".thumb-button.is-active").forEach(function (el) {
-          el.classList.remove("is-active");
-        });
-        document.querySelectorAll(".thumb-panel.is-active").forEach(function (el) {
-          el.classList.remove("is-active");
-          el.querySelectorAll("video").forEach(function (video) {
-            video.pause();
-          });
-        });
-
-        thumb.classList.add("is-active");
-        targetPanel.classList.add("is-active");
-        targetPanel.querySelectorAll("video").forEach(function (video) {
-          video.currentTime = 0;
-          video.play().catch(function () {});
+      document.querySelectorAll(".thumb-button.is-active").forEach(function (el) {
+        el.classList.remove("is-active");
+      });
+      document.querySelectorAll(".thumb-panel.is-active").forEach(function (el) {
+        el.classList.remove("is-active");
+        el.querySelectorAll("video").forEach(function (video) {
+          video.pause();
         });
       });
+
+      thumb.classList.add("is-active");
+      targetPanel.classList.add("is-active");
+      targetPanel.querySelectorAll("video").forEach(function (video) {
+        video.currentTime = 0;
+        video.play().catch(function () {});
+      });
+      updateThumbNavArrows();
+    };
+
+    var thumbPrev = document.querySelector(".thumb-nav-prev");
+    var thumbNext = document.querySelector(".thumb-nav-next");
+
+    var updateThumbNavArrows = function () {
+      var activeIndex = thumbButtonList.indexOf(document.querySelector(".thumb-button.is-active"));
+      if (thumbPrev) thumbPrev.classList.toggle("is-disabled", activeIndex <= 0);
+      if (thumbNext) thumbNext.classList.toggle("is-disabled", activeIndex === -1 || activeIndex >= thumbButtonList.length - 1);
+    };
+
+    thumbButtonList.forEach(function (thumb) {
+      thumb.addEventListener("click", function () {
+        activateThumb(thumb);
+      });
     });
+
+    if (thumbButtonList.length < 2) {
+      if (thumbPrev) thumbPrev.style.display = "none";
+      if (thumbNext) thumbNext.style.display = "none";
+    } else {
+      if (thumbPrev) {
+        thumbPrev.addEventListener("click", function () {
+          var activeIndex = thumbButtonList.indexOf(document.querySelector(".thumb-button.is-active"));
+          if (activeIndex > 0) activateThumb(thumbButtonList[activeIndex - 1]);
+        });
+      }
+      if (thumbNext) {
+        thumbNext.addEventListener("click", function () {
+          var activeIndex = thumbButtonList.indexOf(document.querySelector(".thumb-button.is-active"));
+          if (activeIndex !== -1 && activeIndex < thumbButtonList.length - 1) activateThumb(thumbButtonList[activeIndex + 1]);
+        });
+      }
+      updateThumbNavArrows();
+    }
   }
 });

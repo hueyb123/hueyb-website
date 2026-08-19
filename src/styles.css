@@ -656,7 +656,55 @@ p {
   text-align: center;
 }
 
+.thumb-nav-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background-color: rgba(10, 10, 10, 0.6);
+  color: var(--color-text-muted);
+  opacity: 0.6;
+  cursor: pointer;
+  transition: opacity var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.thumb-nav-arrow svg {
+  width: 18px;
+  height: 18px;
+}
+
+.thumb-nav-arrow:hover {
+  opacity: 1;
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.thumb-nav-arrow.is-disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.thumb-nav-prev {
+  left: 214px;
+}
+
+.thumb-nav-next {
+  right: 24px;
+}
+
 @media (max-width: 860px) {
+  .thumb-nav-arrow {
+    display: none;
+  }
+
   .thumb-sidebar {
     position: static;
     width: 100%;
