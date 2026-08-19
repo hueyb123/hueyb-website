@@ -124,7 +124,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter("hasActiveChild", function (children, nav) {
     if (!Array.isArray(children)) return false;
     return children.some(function (child) {
-      return String(child.label).toLowerCase() === nav;
+      return child.key === nav;
     });
   });
 

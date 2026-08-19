@@ -2,22 +2,27 @@
   "items": [
     {
       "label": "Installations",
+      "key": "installations",
       "url": "/installations/"
     },
     {
       "label": "Photography",
+      "key": "photography",
       "url": "/photography/"
     },
     {
-      "label": "Painting",
+      "label": "Good Times",
+      "key": "painting",
       "url": "/painting/"
     },
     {
       "label": "Blog",
+      "key": "blog",
       "url": "/blog/"
     },
     {
       "label": "Prints",
+      "key": "prints",
       "url": "/prints/"
     },
     {
@@ -25,10 +30,12 @@
       "children": [
         {
           "label": "CV",
+          "key": "cv",
           "url": "/cv/"
         },
         {
           "label": "Contact",
+          "key": "contact",
           "url": "/contact/"
         }
       ]

@@ -29,12 +29,12 @@
               </button>
               <ul class="dropdown-menu">
                 {% for child in item.children %}
-                <li><a href="{{ child.url }}"{% if nav == (child.label | lower) %} class="active"{% endif %}>{{ child.label }}</a></li>
+                <li><a href="{{ child.url }}"{% if nav == child.key %} class="active"{% endif %}>{{ child.label }}</a></li>
                 {% endfor %}
               </ul>
             </li>
             {% else %}
-            <li><a href="{{ item.url }}"{% if nav == (item.label | lower) %} class="active"{% endif %}>{{ item.label }}</a></li>
+            <li><a href="{{ item.url }}"{% if nav == item.key %} class="active"{% endif %}>{{ item.label }}</a></li>
             {% endif %}
             {% endfor %}
           </ul>

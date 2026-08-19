@@ -1,18 +1,18 @@
 ---
 layout: base.njk
-title: "Painting | Huey B"
+title: "Good Times | Huey B"
 nav: painting
 ---
 {% set latestPost = collections.painting | first %}
 {% set cover = latestPost.data.media | firstImage if latestPost else null %}
     <div class="projects-layout">
       <nav class="project-index" aria-label="Jump to piece">
-        <h2 class="project-index-title">Painting</h2>
+        <h2 class="project-index-title">Good Times</h2>
         <ul>
           <li>
             <a href="#painting" class="project-index-link">
               <span class="scramble-target project-scramble" aria-hidden="true"></span>
-              <span class="visually-hidden">Painting</span>
+              <span class="visually-hidden">Good Times</span>
             </a>
           </li>
         </ul>
@@ -23,7 +23,7 @@ nav: painting
           <div class="project-panel-overlay">
             <h3>
               <span class="scramble-target project-scramble" aria-hidden="true"></span>
-              <span class="visually-hidden">Painting</span>
+              <span class="visually-hidden">Good Times</span>
             </h3>
             {% if painting_settings.tagline %}
             <p>
