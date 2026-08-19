@@ -10,13 +10,14 @@ permalink: "painting/good-times/index.html"
       Painting
     </a>
 
-    {% if post %}
+    {% set visibleMediaItems = post.data.media | visibleMedia if post else [] %}
+    {% if post and visibleMediaItems.length %}
     <nav class="thumb-sidebar" aria-label="Good Times media">
       <div class="thumb-sidebar-header">
         <h1>{{ post.data.headline or "Good Times" }}</h1>
         {% if painting_settings.tagline %}<p>{{ painting_settings.tagline }}</p>{% endif %}
       </div>
-      {% for item in post.data.media %}
+      {% for item in visibleMediaItems %}
       {% set thumbCover = item.file | thumbnail %}
       <button type="button" class="thumb-button{% if loop.first %} is-active{% endif %}" data-target="thumb-panel-{{ loop.index0 }}" aria-label="{{ item.caption or post.data.headline or 'Good Times' }}"{% if thumbCover %} style="background-image:url('{{ thumbCover }}')"{% endif %}>
         {% if item.type == "video" %}<span class="thumb-icon" aria-hidden="true">&#9654;</span>{% elif item.type == "audio" %}<span class="thumb-icon" aria-hidden="true">&#9834;</span>{% endif %}
@@ -32,7 +33,7 @@ permalink: "painting/good-times/index.html"
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
       </button>
       <div class="thumb-viewer">
-        {% for item in post.data.media %}
+        {% for item in visibleMediaItems %}
         {% set isActivePanel = loop.first %}
         <div class="thumb-panel{% if isActivePanel %} is-active{% endif %}" id="thumb-panel-{{ loop.index0 }}">
           <div class="thumb-panel-media">

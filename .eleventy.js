@@ -172,10 +172,17 @@ module.exports = function (eleventyConfig) {
     });
   });
 
+  eleventyConfig.addFilter("visibleMedia", function (media) {
+    if (!Array.isArray(media)) return [];
+    return media.filter(function (m) {
+      return !m.hidden;
+    });
+  });
+
   eleventyConfig.addFilter("firstImage", function (media) {
     if (!Array.isArray(media)) return null;
     var found = media.find(function (m) {
-      return m.type === "image";
+      return m.type === "image" && !m.hidden;
     });
     return found ? found.file : null;
   });

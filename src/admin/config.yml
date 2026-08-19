@@ -39,6 +39,7 @@ collections:
               - { label: "Audio", value: "audio" }
           - { label: "File", name: "file", widget: "file" }
           - { label: "Caption", name: "caption", widget: "string", required: false }
+          - { label: "Hidden", name: "hidden", widget: "boolean", default: false, hint: "Exclude this item from the piece without deleting it." }
       - { label: "Description", name: "body", widget: "markdown", required: false }
 
   - name: "photography"
@@ -70,6 +71,7 @@ collections:
               - { label: "Audio", value: "audio" }
           - { label: "File", name: "file", widget: "file" }
           - { label: "Caption", name: "caption", widget: "string", required: false }
+          - { label: "Hidden", name: "hidden", widget: "boolean", default: false, hint: "Exclude this item from the piece without deleting it." }
       - { label: "Description", name: "body", widget: "markdown", required: false }
 
   - name: "painting"
@@ -108,6 +110,7 @@ collections:
               - { label: "Audio", value: "audio" }
           - { label: "File", name: "file", widget: "file" }
           - { label: "Caption", name: "caption", widget: "string", required: false }
+          - { label: "Hidden", name: "hidden", widget: "boolean", default: false, hint: "Exclude this item from the piece without deleting it." }
       - { label: "Details", name: "body", widget: "markdown", required: false, hint: "Optional." }
 
   - name: "painting_settings"
@@ -145,6 +148,7 @@ collections:
               - { label: "Audio", value: "audio" }
           - { label: "File", name: "file", widget: "file" }
           - { label: "Caption", name: "caption", widget: "string", required: false }
+          - { label: "Hidden", name: "hidden", widget: "boolean", default: false, hint: "Exclude this item from the piece without deleting it." }
       - { label: "Musing", name: "body", widget: "markdown", hint: "Thoughts, progress notes, whatever's on your mind about this." }
 
   - name: "blog_settings"

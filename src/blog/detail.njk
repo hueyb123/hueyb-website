@@ -22,7 +22,7 @@ eleventyComputed:
       {% endif %}
 
       <div class="studio-post-media">
-        {% for item in post.data.media %}
+        {% for item in post.data.media | visibleMedia %}
         {% set delay = 160 + loop.index0 * 90 %}
         {% if item.type == "image" %}
         <img src="{{ item.file }}" alt="{{ item.caption or post.data.headline or (post.data.date | readableDate) }}" class="studio-media-image fade-in-item" style="animation-delay: {{ delay }}ms;">
