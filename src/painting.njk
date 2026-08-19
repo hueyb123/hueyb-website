@@ -18,17 +18,18 @@ nav: painting
     <div class="painting-layout">
       <div class="painting-viewer">
         {% for post in collections.painting %}
-        <div class="painting-panel{% if loop.first %} is-active{% endif %}" id="painting-panel-{{ loop.index0 }}">
+        {% set isActivePanel = loop.first %}
+        <div class="painting-panel{% if isActivePanel %} is-active{% endif %}" id="painting-panel-{{ loop.index0 }}">
           {% if post.data.date %}<p class="painting-panel-date">{{ post.data.date | readableDate }}</p>{% endif %}
           {% if post.data.headline %}<h2 class="painting-panel-title">{{ post.data.headline }}</h2>{% endif %}
           <div class="painting-panel-media">
             {% for item in post.data.media %}
             {% if item.type == "image" %}
-            <img src="{{ item.file }}" alt="{{ item.caption or post.data.headline or (post.data.date | readableDate) }}">
+            <img src="{{ item.file }}" alt="{{ item.caption or post.data.headline or (post.data.date | readableDate) }}" loading="{% if isActivePanel %}eager{% else %}lazy{% endif %}">
             {% elif item.type == "video" %}
-            <video src="{{ item.file }}" controls autoplay muted loop playsinline></video>
+            <video src="{{ item.file }}" controls{% if isActivePanel %} autoplay{% endif %} muted loop playsinline preload="{% if isActivePanel %}metadata{% else %}none{% endif %}"></video>
             {% elif item.type == "audio" %}
-            <audio src="{{ item.file }}" controls></audio>
+            <audio src="{{ item.file }}" controls preload="none"></audio>
             {% endif %}
             {% if item.caption %}
             <p class="painting-panel-caption">{{ item.caption }}</p>
