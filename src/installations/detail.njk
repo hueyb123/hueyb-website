@@ -14,6 +14,7 @@ eleventyComputed:
       Installations
     </a>
 
+    {% if project.data.media and project.data.media.length %}
     <nav class="thumb-sidebar" aria-label="{{ project.data.title }} media">
       <div class="thumb-sidebar-header">
         <h1>{{ project.data.title }}</h1>
@@ -54,3 +55,9 @@ eleventyComputed:
       </div>
       {% endif %}
     </div>
+    {% else %}
+    <section class="page-header container">
+      <h1>{{ project.data.title }}</h1>
+      <p class="thumb-empty">No media yet — check back soon.</p>
+    </section>
+    {% endif %}
