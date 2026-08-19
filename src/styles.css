@@ -656,53 +656,49 @@ p {
   text-align: center;
 }
 
-.thumb-nav-arrow {
+.thumb-click-zone {
   position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 50;
+  top: 0;
+  height: 100vh;
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
   padding: 0;
-  border-radius: 50%;
-  border: 1px solid var(--color-border);
-  background-color: rgba(10, 10, 10, 0.6);
+  border: none;
+  background: transparent;
   color: var(--color-text-muted);
-  opacity: 0.6;
   cursor: pointer;
-  transition: opacity var(--transition), color var(--transition), border-color var(--transition), background-color var(--transition);
 }
 
-.thumb-nav-arrow svg {
-  width: 18px;
-  height: 18px;
-}
-
-.thumb-nav-arrow:hover {
-  opacity: 1;
-  background-color: rgba(255, 255, 255, 0.14);
-  color: var(--color-text);
-  border-color: var(--color-border);
-}
-
-.thumb-nav-arrow.is-disabled {
+.thumb-click-zone svg {
+  width: 28px;
+  height: 28px;
   opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.thumb-click-zone:hover svg {
+  opacity: 0.5;
+}
+
+.thumb-click-zone.is-disabled {
+  cursor: default;
   pointer-events: none;
 }
 
-.thumb-nav-prev {
-  left: calc(190px + 16%);
+.thumb-click-prev {
+  left: 190px;
+  width: calc(50% - 95px);
 }
 
-.thumb-nav-next {
-  right: 16%;
+.thumb-click-next {
+  right: 0;
+  width: calc(50% - 95px);
 }
 
 @media (max-width: 860px) {
-  .thumb-nav-arrow {
+  .thumb-click-zone {
     display: none;
   }
 

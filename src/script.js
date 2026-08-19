@@ -484,8 +484,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   var thumbButtonList = Array.prototype.slice.call(document.querySelectorAll(".thumb-button"));
   if (thumbButtonList.length) {
-    var thumbPrev = document.querySelector(".thumb-nav-prev");
-    var thumbNext = document.querySelector(".thumb-nav-next");
+    var thumbPrev = document.querySelector(".thumb-click-prev");
+    var thumbNext = document.querySelector(".thumb-click-next");
 
     var positionThumbNavArrows = function () {
       if (!thumbPrev || !thumbNext) return;
@@ -496,18 +496,15 @@ document.addEventListener("DOMContentLoaded", function () {
       var rect = media.getBoundingClientRect();
       if (!rect.width) return;
 
-      var gap = 16;
-      var arrowSize = 44;
-      var minLeft = 206;
-      var maxLeft = 190 + window.innerWidth * 0.16;
-      var minRight = 16;
-      var maxRight = window.innerWidth * 0.16;
+      var gap = 8;
+      var minWidth = 40;
+      var sidebarWidth = 190;
 
-      var prevLeft = Math.max(minLeft, Math.min(rect.left - gap - arrowSize, maxLeft));
-      var nextRight = Math.max(minRight, Math.min(window.innerWidth - rect.right - gap, maxRight));
+      var prevWidth = Math.max(minWidth, rect.left - gap - sidebarWidth);
+      var nextWidth = Math.max(minWidth, window.innerWidth - rect.right - gap);
 
-      thumbPrev.style.left = prevLeft + "px";
-      thumbNext.style.right = nextRight + "px";
+      thumbPrev.style.width = prevWidth + "px";
+      thumbNext.style.width = nextWidth + "px";
     };
 
     var updateThumbNavArrows = function () {
