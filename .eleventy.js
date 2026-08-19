@@ -59,9 +59,18 @@ module.exports = function (eleventyConfig) {
     return isNaN(parsed) ? -Infinity : parsed;
   }
 
+  // Every collection is built through this so a post with Hidden checked
+  // in the CMS never shows up anywhere on the site - not in its gallery,
+  // not on its own detail page, not in the feed - without deleting it.
+  function getVisibleByGlob(collectionApi, glob) {
+    return collectionApi.getFilteredByGlob(glob).filter(function (item) {
+      return !item.data.hidden;
+    });
+  }
+
   function addProjectStyleCollection(name, folder) {
     eleventyConfig.addCollection(name, function (collectionApi) {
-      var items = collectionApi.getFilteredByGlob("src/content/" + folder + "/*.md");
+      var items = getVisibleByGlob(collectionApi, "src/content/" + folder + "/*.md");
       return sortWithManualOrder(items, function (a, b) {
         var aOngoing = !!a.data.ongoing;
         var bOngoing = !!b.data.ongoing;
@@ -73,7 +82,7 @@ module.exports = function (eleventyConfig) {
 
   function addBlogStyleCollection(name, folder) {
     eleventyConfig.addCollection(name, function (collectionApi) {
-      var items = collectionApi.getFilteredByGlob("src/content/" + folder + "/*.md");
+      var items = getVisibleByGlob(collectionApi, "src/content/" + folder + "/*.md");
       return sortWithManualOrder(items, function (a, b) {
         return toSortableDate(b.data.date) - toSortableDate(a.data.date);
       });
@@ -82,7 +91,7 @@ module.exports = function (eleventyConfig) {
 
   function addPaintingMoodCollection(name, mood) {
     eleventyConfig.addCollection(name, function (collectionApi) {
-      var items = collectionApi.getFilteredByGlob("src/content/painting/*.md").filter(function (item) {
+      var items = getVisibleByGlob(collectionApi, "src/content/painting/*.md").filter(function (item) {
         return (item.data.mood || "Good Times") === mood;
       });
       return sortWithManualOrder(items, function (a, b) {
@@ -99,14 +108,14 @@ module.exports = function (eleventyConfig) {
   addBlogStyleCollection("blogPosts", "blog");
 
   eleventyConfig.addCollection("prints", function (collectionApi) {
-    var items = collectionApi.getFilteredByGlob("src/content/prints/*.md");
+    var items = getVisibleByGlob(collectionApi, "src/content/prints/*.md");
     return sortWithManualOrder(items, function (a, b) {
       return a.data.name.localeCompare(b.data.name);
     });
   });
 
   eleventyConfig.addCollection("cv", function (collectionApi) {
-    var items = collectionApi.getFilteredByGlob("src/content/cv/*.md");
+    var items = getVisibleByGlob(collectionApi, "src/content/cv/*.md");
     return sortWithManualOrder(items, function (a, b) {
       return String(b.data.year).localeCompare(String(a.data.year));
     }).map(function (item) {
@@ -125,7 +134,7 @@ module.exports = function (eleventyConfig) {
     ];
     var items = [];
     galleryFolders.forEach(function (entry) {
-      collectionApi.getFilteredByGlob("src/content/" + entry.folder + "/*.md").forEach(function (item) {
+      getVisibleByGlob(collectionApi, "src/content/" + entry.folder + "/*.md").forEach(function (item) {
         items.push({
           title: "New " + entry.label + ": " + item.data.title,
           url: "/" + entry.folder + "/" + item.fileSlug + "/",
@@ -134,7 +143,7 @@ module.exports = function (eleventyConfig) {
       });
     });
     postFolders.forEach(function (entry) {
-      collectionApi.getFilteredByGlob("src/content/" + entry.folder + "/*.md").forEach(function (item) {
+      getVisibleByGlob(collectionApi, "src/content/" + entry.folder + "/*.md").forEach(function (item) {
         items.push({
           title: item.data.headline || entry.label + " update",
           url: "/" + entry.folder + "/" + item.fileSlug + "/",
