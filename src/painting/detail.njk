@@ -15,6 +15,17 @@ eleventyComputed:
       Painting
     </a>
 
+    {% if pagination.href.previous %}
+    <a href="{{ pagination.href.previous }}" class="post-nav-arrow post-nav-prev" aria-label="Previous post">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </a>
+    {% endif %}
+    {% if pagination.href.next %}
+    <a href="{{ pagination.href.next }}" class="post-nav-arrow post-nav-next" aria-label="Next post">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+    {% endif %}
+
     <section class="container studio-post">
       {% if post.data.date %}
       <p class="studio-post-date fade-in-item" style="animation-delay: 0ms;">{{ post.data.date | readableDate }}</p>
