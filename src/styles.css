@@ -829,7 +829,7 @@ p {
   width: 100%;
   scroll-snap-align: start;
   overflow: hidden;
-  background-color: var(--color-bg-alt);
+  background-color: var(--color-bg);
   border-bottom: 1px solid var(--color-border);
 }
 
