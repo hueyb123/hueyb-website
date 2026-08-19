@@ -1,6 +1,14 @@
 {
-  "title": "Huey B",
-  "description": "A multidisciplinary artist bumbling about time and space.",
+  "titles": [
+    {
+      "text": "Huey B"
+    }
+  ],
+  "descriptions": [
+    {
+      "text": "A multidisciplinary artist bumbling about time and space."
+    }
+  ],
   "videos": [
     {
       "file": "/index_videos/video_2023-11-08_14-15-30.mp4"

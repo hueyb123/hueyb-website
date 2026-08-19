@@ -7,15 +7,33 @@ nav: home
       <video class="hero-video" autoplay muted loop playsinline></video>
       <div class="hero-scrim"></div>
       <div class="container hero-inner">
+        {% if home.titles.length %}
         <h1 class="wordmark">
           <span class="scramble-target" aria-hidden="true"></span>
-          <span class="visually-hidden">{{ home.title }}</span>
+          <span class="visually-hidden" id="home-title"></span>
         </h1>
+        {% endif %}
         <p>
           <span class="scramble-target" aria-hidden="true"></span>
-          <span class="visually-hidden">{{ home.description }}</span>
+          <span class="visually-hidden" id="home-description"></span>
         </p>
       </div>
     </section>
 
-    <script>window.HERO_VIDEOS = {{ home.videos | dump | safe }};</script>
+    <script>
+      window.HERO_VIDEOS = {{ home.videos | dump | safe }};
+      (function () {
+        var pick = function (pool, id) {
+          var el = document.getElementById(id);
+          var visible = (pool || []).filter(function (item) {
+            return !item.hidden;
+          });
+          if (el && visible.length) {
+            var chosen = visible[Math.floor(Math.random() * visible.length)];
+            el.textContent = chosen.text || "";
+          }
+        };
+        pick({{ home.titles | dump | safe }}, "home-title");
+        pick({{ home.descriptions | dump | safe }}, "home-description");
+      })();
+    </script>

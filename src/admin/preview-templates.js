@@ -67,8 +67,7 @@ var PostPreview = createClass({
   },
 });
 CMS.registerPreviewTemplate("blog", PostPreview);
-CMS.registerPreviewTemplate("good-times", PostPreview);
-CMS.registerPreviewTemplate("bad-times", PostPreview);
+CMS.registerPreviewTemplate("painting", PostPreview);
 
 function makeSettingsPreview(heading) {
   return createClass({
@@ -120,12 +119,26 @@ var HomePreview = createClass({
     var getAsset = this.props.getAsset;
     var data = (this.props.entry.get("data") || {}).toJS ? this.props.entry.get("data").toJS() : {};
     var videos = data.videos || [];
+    var titles = data.titles || [];
+    var descriptions = data.descriptions || [];
 
     return h(
       "div",
       { className: "container", style: { paddingTop: "40px", paddingBottom: "40px", textAlign: "center" } },
-      renderHeading(data.title || "Untitled"),
-      data.description ? h("p", {}, data.description) : null,
+      renderHeading(
+        titles.length
+          ? titles.map(function (t) { return t.hidden ? t.text + " (hidden)" : t.text; }).join(" / ")
+          : "Untitled"
+      ),
+      descriptions.length
+        ? h(
+            "ul",
+            { style: { listStyle: "none", padding: 0, color: "#8a8a86" } },
+            descriptions.map(function (d, i) {
+              return h("li", { key: i, style: d.hidden ? { textDecoration: "line-through", opacity: 0.5 } : {} }, d.text);
+            })
+          )
+        : null,
       h(
         "div",
         { style: { display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "12px" } },
