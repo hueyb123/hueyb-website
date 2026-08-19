@@ -58,10 +58,12 @@
 
   <footer class="site-footer{% if revealFooter %} fade-in-item{% else %} page-enter{% endif %}"{% if revealFooter %} style="animation-delay: 600ms;"{% endif %}>
     <div class="container">
+      {% if nav != "installations" and nav != "photography" and nav != "painting" %}
       <div class="footer-subscribe">
         <p>Get updates on my practice</p>
         {% include "kit-form.njk" %}
       </div>
+      {% endif %}
       <p>&copy; 2026 Huey B. All rights reserved.</p>
     </div>
   </footer>
