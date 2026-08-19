@@ -499,6 +499,7 @@ p {
 .thumb-sidebar {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  align-content: start;
   gap: 6px;
   position: fixed;
   top: 0;
