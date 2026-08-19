@@ -9,8 +9,7 @@ nav: photography
         <ul>
           {% for project in collections.photography %}
           <li>
-            <a href="#{{ project.fileSlug }}" class="project-index-link">
-              <span class="scramble-target project-scramble" aria-hidden="true"></span>
+            <a href="#{{ project.fileSlug }}" class="project-index-link" aria-label="{{ project.data.title }}"{% if project.data.cover %} style="background-image:url('{{ project.data.cover }}')"{% endif %}>
               <span class="visually-hidden">{{ project.data.title }}</span>
             </a>
           </li>
