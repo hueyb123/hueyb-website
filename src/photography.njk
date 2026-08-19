@@ -20,7 +20,12 @@ nav: photography
 
       <div class="projects-scroll">
         {% for project in collections.photography %}
-        <a href="/photography/{{ project.fileSlug }}/" id="{{ project.fileSlug }}" class="project-panel"{% if project.data.cover %} style="background-image:url('{{ project.data.cover }}');background-size:contain;background-repeat:no-repeat;background-position:75% center;"{% endif %}>
+        <a href="/photography/{{ project.fileSlug }}/" id="{{ project.fileSlug }}" class="project-panel">
+          {% if project.data.cover %}
+          <div class="project-panel-image">
+            <img src="{{ project.data.cover }}" alt="" loading="lazy">
+          </div>
+          {% endif %}
           <div class="project-panel-overlay">
             <h3>
               <span class="scramble-target project-scramble" aria-hidden="true"></span>
