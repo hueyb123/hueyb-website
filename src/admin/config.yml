@@ -151,7 +151,7 @@ collections:
           - { label: "Tagline", name: "tagline", widget: "text", hint: "Shown under the BLOG heading at the top of the page." }
 
   - name: "prints"
-    label: "Browse"
+    label: "Store"
     folder: "src/content/prints"
     create: true
     slug: "{{slug}}"
@@ -182,13 +182,13 @@ collections:
           - { label: "Sold Out", name: "sold_out", widget: "boolean", default: false }
 
   - name: "prints_settings"
-    label: "Browse Settings"
+    label: "Store Settings"
     files:
       - name: "prints_settings"
-        label: "Browse Settings"
+        label: "Store Settings"
         file: "src/_data/prints_settings.json"
         fields:
-          - { label: "Headline", name: "headline", widget: "string", hint: "The big heading shown at the top of the Browse page." }
+          - { label: "Headline", name: "headline", widget: "string", hint: "The big heading shown at the top of the Store page." }
           - { label: "Tagline", name: "tagline", widget: "text", required: false, hint: "Shown under the headline at the top of the page." }
 
   - name: "cv"
