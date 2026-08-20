@@ -21,7 +21,7 @@ collections:
       - { label: "Date", name: "date", widget: "string", required: false, pattern: ['^\d{4}(-\d{2}-\d{2})?$', "Enter a year (e.g. 2024) or a full date (e.g. 2024-03-15)."], hint: "A year is enough — add the full date only if you want more precision." }
       - { label: "Ongoing", name: "ongoing", widget: "boolean", default: false, hint: "Check this if the piece is still in progress. Ongoing pieces sort to the top ahead of everything else, unless Display Order below is set." }
       - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding Ongoing and date. Leave blank to sort automatically instead. Tip: use a decimal like 1.5 to slot a piece between two others without renumbering everything." }
-      - { label: "Hidden", name: "hidden", widget: "boolean", default: false, hint: "Hide this piece from the live site without deleting it." }
+      - { label: "Hidden", name: "hidden", widget: "boolean", default: false, required: false, hint: "Hide this piece from the live site without deleting it." }
       - { label: "Tile Caption", name: "caption", widget: "string", required: false, hint: "Optional short line shown on the tile — a year, a phrase, or leave blank." }
       - { label: "Cover Image", name: "cover", widget: "image", hint: "Shown as the background of the tile." }
       - label: "Media"
@@ -39,7 +39,7 @@ collections:
               - { label: "Audio", value: "audio" }
           - { label: "File", name: "file", widget: "file" }
           - { label: "Caption", name: "caption", widget: "string", required: false }
-          - { label: "Hidden", name: "hidden", widget: "boolean", default: false, hint: "Exclude this item from the piece without deleting it." }
+          - { label: "Hidden", name: "hidden", widget: "boolean", default: false, required: false, hint: "Exclude this item from the piece without deleting it." }
       - { label: "Description", name: "body", widget: "markdown", required: false }
 
   - name: "photography"
@@ -53,7 +53,7 @@ collections:
       - { label: "Date", name: "date", widget: "string", required: false, pattern: ['^\d{4}(-\d{2}-\d{2})?$', "Enter a year (e.g. 2024) or a full date (e.g. 2024-03-15)."], hint: "A year is enough — add the full date only if you want more precision." }
       - { label: "Ongoing", name: "ongoing", widget: "boolean", default: false, hint: "Check this if the piece is still in progress. Ongoing pieces sort to the top ahead of everything else, unless Display Order below is set." }
       - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding Ongoing and date. Leave blank to sort automatically instead. Tip: use a decimal like 1.5 to slot a piece between two others without renumbering everything." }
-      - { label: "Hidden", name: "hidden", widget: "boolean", default: false, hint: "Hide this piece from the live site without deleting it." }
+      - { label: "Hidden", name: "hidden", widget: "boolean", default: false, required: false, hint: "Hide this piece from the live site without deleting it." }
       - { label: "Tile Caption", name: "caption", widget: "string", required: false, hint: "Optional short line shown on the tile — a year, a phrase, or leave blank." }
       - { label: "Cover Image", name: "cover", widget: "image", hint: "Shown as the background of the tile." }
       - label: "Media"
@@ -71,7 +71,7 @@ collections:
               - { label: "Audio", value: "audio" }
           - { label: "File", name: "file", widget: "file" }
           - { label: "Caption", name: "caption", widget: "string", required: false }
-          - { label: "Hidden", name: "hidden", widget: "boolean", default: false, hint: "Exclude this item from the piece without deleting it." }
+          - { label: "Hidden", name: "hidden", widget: "boolean", default: false, required: false, hint: "Exclude this item from the piece without deleting it." }
       - { label: "Description", name: "body", widget: "markdown", required: false }
 
   - name: "painting"
@@ -85,7 +85,7 @@ collections:
     fields:
       - { label: "Date", name: "date", widget: "datetime", required: false, hint: "Optional. Used to sort posts, newest first, unless Display Order below is set." }
       - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding the date. Leave blank to sort by date instead. Tip: use a decimal like 1.5 to slot a post between two others without renumbering everything." }
-      - { label: "Hidden", name: "hidden", widget: "boolean", default: false, hint: "Hide this post from the live site without deleting it." }
+      - { label: "Hidden", name: "hidden", widget: "boolean", default: false, required: false, hint: "Hide this post from the live site without deleting it." }
       - label: "Section"
         name: "mood"
         widget: "select"
@@ -110,7 +110,7 @@ collections:
               - { label: "Audio", value: "audio" }
           - { label: "File", name: "file", widget: "file" }
           - { label: "Caption", name: "caption", widget: "string", required: false }
-          - { label: "Hidden", name: "hidden", widget: "boolean", default: false, hint: "Exclude this item from the piece without deleting it." }
+          - { label: "Hidden", name: "hidden", widget: "boolean", default: false, required: false, hint: "Exclude this item from the piece without deleting it." }
       - { label: "Details", name: "body", widget: "markdown", required: false, hint: "Optional." }
 
   - name: "painting_settings"
@@ -131,7 +131,7 @@ collections:
     fields:
       - { label: "Date", name: "date", widget: "datetime", hint: "Used to sort posts, newest first, unless Display Order below is set." }
       - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding the date. Leave blank to sort by date instead. Tip: use a decimal like 1.5 to slot a post between two others without renumbering everything." }
-      - { label: "Hidden", name: "hidden", widget: "boolean", default: false, hint: "Hide this post from the live site without deleting it." }
+      - { label: "Hidden", name: "hidden", widget: "boolean", default: false, required: false, hint: "Hide this post from the live site without deleting it." }
       - { label: "Headline (optional)", name: "headline", widget: "string", required: false, hint: "Most posts can skip this and just lead with the date." }
       - label: "Media"
         name: "media"
@@ -148,7 +148,7 @@ collections:
               - { label: "Audio", value: "audio" }
           - { label: "File", name: "file", widget: "file" }
           - { label: "Caption", name: "caption", widget: "string", required: false }
-          - { label: "Hidden", name: "hidden", widget: "boolean", default: false, hint: "Exclude this item from the piece without deleting it." }
+          - { label: "Hidden", name: "hidden", widget: "boolean", default: false, required: false, hint: "Exclude this item from the piece without deleting it." }
       - { label: "Musing", name: "body", widget: "markdown", hint: "Thoughts, progress notes, whatever's on your mind about this." }
 
   - name: "blog_settings"
@@ -169,7 +169,7 @@ collections:
     fields:
       - { label: "Name", name: "name", widget: "string" }
       - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first. Leave blank to sort alphabetically by name instead. Tip: use a decimal like 1.5 to slot a print between two others without renumbering everything." }
-      - { label: "Hidden", name: "hidden", widget: "boolean", default: false, hint: "Hide this print from the shop without deleting it." }
+      - { label: "Hidden", name: "hidden", widget: "boolean", default: false, required: false, hint: "Hide this print from the shop without deleting it." }
       - { label: "Description", name: "description", widget: "text", required: false }
       - { label: "Image", name: "image", widget: "image" }
       - label: "Edition Type"
@@ -212,7 +212,7 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Venue", name: "venue", widget: "string" }
       - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first within their category section, overriding the year. Leave blank to sort by year (newest first) instead." }
-      - { label: "Hidden", name: "hidden", widget: "boolean", default: false, hint: "Hide this entry from the CV without deleting it." }
+      - { label: "Hidden", name: "hidden", widget: "boolean", default: false, required: false, hint: "Hide this entry from the CV without deleting it." }
 
   - name: "section_visibility"
     label: "Section Visibility"
@@ -221,12 +221,32 @@ collections:
         label: "Section Visibility"
         file: "src/_data/section_visibility.json"
         fields:
-          - { label: "Hide Installations", name: "installations", widget: "boolean", default: false, hint: "Removes it from the header nav, empties its gallery, and stops every one of its posts from building." }
-          - { label: "Hide Photography", name: "photography", widget: "boolean", default: false, hint: "Removes it from the header nav, empties its gallery, and stops every one of its posts from building." }
-          - { label: "Hide Painting", name: "painting", widget: "boolean", default: false, hint: "Removes it from the header nav and hides the Painting landing page, Good Times, Bad Times, and every post in both sections." }
-          - { label: "Hide Blog", name: "blog", widget: "boolean", default: false, hint: "Removes it from the header nav, empties the blog, and stops every post from building." }
-          - { label: "Hide Prints", name: "prints", widget: "boolean", default: false, hint: "Removes it from the header nav and hides every print for sale." }
-          - { label: "Hide CV", name: "cv", widget: "boolean", default: false, hint: "Removes it from the About dropdown and hides the whole CV page." }
+          - { label: "Hide Installations", name: "installations", widget: "boolean", default: false, required: false, hint: "Removes it from the header nav, empties its gallery, and stops every one of its posts from building." }
+          - { label: "Hide Photography", name: "photography", widget: "boolean", default: false, required: false, hint: "Removes it from the header nav, empties its gallery, and stops every one of its posts from building." }
+          - { label: "Hide Painting", name: "painting", widget: "boolean", default: false, required: false, hint: "Removes it from the header nav and hides the Painting landing page, Good Times, Bad Times, and every post in both sections." }
+          - { label: "Hide Blog", name: "blog", widget: "boolean", default: false, required: false, hint: "Removes it from the header nav, empties the blog, and stops every post from building." }
+          - { label: "Hide Prints", name: "prints", widget: "boolean", default: false, required: false, hint: "Removes it from the header nav and hides every print for sale." }
+          - { label: "Hide CV", name: "cv", widget: "boolean", default: false, required: false, hint: "Removes it from the About dropdown and hides the whole CV page." }
+
+  - name: "collection_labels"
+    label: "Collection Names"
+    files:
+      - name: "collection_labels"
+        label: "Collection Names"
+        file: "src/_data/collection_labels.json"
+        fields:
+          - { label: "Installations", name: "installations", widget: "string", hint: "What the Installations collection is called in this sidebar." }
+          - { label: "Photography", name: "photography", widget: "string", hint: "What the Photography collection is called in this sidebar." }
+          - { label: "Painting Posts", name: "painting", widget: "string", hint: "What the Painting Posts collection is called in this sidebar." }
+          - { label: "Painting Settings", name: "painting_settings", widget: "string", hint: "What the Painting Settings screen is called in this sidebar." }
+          - { label: "Blog Posts", name: "blog", widget: "string", hint: "What the Blog Posts collection is called in this sidebar." }
+          - { label: "Blog Settings", name: "blog_settings", widget: "string", hint: "What the Blog Settings screen is called in this sidebar." }
+          - { label: "Prints", name: "prints", widget: "string", hint: "What the Prints collection is called in this sidebar." }
+          - { label: "CV", name: "cv", widget: "string", hint: "What the CV collection is called in this sidebar." }
+          - { label: "Section Visibility", name: "section_visibility", widget: "string", hint: "What the Section Visibility screen is called in this sidebar." }
+          - { label: "Header Navigation", name: "navigation", widget: "string", hint: "What the Header Navigation screen is called in this sidebar." }
+          - { label: "Home", name: "home", widget: "string", hint: "What the Home screen is called in this sidebar." }
+          - { label: "Collection Names", name: "collection_labels", widget: "string", hint: "What this screen itself is called in this sidebar." }
 
   - name: "navigation"
     label: "Header Navigation"
@@ -268,7 +288,7 @@ collections:
             hint: "Add as many as you want, or none - one random title shows each time someone loads the home page."
             fields:
               - { label: "Text", name: "text", widget: "string" }
-              - { label: "Hidden", name: "hidden", widget: "boolean", default: false, hint: "Exclude this from the random rotation without deleting it." }
+              - { label: "Hidden", name: "hidden", widget: "boolean", default: false, required: false, hint: "Exclude this from the random rotation without deleting it." }
           - label: "Descriptions"
             name: "descriptions"
             widget: "list"
@@ -277,7 +297,7 @@ collections:
             hint: "Add as many as you want, or none - one random description shows each time someone loads the home page."
             fields:
               - { label: "Text", name: "text", widget: "text" }
-              - { label: "Hidden", name: "hidden", widget: "boolean", default: false, hint: "Exclude this from the random rotation without deleting it." }
+              - { label: "Hidden", name: "hidden", widget: "boolean", default: false, required: false, hint: "Exclude this from the random rotation without deleting it." }
           - label: "Background Videos"
             name: "videos"
             widget: "list"
