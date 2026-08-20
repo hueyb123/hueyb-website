@@ -7,33 +7,9 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
 <body>
-  <script>window.CMS_MANUAL_INIT = true;</script>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script src="https://unpkg.com/markdown-it/dist/browser/markdown-it.umd.min.js"></script>
-  <script src="https://unpkg.com/js-yaml@4/dist/js-yaml.umd.js"></script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   <script src="/admin/preview-templates.js"></script>
-  <script>
-    // Collection sidebar labels are normally fixed by config.yml. This lets
-    // the "Collection Names" screen (src/_data/collection_labels.json)
-    // override them at load time, so renaming a collection there doesn't
-    // require editing config.yml.
-    Promise.all([
-      fetch("./config.yml").then(function (r) { return r.text(); }),
-      fetch("/collection-labels.json").then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; }),
-    ]).then(function (results) {
-      var config = jsyaml.load(results[0]);
-      var labels = results[1];
-      (config.collections || []).forEach(function (collection) {
-        var override = labels[collection.name];
-        if (!override) return;
-        collection.label = override;
-        if (Array.isArray(collection.files) && collection.files.length === 1) {
-          collection.files[0].label = override;
-        }
-      });
-      CMS.init({ config: config });
-    });
-  </script>
 </body>
 </html>
