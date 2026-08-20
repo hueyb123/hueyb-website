@@ -6,53 +6,65 @@ pagination:
 permalink: "painting/{{ post.fileSlug }}/index.html"
 layout: base.njk
 nav: painting
-revealFooter: true
 eleventyComputed:
   title: "{% if post.data.headline %}{{ post.data.headline }}{% elif post.data.date %}{{ post.data.date | readableDate }}{% else %}Untitled{% endif %} | Huey B"
 ---
-    <a href="/painting/{% if post.data.mood == 'Bad Times' %}bad-times{% else %}good-times{% endif %}/" class="back-button">
+{% set label = post.data.headline or (post.data.date | readableDate) or "Untitled" %}
+    <a href="/painting/" class="back-button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       Painting
     </a>
 
-    {% if pagination.href.previous %}
-    <a href="{{ pagination.href.previous }}" class="post-nav-arrow post-nav-prev" aria-label="Previous post">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-    </a>
-    {% endif %}
-    {% if pagination.href.next %}
-    <a href="{{ pagination.href.next }}" class="post-nav-arrow post-nav-next" aria-label="Next post">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-    </a>
-    {% endif %}
+    {% set visibleMediaItems = post.data.media | visibleMedia %}
+    {% if visibleMediaItems.length %}
+    <nav class="thumb-sidebar" aria-label="{{ label }} media">
+      <div class="thumb-sidebar-header">
+        <h1>{{ label }}</h1>
+      </div>
+      {% for item in visibleMediaItems %}
+      {% set thumbCover = item.file | thumbnail %}
+      <button type="button" class="thumb-button{% if loop.first %} is-active{% endif %}" data-target="thumb-panel-{{ loop.index0 }}" aria-label="{{ item.caption or label }}"{% if thumbCover %} style="background-image:url('{{ thumbCover }}')"{% endif %}>
+        {% if item.type == "video" %}<span class="thumb-icon" aria-hidden="true">&#9654;</span>{% elif item.type == "audio" %}<span class="thumb-icon" aria-hidden="true">&#9834;</span>{% endif %}
+      </button>
+      {% endfor %}
+    </nav>
 
-    <section class="container studio-post">
-      {% if post.data.date %}
-      <p class="studio-post-date fade-in-item" style="animation-delay: 0ms;">{{ post.data.date | readableDate }}</p>
-      {% endif %}
-      {% if post.data.headline %}
-      <h1 class="studio-post-headline fade-in-item" style="animation-delay: 70ms;">{{ post.data.headline }}</h1>
-      {% endif %}
-
-      <div class="studio-post-media">
-        {% for item in post.data.media | visibleMedia %}
-        {% set delay = 160 + loop.index0 * 90 %}
-        {% if item.type == "image" %}
-        <img src="{{ item.file }}" alt="{{ item.caption or post.data.headline or (post.data.date | readableDate) }}" class="studio-media-image fade-in-item" style="animation-delay: {{ delay }}ms;">
-        {% elif item.type == "video" %}
-        <video src="{{ item.file }}" controls autoplay muted loop playsinline class="studio-media-video fade-in-item" style="animation-delay: {{ delay }}ms;"></video>
-        {% elif item.type == "audio" %}
-        <audio src="{{ item.file }}" controls class="studio-media-audio fade-in-item" style="animation-delay: {{ delay }}ms;"></audio>
-        {% endif %}
-        {% if item.caption %}
-        <p class="studio-media-caption fade-in-item" style="animation-delay: {{ delay }}ms;">{{ item.caption }}</p>
-        {% endif %}
+    <div class="thumb-layout">
+      <button type="button" class="thumb-click-zone thumb-click-prev" aria-label="Previous">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button type="button" class="thumb-click-zone thumb-click-next" aria-label="Next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+      <div class="thumb-viewer">
+        {% for item in visibleMediaItems %}
+        {% set isActivePanel = loop.first %}
+        <div class="thumb-panel{% if isActivePanel %} is-active{% endif %}" id="thumb-panel-{{ loop.index0 }}">
+          <div class="thumb-panel-media">
+            {% if item.type == "image" %}
+            <img src="{{ item.file }}" alt="{{ item.caption or label }}" loading="{% if isActivePanel %}eager{% else %}lazy{% endif %}">
+            {% elif item.type == "video" %}
+            <video src="{{ item.file }}" controls{% if isActivePanel %} autoplay{% endif %} muted loop playsinline preload="{% if isActivePanel %}metadata{% else %}none{% endif %}"></video>
+            {% elif item.type == "audio" %}
+            <audio src="{{ item.file }}" controls preload="none"></audio>
+            {% endif %}
+            {% if item.caption %}
+            <p class="thumb-panel-caption">{{ item.caption }}</p>
+            {% endif %}
+          </div>
+        </div>
         {% endfor %}
       </div>
 
       {% if post.templateContent %}
-      <div class="studio-post-body fade-in-item" style="animation-delay: 520ms;">
+      <div class="thumb-description container">
         {{ post.templateContent | safe }}
       </div>
       {% endif %}
+    </div>
+    {% else %}
+    <section class="page-header container">
+      <h1>{{ label }}</h1>
+      <p class="thumb-empty">No media yet — check back soon.</p>
     </section>
+    {% endif %}

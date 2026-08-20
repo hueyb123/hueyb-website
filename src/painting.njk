@@ -3,53 +3,47 @@ layout: base.njk
 title: "Painting | Huey B"
 nav: painting
 ---
-{% set goodTimesLatest = collections.paintingGoodTimes | first %}
-{% set badTimesLatest = collections.paintingBadTimes | first %}
-{% set goodTimesCover = goodTimesLatest.data.media | firstImage if goodTimesLatest else null %}
-{% set badTimesCover = badTimesLatest.data.media | firstImage if badTimesLatest else null %}
     {% if not section_visibility.painting %}
+    {% for post in collections.painting %}
+    {% set coverPath = post.data.media | firstImage %}
+    {% set coverImage = coverPath | thumbnailData(1200) %}
+    {% if coverImage %}<link rel="preload" as="image" href="{{ coverImage.url }}">{% endif %}
+    {% endfor %}
     <div class="projects-layout">
       <nav class="project-index" aria-label="Jump to piece">
         <h2 class="project-index-title">Painting</h2>
         <ul>
+          {% for post in collections.painting %}
+          {% set label = post.data.headline or (post.data.date | readableDate) or "Untitled" %}
           <li>
-            <a href="#good-times" class="project-index-link">
-              <span class="scramble-target project-scramble" aria-hidden="true"></span>
-              <span class="visually-hidden">Good Times</span>
+            <a href="#{{ post.fileSlug }}" class="project-index-link">
+              <span class="scramble-target project-scramble" aria-hidden="true">{{ label }}</span>
+              <span class="visually-hidden">{{ label }}</span>
             </a>
           </li>
-          <li>
-            <a href="#bad-times" class="project-index-link">
-              <span class="scramble-target project-scramble" aria-hidden="true"></span>
-              <span class="visually-hidden">Bad Times</span>
-            </a>
-          </li>
+          {% endfor %}
         </ul>
       </nav>
 
       <div class="projects-scroll">
-        <a href="/painting/good-times/" id="good-times" class="project-panel"{% if goodTimesCover %} style="background-image:url('{{ goodTimesCover }}');background-size:45%;background-repeat:no-repeat;background-position:75% center;"{% endif %}>
+        {% for post in collections.painting %}
+        {% set label = post.data.headline or (post.data.date | readableDate) or "Untitled" %}
+        {% set coverPath = post.data.media | firstImage %}
+        {% set coverImage = coverPath | thumbnailData(1200) %}
+        <a href="/painting/{{ post.fileSlug }}/" id="{{ post.fileSlug }}" class="project-panel">
           <div class="project-panel-overlay">
             <h3>
-              <span class="scramble-target project-scramble" aria-hidden="true"></span>
-              <span class="visually-hidden">Good Times</span>
-            </h3>
-            {% if painting_settings.tagline %}
-            <p>
-              <span class="scramble-target project-scramble" aria-hidden="true"></span>
-              <span class="visually-hidden">{{ painting_settings.tagline }}</span>
-            </p>
-            {% endif %}
-          </div>
-        </a>
-        <a href="/painting/bad-times/" id="bad-times" class="project-panel"{% if badTimesCover %} style="background-image:url('{{ badTimesCover }}');background-size:45%;background-repeat:no-repeat;background-position:75% center;"{% endif %}>
-          <div class="project-panel-overlay">
-            <h3>
-              <span class="scramble-target project-scramble" aria-hidden="true"></span>
-              <span class="visually-hidden">Bad Times</span>
+              <span class="scramble-target project-scramble" aria-hidden="true">{{ label }}</span>
+              <span class="visually-hidden">{{ label }}</span>
             </h3>
           </div>
+          {% if coverImage %}
+          <div class="project-panel-image">
+            <img src="{{ coverImage.url }}" width="{{ coverImage.width }}" height="{{ coverImage.height }}" alt="">
+          </div>
+          {% endif %}
         </a>
+        {% endfor %}
       </div>
     </div>
     {% endif %}

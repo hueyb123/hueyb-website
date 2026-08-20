@@ -107,22 +107,9 @@ module.exports = function (eleventyConfig) {
     });
   }
 
-  function addPaintingMoodCollection(name, mood) {
-    eleventyConfig.addCollection(name, function (collectionApi) {
-      var items = getVisibleByGlob(collectionApi, "src/content/painting/*.md", "painting").filter(function (item) {
-        return (item.data.mood || "Good Times") === mood;
-      });
-      return sortWithManualOrder(items, function (a, b) {
-        return toSortableDate(b.data.date) - toSortableDate(a.data.date);
-      });
-    });
-  }
-
   addProjectStyleCollection("photography", "photography");
   addProjectStyleCollection("installations", "installations");
   addBlogStyleCollection("painting", "painting");
-  addPaintingMoodCollection("paintingGoodTimes", "Good Times");
-  addPaintingMoodCollection("paintingBadTimes", "Bad Times");
   addBlogStyleCollection("blogPosts", "blog");
 
   eleventyConfig.addCollection("prints", function (collectionApi) {

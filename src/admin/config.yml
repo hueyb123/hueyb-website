@@ -79,21 +79,11 @@ collections:
     folder: "src/content/painting"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}{{second}}"
-    summary: "{{mood | default('Good Times')}} — {{headline | default('Untitled')}}"
-    view_groups:
-      - { label: "Section", field: mood }
+    summary: "{{headline | default('Untitled')}}"
     fields:
       - { label: "Date", name: "date", widget: "datetime", required: false, hint: "Optional. Used to sort posts, newest first, unless Display Order below is set." }
       - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first, overriding the date. Leave blank to sort by date instead. Tip: use a decimal like 1.5 to slot a post between two others without renumbering everything." }
       - { label: "Hidden", name: "hidden", widget: "boolean", default: false, required: false, hint: "Hide this post from the live site without deleting it." }
-      - label: "Section"
-        name: "mood"
-        widget: "select"
-        default: "Good Times"
-        hint: "Which gallery this post shows up in. Shows on every entry in the list below, and you can also use the \"Group by\" control above the list to cluster posts by section."
-        options:
-          - { label: "Good Times", value: "Good Times" }
-          - { label: "Bad Times", value: "Bad Times" }
       - { label: "Title", name: "headline", widget: "string", required: false, hint: "Optional." }
       - label: "Media"
         name: "media"
