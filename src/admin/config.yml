@@ -181,6 +181,16 @@ collections:
           - { label: "Total Copies", name: "quantity", widget: "number", value_type: "int", required: false, hint: "Only matters for Limited Edition prints — how many of this size exist." }
           - { label: "Sold Out", name: "sold_out", widget: "boolean", default: false }
 
+  - name: "prints_settings"
+    label: "Browse Settings"
+    files:
+      - name: "prints_settings"
+        label: "Browse Settings"
+        file: "src/_data/prints_settings.json"
+        fields:
+          - { label: "Headline", name: "headline", widget: "string", hint: "The big heading shown at the top of the Browse page." }
+          - { label: "Tagline", name: "tagline", widget: "text", required: false, hint: "Shown under the headline at the top of the page." }
+
   - name: "cv"
     label: "CV"
     folder: "src/content/cv"
