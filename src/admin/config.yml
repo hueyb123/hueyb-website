@@ -151,7 +151,7 @@ collections:
           - { label: "Tagline", name: "tagline", widget: "text", hint: "Shown under the BLOG heading at the top of the page." }
 
   - name: "prints"
-    label: "Prints"
+    label: "Browse"
     folder: "src/content/prints"
     create: true
     slug: "{{slug}}"
