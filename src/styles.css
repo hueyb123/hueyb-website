@@ -1322,6 +1322,12 @@ p {
   color: var(--color-accent);
 }
 
+.print-shipping-note {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin: -18px 0 24px;
+}
+
 .print-checkout {
   max-width: 320px;
 }
