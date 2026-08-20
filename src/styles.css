@@ -740,6 +740,15 @@ p {
   aspect-ratio: 1 / 1;
 }
 
+.print-tile-grid {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 6px;
+}
+
+.print-tile-grid .tile {
+  aspect-ratio: 1 / 1;
+}
+
 .tile {
   position: relative;
   aspect-ratio: 4 / 3;

@@ -10,9 +10,10 @@ nav: prints
     </section>
 
     <section class="container">
-      <div class="tile-grid">
+      <div class="tile-grid print-tile-grid">
         {% for print in collections.prints %}
-        <a href="/prints/{{ print.fileSlug }}/" class="tile reveal"{% if print.data.image %} style="background-image:url('{{ print.data.image }}');background-size:cover;background-position:center;"{% endif %}>
+        {% set thumb = print.data.image | thumbnail(600) %}
+        <a href="/prints/{{ print.fileSlug }}/" class="tile reveal"{% if thumb %} style="background-image:url('{{ thumb }}');background-size:cover;background-position:center;"{% endif %}>
           <div class="tile-overlay">
             <h3>{{ print.data.name }}</h3>
             {% if print.data.variants | allSoldOut %}
