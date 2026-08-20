@@ -214,6 +214,20 @@ collections:
       - { label: "Display Order", name: "order", widget: "number", value_type: "float", required: false, hint: "Optional. Lower numbers show first within their category section, overriding the year. Leave blank to sort by year (newest first) instead." }
       - { label: "Hidden", name: "hidden", widget: "boolean", default: false, hint: "Hide this entry from the CV without deleting it." }
 
+  - name: "section_visibility"
+    label: "Section Visibility"
+    files:
+      - name: "section_visibility"
+        label: "Section Visibility"
+        file: "src/_data/section_visibility.json"
+        fields:
+          - { label: "Hide Installations", name: "installations", widget: "boolean", default: false, hint: "Removes it from the header nav, empties its gallery, and stops every one of its posts from building." }
+          - { label: "Hide Photography", name: "photography", widget: "boolean", default: false, hint: "Removes it from the header nav, empties its gallery, and stops every one of its posts from building." }
+          - { label: "Hide Painting", name: "painting", widget: "boolean", default: false, hint: "Removes it from the header nav and hides the Painting landing page, Good Times, Bad Times, and every post in both sections." }
+          - { label: "Hide Blog", name: "blog", widget: "boolean", default: false, hint: "Removes it from the header nav, empties the blog, and stops every post from building." }
+          - { label: "Hide Prints", name: "prints", widget: "boolean", default: false, hint: "Removes it from the header nav and hides every print for sale." }
+          - { label: "Hide CV", name: "cv", widget: "boolean", default: false, hint: "Removes it from the About dropdown and hides the whole CV page." }
+
   - name: "navigation"
     label: "Header Navigation"
     files:

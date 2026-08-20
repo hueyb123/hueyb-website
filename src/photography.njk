@@ -3,6 +3,7 @@ layout: base.njk
 title: "Photography | Huey B"
 nav: photography
 ---
+    {% if not section_visibility.photography %}
     {% for project in collections.photography %}
     {% set coverImage = project.data.cover | thumbnailData(1200) %}
     {% if coverImage %}<link rel="preload" as="image" href="{{ coverImage.url }}">{% endif %}
@@ -47,3 +48,4 @@ nav: photography
         {% endfor %}
       </div>
     </div>
+    {% endif %}

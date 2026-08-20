@@ -3,6 +3,7 @@ layout: base.njk
 title: "Prints | Huey B"
 nav: prints
 ---
+    {% if not section_visibility.prints %}
     <section class="page-header container">
       <h1>Prints</h1>
       <p>Fine art prints available for sale.</p>
@@ -24,3 +25,4 @@ nav: prints
         {% endfor %}
       </div>
     </section>
+    {% endif %}

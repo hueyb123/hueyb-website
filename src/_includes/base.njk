@@ -22,6 +22,7 @@
           <ul>
             {% for item in navigation.items %}
             {% if item.children %}
+            {% if not section_visibility[item.key] %}
             <li class="has-dropdown">
               <button type="button" class="dropdown-toggle{% if item.children | hasActiveChild(nav) %} active{% endif %}" aria-haspopup="true" aria-expanded="false">
                 {{ item.label }}
@@ -29,12 +30,17 @@
               </button>
               <ul class="dropdown-menu">
                 {% for child in item.children %}
+                {% if not section_visibility[child.key] %}
                 <li><a href="{{ child.url }}"{% if nav == child.key %} class="active"{% endif %}>{{ child.label }}</a></li>
+                {% endif %}
                 {% endfor %}
               </ul>
             </li>
+            {% endif %}
             {% else %}
+            {% if not section_visibility[item.key] %}
             <li><a href="{{ item.url }}"{% if nav == item.key %} class="active"{% endif %}>{{ item.label }}</a></li>
+            {% endif %}
             {% endif %}
             {% endfor %}
           </ul>

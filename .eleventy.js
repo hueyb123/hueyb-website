@@ -1,6 +1,19 @@
 var markdownIt = require("markdown-it")({ html: true });
 var Image = require("@11ty/eleventy-img").default;
 var path = require("path");
+var fs = require("fs");
+
+// Read fresh every call (not require()'d, which would cache the old
+// contents across a whole watch/serve session) so toggling a checkbox in
+// the CMS takes effect on the next build without restarting the server.
+function isSectionHidden(section) {
+  try {
+    var data = JSON.parse(fs.readFileSync(path.join(__dirname, "src/_data/section_visibility.json"), "utf8"));
+    return !!data[section];
+  } catch (e) {
+    return false;
+  }
+}
 
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(require("@11ty/eleventy-plugin-rss").default);
@@ -62,7 +75,12 @@ module.exports = function (eleventyConfig) {
   // Every collection is built through this so a post with Hidden checked
   // in the CMS never shows up anywhere on the site - not in its gallery,
   // not on its own detail page, not in the feed - without deleting it.
-  function getVisibleByGlob(collectionApi, glob) {
+  // Also honors the whole-section visibility toggle: a hidden section comes
+  // back as zero items, which empties its gallery page and - since detail
+  // pages are paginated off these same collections - stops any of its
+  // individual post pages from being generated at all.
+  function getVisibleByGlob(collectionApi, glob, section) {
+    if (section && isSectionHidden(section)) return [];
     return collectionApi.getFilteredByGlob(glob).filter(function (item) {
       return !item.data.hidden;
     });
@@ -70,7 +88,7 @@ module.exports = function (eleventyConfig) {
 
   function addProjectStyleCollection(name, folder) {
     eleventyConfig.addCollection(name, function (collectionApi) {
-      var items = getVisibleByGlob(collectionApi, "src/content/" + folder + "/*.md");
+      var items = getVisibleByGlob(collectionApi, "src/content/" + folder + "/*.md", folder);
       return sortWithManualOrder(items, function (a, b) {
         var aOngoing = !!a.data.ongoing;
         var bOngoing = !!b.data.ongoing;
@@ -80,9 +98,9 @@ module.exports = function (eleventyConfig) {
     });
   }
 
-  function addBlogStyleCollection(name, folder) {
+  function addBlogStyleCollection(name, folder, section) {
     eleventyConfig.addCollection(name, function (collectionApi) {
-      var items = getVisibleByGlob(collectionApi, "src/content/" + folder + "/*.md");
+      var items = getVisibleByGlob(collectionApi, "src/content/" + folder + "/*.md", section || folder);
       return sortWithManualOrder(items, function (a, b) {
         return toSortableDate(b.data.date) - toSortableDate(a.data.date);
       });
@@ -91,7 +109,7 @@ module.exports = function (eleventyConfig) {
 
   function addPaintingMoodCollection(name, mood) {
     eleventyConfig.addCollection(name, function (collectionApi) {
-      var items = getVisibleByGlob(collectionApi, "src/content/painting/*.md").filter(function (item) {
+      var items = getVisibleByGlob(collectionApi, "src/content/painting/*.md", "painting").filter(function (item) {
         return (item.data.mood || "Good Times") === mood;
       });
       return sortWithManualOrder(items, function (a, b) {
@@ -108,14 +126,14 @@ module.exports = function (eleventyConfig) {
   addBlogStyleCollection("blogPosts", "blog");
 
   eleventyConfig.addCollection("prints", function (collectionApi) {
-    var items = getVisibleByGlob(collectionApi, "src/content/prints/*.md");
+    var items = getVisibleByGlob(collectionApi, "src/content/prints/*.md", "prints");
     return sortWithManualOrder(items, function (a, b) {
       return a.data.name.localeCompare(b.data.name);
     });
   });
 
   eleventyConfig.addCollection("cv", function (collectionApi) {
-    var items = getVisibleByGlob(collectionApi, "src/content/cv/*.md");
+    var items = getVisibleByGlob(collectionApi, "src/content/cv/*.md", "cv");
     return sortWithManualOrder(items, function (a, b) {
       return String(b.data.year).localeCompare(String(a.data.year));
     }).map(function (item) {
@@ -134,7 +152,7 @@ module.exports = function (eleventyConfig) {
     ];
     var items = [];
     galleryFolders.forEach(function (entry) {
-      getVisibleByGlob(collectionApi, "src/content/" + entry.folder + "/*.md").forEach(function (item) {
+      getVisibleByGlob(collectionApi, "src/content/" + entry.folder + "/*.md", entry.folder).forEach(function (item) {
         items.push({
           title: "New " + entry.label + ": " + item.data.title,
           url: "/" + entry.folder + "/" + item.fileSlug + "/",
@@ -143,7 +161,7 @@ module.exports = function (eleventyConfig) {
       });
     });
     postFolders.forEach(function (entry) {
-      getVisibleByGlob(collectionApi, "src/content/" + entry.folder + "/*.md").forEach(function (item) {
+      getVisibleByGlob(collectionApi, "src/content/" + entry.folder + "/*.md", entry.folder).forEach(function (item) {
         items.push({
           title: item.data.headline || entry.label + " update",
           url: "/" + entry.folder + "/" + item.fileSlug + "/",

@@ -7,6 +7,7 @@ nav: painting
 {% set badTimesLatest = collections.paintingBadTimes | first %}
 {% set goodTimesCover = goodTimesLatest.data.media | firstImage if goodTimesLatest else null %}
 {% set badTimesCover = badTimesLatest.data.media | firstImage if badTimesLatest else null %}
+    {% if not section_visibility.painting %}
     <div class="projects-layout">
       <nav class="project-index" aria-label="Jump to piece">
         <h2 class="project-index-title">Painting</h2>
@@ -51,3 +52,4 @@ nav: painting
         </a>
       </div>
     </div>
+    {% endif %}

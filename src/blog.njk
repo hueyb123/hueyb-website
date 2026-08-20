@@ -3,6 +3,7 @@ layout: base.njk
 title: "Blog | Huey B"
 nav: blog
 ---
+    {% if not section_visibility.blog %}
     <section class="page-header container">
       <h1>Blog</h1>
       <p>{{ blog.tagline }}</p>
@@ -21,3 +22,4 @@ nav: blog
         {% endfor %}
       </div>
     </section>
+    {% endif %}
