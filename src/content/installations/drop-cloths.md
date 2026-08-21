@@ -1,5 +1,5 @@
 ---
-title: Drop Cloths
+title: Spirit Openings
 ongoing: false
 cover: /assets/uploads/drop-cloths-01.jpg
 media:

@@ -2,6 +2,7 @@
 title: The Middle Room
 date: "2026"
 ongoing: false
+order: 1
 cover: /assets/uploads/img_2599.jpg
 media:
   - type: image
