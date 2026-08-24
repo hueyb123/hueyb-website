@@ -17,17 +17,26 @@ function renderHeading(text) {
   return h("section", { className: "page-header" }, h("h1", {}, text));
 }
 
+function renderFilename(path) {
+  var name = (path || "").split("/").pop();
+  return name
+    ? h("p", { style: { fontSize: "12px", color: "#8a8a86", margin: "4px 0 8px", wordBreak: "break-all" } }, name)
+    : null;
+}
+
 function renderMedia(getAsset, media, imgClass) {
   return (media || []).map(function (item, i) {
     var src = assetUrl(getAsset, item.file);
     if (!src) return null;
+    var mediaEl;
     if (item.type === "video") {
-      return h("video", { key: i, src: src, controls: true, className: imgClass, style: { width: "100%", marginBottom: "8px" } });
+      mediaEl = h("video", { src: src, controls: true, className: imgClass, style: { width: "100%" } });
+    } else if (item.type === "audio") {
+      mediaEl = h("audio", { src: src, controls: true, style: { width: "100%" } });
+    } else {
+      mediaEl = h("img", { src: src, className: imgClass, style: { width: "100%" } });
     }
-    if (item.type === "audio") {
-      return h("audio", { key: i, src: src, controls: true, style: { width: "100%", marginBottom: "8px" } });
-    }
-    return h("img", { key: i, src: src, className: imgClass, style: { width: "100%", marginBottom: "8px" } });
+    return h("div", { key: i }, mediaEl, renderFilename(item.file));
   });
 }
 
@@ -96,7 +105,8 @@ var PrintsPreview = createClass({
       "div",
       { className: "container", style: { paddingTop: "40px", paddingBottom: "40px", maxWidth: "640px", textAlign: "center" } },
       renderHeading(data.name || "Untitled"),
-      imgSrc ? h("img", { src: imgSrc, style: { width: "100%", marginBottom: "16px" } }) : null,
+      imgSrc ? h("img", { src: imgSrc, style: { width: "100%" } }) : null,
+      imgSrc ? renderFilename(data.image) : null,
       data.description ? h("p", {}, data.description) : null,
       h(
         "ul",
@@ -144,7 +154,13 @@ var HomePreview = createClass({
         { style: { display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "12px" } },
         videos.map(function (v, i) {
           var src = assetUrl(getAsset, v.file);
-          return src ? h("video", { key: i, src: src, controls: true, style: { width: "260px" } }) : null;
+          if (!src) return null;
+          return h(
+            "div",
+            { key: i, style: { width: "260px" } },
+            h("video", { src: src, controls: true, style: { width: "100%" } }),
+            renderFilename(v.file)
+          );
         })
       )
     );
