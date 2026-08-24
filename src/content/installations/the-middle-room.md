@@ -17,4 +17,10 @@ media:
       Alejandro Giraldo
   - type: image
     file: /assets/uploads/img_2841.jpg
+  - hidden: false
+    type: image
+    file: /assets/uploads/dsc02502.jpg
+  - hidden: false
+    type: image
+    file: /assets/uploads/dsc02512.jpg
 ---

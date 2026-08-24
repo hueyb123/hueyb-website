@@ -2,7 +2,7 @@
   "installations": false,
   "photography": false,
   "painting": false,
-  "blog": false,
+  "blog": true,
   "prints": false,
   "cv": false
 }

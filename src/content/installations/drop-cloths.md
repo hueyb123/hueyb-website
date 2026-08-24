@@ -1,7 +1,7 @@
 ---
 title: Spirit Openings
 ongoing: false
-cover: /assets/uploads/drop-cloths-01.jpg
+cover: /assets/uploads/4889a3f5-5477-4c96-84de-fba6c06f0b92.jpg
 media:
   - type: image
     file: /assets/uploads/drop-cloths-01.jpg
@@ -13,6 +13,7 @@ media:
     file: /assets/uploads/drop-cloths-04.jpg
   - type: image
     file: /assets/uploads/drop-cloths-05.jpg
-  - type: image
-    file: /assets/uploads/drop-cloths-06.jpg
+  - hidden: false
+    file: /assets/uploads/4889a3f5-5477-4c96-84de-fba6c06f0b92.jpg
+    type: image
 ---

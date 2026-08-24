@@ -1,11 +1,145 @@
 (function () {
   var NEON_COLORS = ["#ccff33", "#39ff14", "#ff2ec4", "#00e5ff", "#b026ff", "#ff6a00", "#faff00", "#ff2b5e"];
-  var chosen = NEON_COLORS[Math.floor(Math.random() * NEON_COLORS.length)];
-  document.documentElement.style.setProperty("--color-accent", chosen);
-  var chosenProject = NEON_COLORS[Math.floor(Math.random() * NEON_COLORS.length)];
-  document.documentElement.style.setProperty("--color-project-accent", chosenProject);
-  var chosenIndex = NEON_COLORS[Math.floor(Math.random() * NEON_COLORS.length)];
-  document.documentElement.style.setProperty("--color-index-accent", chosenIndex);
+  window.randomizeAccentColors = function () {
+    var chosen = NEON_COLORS[Math.floor(Math.random() * NEON_COLORS.length)];
+    document.documentElement.style.setProperty("--color-accent", chosen);
+    var chosenProject = NEON_COLORS[Math.floor(Math.random() * NEON_COLORS.length)];
+    document.documentElement.style.setProperty("--color-project-accent", chosenProject);
+    var chosenIndex = NEON_COLORS[Math.floor(Math.random() * NEON_COLORS.length)];
+    document.documentElement.style.setProperty("--color-index-accent", chosenIndex);
+  };
+  window.randomizeAccentColors();
+
+  if (window.matchMedia && window.matchMedia("(pointer: fine)").matches) {
+    try {
+    var cursorEl = document.createElement("div");
+    cursorEl.id = "custom-cursor";
+
+    // A welcoming digital ghost hand: a soft palm with five relaxed,
+    // spread fingers, rendered as rounded capsules rather than a pixel
+    // grid so it actually reads as a hand. Palm faces the viewer, fingers
+    // open in greeting.
+    var wristX = 50;
+    var wristY = 115;
+    var ghostShape =
+      // A welcoming open hand, palm toward the viewer, fingers relaxed and
+      // extended together like an abhaya mudra (the Buddhist gesture of
+      // reassurance). Palm: wider near the fingers, a thenar bulge on the
+      // thumb side, a softer hypothenar bulge on the pinky side, tapering
+      // to a wrist.
+      '<path d="M33 66 Q18 74 24 88 Q28 105 42 113 L58 113 Q72 105 76 88 Q82 74 67 66 Q50 74 33 66 Z"/>' +
+      '<line class="ghost-thumb" x1="30" y1="84" x2="9" y2="68" stroke-width="15"/>' + // thumb, off the palm's side
+      '<line class="ghost-index" x1="38" y1="68" x2="27" y2="28" stroke-width="11"/>' + // index
+      '<line class="ghost-middle" x1="50" y1="65" x2="50" y2="18" stroke-width="12"/>' + // middle
+      '<line class="ghost-ring" x1="62" y1="68" x2="73" y2="28" stroke-width="11"/>' + // ring
+      '<line class="ghost-pinky" x1="70" y1="74" x2="85" y2="42" stroke-width="9"/>' + // pinky
+      // Faint palm creases for texture.
+      '<path class="ghost-crease" d="M30 78 Q45 92 68 82" stroke-width="1.4" fill="none"/>' +
+      '<path class="ghost-crease" d="M27 90 Q46 100 64 98" stroke-width="1.4" fill="none"/>';
+    cursorEl.innerHTML =
+      '<svg viewBox="0 0 100 130" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+      '<defs>' +
+      '<g id="ghost-hand-shape" stroke="currentColor" stroke-linecap="round" fill="currentColor">' + ghostShape + "</g>" +
+      '<radialGradient id="gem-shine" cx="35%" cy="30%" r="75%">' +
+      '<stop offset="0%" style="stop-color:#ffffff"/>' +
+      '<stop offset="45%" style="stop-color:var(--color-project-accent)"/>' +
+      '<stop offset="100%" style="stop-color:var(--color-project-accent)"/>' +
+      "</radialGradient>" +
+      "</defs>" +
+      '<g class="cursor-hand-wave" style="transform-origin:' + wristX + "px " + wristY + 'px">' +
+      '<use href="#ghost-hand-shape" class="ghost-layer ghost-cyan" x="-1.6"/>' +
+      '<use href="#ghost-hand-shape" class="ghost-layer ghost-magenta" x="1.6"/>' +
+      '<use href="#ghost-hand-shape" class="ghost-layer ghost-main"/>' +
+      '<circle class="ghost-gem-ring ghost-gem-ring-1" cx="50" cy="90" r="6" style="stroke:var(--color-project-accent)"/>' +
+      '<circle class="ghost-gem-ring ghost-gem-ring-2" cx="50" cy="90" r="6" style="stroke:var(--color-project-accent)"/>' +
+      '<circle class="ghost-palm-dot" cx="50" cy="90" r="6" fill="url(#gem-shine)"/>' +
+      '<circle class="ghost-gem-glint" cx="47.8" cy="87.4" r="1.6" fill="#ffffff"/>' +
+      '<g class="ghost-gem-sparkle" transform="translate(50 90)">' +
+      '<path d="M0 -9 L0 9 M-9 0 L9 0" stroke="#ffffff" stroke-width="1.1" stroke-linecap="round"/>' +
+      "</g>" +
+      "</g></svg>";
+    var storedX = sessionStorage.getItem("cursorX");
+    var storedY = sessionStorage.getItem("cursorY");
+    if (storedX !== null && storedY !== null) {
+      cursorEl.style.transition = "none";
+      cursorEl.style.left = storedX + "px";
+      cursorEl.style.top = storedY + "px";
+      cursorEl.classList.add("is-visible");
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          cursorEl.style.transition = "";
+        });
+      });
+    }
+    document.body.appendChild(cursorEl);
+
+    var lastCursorX = storedX !== null ? parseFloat(storedX) : null;
+    var lastCursorY = storedY !== null ? parseFloat(storedY) : null;
+    document.addEventListener("mousemove", function (e) {
+      lastCursorX = e.clientX;
+      lastCursorY = e.clientY;
+      cursorEl.style.left = e.clientX + "px";
+      cursorEl.style.top = e.clientY + "px";
+      if (!cursorEl.classList.contains("is-visible")) {
+        cursorEl.classList.add("is-visible");
+      }
+    });
+    document.addEventListener("mouseleave", function () {
+      cursorEl.classList.remove("is-visible");
+    });
+    window.addEventListener("pagehide", function () {
+      if (lastCursorX !== null && lastCursorY !== null) {
+        sessionStorage.setItem("cursorX", lastCursorX);
+        sessionStorage.setItem("cursorY", lastCursorY);
+      }
+    });
+
+    var waveTimer = null;
+    document.addEventListener("click", function (e) {
+      if (e.target.closest("a, button, [role='button']")) return;
+      cursorEl.classList.remove("is-waving");
+      void cursorEl.offsetWidth;
+      cursorEl.classList.add("is-waving");
+      clearTimeout(waveTimer);
+      waveTimer = setTimeout(function () {
+        cursorEl.classList.remove("is-waving");
+      }, 600);
+    });
+
+    var pushTimer = null;
+    window.triggerCursorPush = function () {
+      cursorEl.classList.remove("is-pushing");
+      void cursorEl.offsetWidth;
+      cursorEl.classList.add("is-pushing");
+      clearTimeout(pushTimer);
+      pushTimer = setTimeout(function () {
+        cursorEl.classList.remove("is-pushing");
+      }, 400);
+    };
+    document.addEventListener("click", function (e) {
+      if (e.target.closest(".formkit-input, .formkit-submit")) {
+        window.triggerCursorPush();
+      }
+    });
+
+    var ghostHandShape = cursorEl.querySelector("#ghost-hand-shape");
+    var PINCH_SELECTOR = ".main-nav a, .thumb-sidebar .thumb-button, .project-index-link, .logo, .icon-link, .back-button, .formkit-input";
+    document.addEventListener("mouseover", function (e) {
+      if (e.target.closest(PINCH_SELECTOR)) {
+        cursorEl.classList.add("is-hovering-link");
+        if (ghostHandShape) ghostHandShape.classList.add("is-pinching");
+      }
+    });
+    document.addEventListener("mouseout", function (e) {
+      if (e.target.closest(PINCH_SELECTOR)) {
+        cursorEl.classList.remove("is-hovering-link");
+        if (ghostHandShape) ghostHandShape.classList.remove("is-pinching");
+      }
+    });
+    } catch (err) {
+      console.error("custom cursor failed to init", err);
+    }
+  }
 
   var enterEls = document.querySelectorAll(".page-enter");
   if (enterEls.length) {
@@ -128,13 +262,63 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Plays the hero video from a random point, always forward. Reverse
+  // playback (manually stepping currentTime backward on a timer) was
+  // removed - JS-driven seeking is fundamentally not how browsers are
+  // built to play video smoothly, and it was the actual cause of the
+  // choppiness/frame drops, not the resolution/bitrate/process issues
+  // fixed earlier. Native play() + native "ended" is what's fast here.
+  window.heroVideoPlayer = (function () {
+    var activeVideo = null;
+    var endedListener = null;
+
+    var stop = function () {
+      if (activeVideo && endedListener) {
+        activeVideo.removeEventListener("ended", endedListener);
+        endedListener = null;
+      }
+    };
+
+    return {
+      // randomStart is only safe when there's no transition animation to
+      // mask a loading gap (i.e. the very first video on page load). Mid-
+      // transition switches always start at 0, which is the one part of
+      // the file guaranteed to already be buffered, so playback never
+      // shows a frozen frame while the glitch is running on top of it.
+      start: function (video, onCycleEnd, randomStart) {
+        stop();
+        activeVideo = video;
+        video.pause();
+        var seekAndPlay = function () {
+          var duration = video.duration;
+          if (randomStart && duration && isFinite(duration)) {
+            video.currentTime = Math.random() * duration * 0.8;
+          }
+          video.play().catch(function () {});
+          if (onCycleEnd) {
+            endedListener = onCycleEnd;
+            video.addEventListener("ended", endedListener, { once: true });
+          }
+        };
+        if (video.readyState >= 1) {
+          seekAndPlay();
+        } else {
+          video.addEventListener("loadedmetadata", seekAndPlay, { once: true });
+        }
+      },
+      stop: stop
+    };
+  })();
+
   var heroVideo = document.querySelector(".hero-video");
   if (heroVideo) {
     var videoPool = window.HERO_VIDEOS || [];
     if (videoPool.length) {
       var chosen = videoPool[Math.floor(Math.random() * videoPool.length)];
       heroVideo.src = chosen.file || chosen;
-      heroVideo.play().catch(function () {});
+      window.heroVideoPlayer.start(heroVideo, function () {
+        if (window.switchVideo) window.switchVideo();
+      }, true);
     }
   }
 
@@ -323,13 +507,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   var GLITCH_CHARS = "$&#%@!<>[]{}=+*^?/\\_~";
 
-  function TextScramble(el, glitchProbability) {
+  function TextScramble(el, glitchProbability, onComplete) {
     this.el = el;
     this.frame = 0;
     this.frameRequest = null;
     this.queue = [];
     this.spans = [];
     this.glitchProbability = typeof glitchProbability === "number" ? glitchProbability : 0.3;
+    this.onComplete = onComplete;
     this.update = this.update.bind(this);
   }
 
@@ -386,6 +571,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (complete < this.queue.length) {
       this.frame++;
       this.frameRequest = requestAnimationFrame(this.update);
+    } else if (this.onComplete) {
+      this.onComplete();
     }
   };
 
@@ -393,7 +580,19 @@ document.addEventListener("DOMContentLoaded", function () {
     var hiddenText = target.nextElementSibling;
     if (!hiddenText) return;
     var fullText = hiddenText.textContent.trim();
-    var scrambler = new TextScramble(target);
+    var onComplete = null;
+    if (hiddenText.id === "home-title" && fullText.slice(-3) === "...") {
+      onComplete = function () {
+        var slots = target.querySelectorAll(".scramble-slot");
+        var dots = Array.prototype.slice.call(slots, -3);
+        dots.forEach(function (dot) {
+          dot.classList.add("loading-dot");
+          dot.style.setProperty("--glitch-duration", 3600 + Math.random() * 2600 + "ms");
+          dot.style.setProperty("--glitch-delay", Math.random() * 3000 + "ms");
+        });
+      };
+    }
+    var scrambler = new TextScramble(target, undefined, onComplete);
     var stagger = Math.min(fullText.length * 1.35, 95);
     scrambler.setText(fullText, stagger);
   });
@@ -474,6 +673,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
         e.preventDefault();
         var href = panel.href;
+        if (window.triggerCursorPush) window.triggerCursorPush();
         document.body.classList.add("page-fade-out");
         setTimeout(function () {
           window.location.href = href;
@@ -558,12 +758,14 @@ document.addEventListener("DOMContentLoaded", function () {
         thumbPrev.addEventListener("click", function () {
           var activeIndex = thumbButtonList.indexOf(document.querySelector(".thumb-button.is-active"));
           if (activeIndex > 0) activateThumb(thumbButtonList[activeIndex - 1]);
+          if (window.triggerCursorPush) window.triggerCursorPush();
         });
       }
       if (thumbNext) {
         thumbNext.addEventListener("click", function () {
           var activeIndex = thumbButtonList.indexOf(document.querySelector(".thumb-button.is-active"));
           if (activeIndex !== -1 && activeIndex < thumbButtonList.length - 1) activateThumb(thumbButtonList[activeIndex + 1]);
+          if (window.triggerCursorPush) window.triggerCursorPush();
         });
       }
       updateThumbNavArrows();

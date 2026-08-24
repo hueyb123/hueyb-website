@@ -3,8 +3,8 @@ layout: base.njk
 title: "Huey B"
 nav: home
 ---
-    <section class="hero-full">
-      <video class="hero-video" autoplay muted loop playsinline></video>
+    <div class="hero-full" id="hero-reload" role="button" tabindex="0" aria-label="Switch video">
+      <video class="hero-video" autoplay muted playsinline preload="auto"></video>
       <div class="hero-scrim"></div>
       <div class="container hero-inner">
         {% if home.titles.length %}
@@ -18,11 +18,132 @@ nav: home
           <span class="visually-hidden" id="home-description"></span>
         </p>
       </div>
-    </section>
+    </div>
 
     <script>
       window.HERO_VIDEOS = {{ home.videos | dump | safe }};
       (function () {
+        var hero = document.getElementById("hero-reload");
+        var heroVideo = document.querySelector(".hero-video");
+
+        var levenshtein = function (a, b) {
+          var m = a.length, n = b.length;
+          var dp = [];
+          for (var i = 0; i <= m; i++) dp.push([i]);
+          for (var j = 0; j <= n; j++) dp[0][j] = j;
+          for (i = 1; i <= m; i++) {
+            for (j = 1; j <= n; j++) {
+              dp[i][j] = a[i - 1] === b[j - 1]
+                ? dp[i - 1][j - 1]
+                : 1 + Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]);
+            }
+          }
+          return dp[m][n];
+        };
+        var baseName = function (src) {
+          return (src || "").split("/").pop().replace(/\.[^.]+$/, "").toLowerCase();
+        };
+        // 0 = names have nothing in common, 1 = same clip. Used to scale how
+        // disruptive the glitch feels: related videos (same shoot, similar
+        // filenames) cut smoother; unrelated ones hit harder.
+        var videoConnection = function (srcA, srcB) {
+          var a = baseName(srcA);
+          var b = baseName(srcB);
+          if (!a || !b) return 0.5;
+          var dist = levenshtein(a, b);
+          var maxLen = Math.max(a.length, b.length) || 1;
+          return Math.max(0, 1 - dist / maxLen);
+        };
+
+        var playHeroGlitch = function (connection) {
+          if (!heroVideo || !heroVideo.animate) return null;
+          var intensity = 1 - connection;
+          // Fewer steps and simpler filters keep this cheap to composite -
+          // this runs right as the video element is being torn down and
+          // rebuilt for the new src, which is the heaviest moment already.
+          var steps = 3 + Math.round(intensity * 3) + Math.floor(Math.random() * 2);
+          var duration = 340 + intensity * 380 + Math.random() * 140;
+          var Z = " translateZ(0)";
+          var frames = [{ filter: "none", transform: "translateX(0)" + Z, opacity: 1 }];
+          for (var i = 1; i < steps; i++) {
+            var gray = (0.3 + Math.random() * (0.4 + intensity * 0.6)).toFixed(2);
+            var bright = (0.85 + Math.random() * (0.15 + intensity * 0.32)).toFixed(2);
+            var shift = (Math.random() * (0.25 + intensity * 0.85) - (0.12 + intensity * 0.42)).toFixed(2);
+            var op = Math.random() < 0.18 + intensity * 0.3 ? (0.82 + Math.random() * 0.12).toFixed(2) : 1;
+            frames.push({
+              filter: "grayscale(" + gray + ") brightness(" + bright + ")",
+              transform: "translateX(" + shift + "%)" + Z,
+              opacity: op
+            });
+          }
+          frames.push({ filter: "none", transform: "translateX(0)" + Z, opacity: 1 });
+          heroVideo.animate(frames, { duration: duration, easing: "linear" });
+          return duration;
+        };
+        var switchVideo = window.switchVideo = function () {
+          if (!heroVideo) return;
+          var pool = (window.HERO_VIDEOS || []).filter(function (item) {
+            return !item.hidden;
+          });
+          if (!pool.length) return;
+          var currentSrc = heroVideo.currentSrc || heroVideo.src;
+          var choices = pool.filter(function (item) {
+            return !currentSrc || currentSrc.indexOf(item.file || item) === -1;
+          });
+          if (!choices.length) choices = pool;
+          var chosen = choices[Math.floor(Math.random() * choices.length)];
+          var chosenSrc = chosen.file || chosen;
+
+          // Get the browser fetching/buffering the next clip immediately,
+          // in the background, so by the time the transition actually
+          // swaps heroVideo.src the data is already warm in cache instead
+          // of starting a cold load right as we seek and play it.
+          var preload = document.createElement("video");
+          preload.muted = true;
+          preload.preload = "auto";
+          preload.src = chosenSrc;
+          preload.load();
+
+          var applyVideo = function () {
+            heroVideo.src = chosenSrc;
+            if (window.heroVideoPlayer) {
+              window.heroVideoPlayer.start(heroVideo, switchVideo);
+            } else {
+              heroVideo.play().catch(function () {});
+            }
+            if (window.randomizeAccentColors) {
+              window.randomizeAccentColors();
+            }
+          };
+          if (Math.random() < 0.03) {
+            var fadeDuration = 1100 + Math.random() * 500;
+            heroVideo.style.transition = "opacity " + fadeDuration + "ms ease";
+            heroVideo.style.opacity = "0";
+            setTimeout(function () {
+              applyVideo();
+              requestAnimationFrame(function () {
+                heroVideo.style.opacity = "1";
+              });
+            }, fadeDuration);
+          } else {
+            var connection = videoConnection(currentSrc, chosenSrc);
+            var glitchDuration = playHeroGlitch(connection);
+            setTimeout(applyVideo, glitchDuration ? glitchDuration * 0.45 : 0);
+          }
+        };
+        if (hero) {
+          hero.addEventListener("click", function () {
+            if (window.triggerCursorPush) window.triggerCursorPush();
+            switchVideo();
+          });
+          hero.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              if (window.triggerCursorPush) window.triggerCursorPush();
+              switchVideo();
+            }
+          });
+        }
         var pick = function (pool, id) {
           var el = document.getElementById(id);
           var visible = (pool || []).filter(function (item) {

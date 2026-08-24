@@ -1,5 +1,5 @@
 ---
-name: Ravenous Fish
+name: Ravenous Fish Print
 image: /assets/uploads/img-1040-print.jpg
 edition_type: open
 variants:
