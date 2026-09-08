@@ -1058,6 +1058,38 @@ p {
   aspect-ratio: 1 / 1;
 }
 
+.remnants-page main {
+  display: flex;
+}
+
+.remnants-page .site-footer {
+  display: none;
+}
+
+.remnants-full {
+  position: relative;
+  flex: 1 0 auto;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.remnants-media {
+  position: absolute;
+  inset: 0;
+  will-change: filter, transform;
+  transform: translateZ(0);
+}
+
+.remnants-media img,
+.remnants-media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
 .tile {
   position: relative;
   aspect-ratio: 4 / 3;

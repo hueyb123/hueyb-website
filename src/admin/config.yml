@@ -190,6 +190,7 @@ collections:
         fields:
           - { label: "Headline", name: "headline", widget: "string", hint: "The big heading shown at the top of the Store page." }
           - { label: "Tagline", name: "tagline", widget: "text", required: false, hint: "Shown under the headline at the top of the page." }
+          - { label: "Hide Store", name: "hidden", widget: "boolean", default: false, required: false, hint: "Removes it from the header nav and hides every print for sale." }
 
   - name: "cv"
     label: "CV"
@@ -225,8 +226,8 @@ collections:
           - { label: "Hide Photography", name: "photography", widget: "boolean", default: false, required: false, hint: "Removes it from the header nav, empties its gallery, and stops every one of its posts from building." }
           - { label: "Hide Painting", name: "painting", widget: "boolean", default: false, required: false, hint: "Removes it from the header nav and hides the Painting landing page, Good Times, Bad Times, and every post in both sections." }
           - { label: "Hide Blog", name: "blog", widget: "boolean", default: false, required: false, hint: "Removes it from the header nav, empties the blog, and stops every post from building." }
-          - { label: "Hide Prints", name: "prints", widget: "boolean", default: false, required: false, hint: "Removes it from the header nav and hides every print for sale." }
           - { label: "Hide CV", name: "cv", widget: "boolean", default: false, required: false, hint: "Removes it from the About dropdown and hides the whole CV page." }
+          - { label: "Hide Stream", name: "remnants", widget: "boolean", default: false, required: false, hint: "Removes it from the header nav and hides the page." }
 
   - name: "navigation"
     label: "Header Navigation"
@@ -284,4 +285,4 @@ collections:
             summary: "{{fields.file}}"
             hint: "One random video from this pool plays each time someone loads the home page."
             fields:
-              - { label: "Video File", name: "file", widget: "file" }
+              - { label: "Video File", name: "file", widget: "file", media_folder: "src/assets/videos", public_folder: "/assets/videos" }

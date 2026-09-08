@@ -12,7 +12,7 @@
   <link rel="alternate" type="application/rss+xml" title="Huey B — New Posts" href="/feed.xml">
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
-<body{% if nav == "home" %} class="home-page"{% endif %}>
+<body{% if nav == "home" %} class="home-page"{% elif nav == "remnants" %} class="remnants-page"{% endif %}>
 
   <header class="site-header">
     <div class="container">
@@ -38,7 +38,7 @@
             </li>
             {% endif %}
             {% else %}
-            {% if not section_visibility[item.key] %}
+            {% if not section_visibility[item.key] and not (item.key == "prints" and prints_settings.hidden) %}
             <li><a href="{{ item.url }}"{% if nav == item.key %} class="active"{% endif %}>{{ item.label }}</a></li>
             {% endif %}
             {% endif %}
@@ -46,10 +46,12 @@
           </ul>
         </nav>
         <div class="header-icons">
+          {% if not prints_settings.hidden %}
           <a href="/cart/" class="icon-link" aria-label="Cart">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
             <span class="cart-badge">0</span>
           </a>
+          {% endif %}
           <a href="https://www.instagram.com/huebeeeee/" class="icon-link" aria-label="Instagram" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
           </a>

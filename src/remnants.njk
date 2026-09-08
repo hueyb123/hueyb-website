@@ -1,0 +1,186 @@
+---
+layout: base.njk
+title: "Stream | Huey B"
+nav: remnants
+---
+    {% if not section_visibility.remnants %}
+    <div class="remnants-full" id="remnants-full" role="button" tabindex="0" aria-label="Show another piece">
+      <div class="remnants-media" id="remnants-media"></div>
+    </div>
+
+    <script>
+      window.REMNANTS_ITEMS = {{ collections.remnants | dump | safe }};
+      (function () {
+        var stage = document.getElementById("remnants-full");
+        var mediaHost = document.getElementById("remnants-media");
+        var items = (window.REMNANTS_ITEMS || []).slice();
+        if (!stage || !items.length) return;
+
+        var currentFile = null;
+        var advanceTimer = null;
+
+        var clearAdvanceTimer = function () {
+          if (advanceTimer) {
+            clearTimeout(advanceTimer);
+            advanceTimer = null;
+          }
+        };
+
+        // Same glitch/fade transition system as the homepage video, just
+        // applied to this media container instead of a single <video> -
+        // this page swaps between images and videos, not just one tag.
+        var levenshtein = function (a, b) {
+          var m = a.length, n = b.length;
+          var dp = [];
+          for (var i = 0; i <= m; i++) dp.push([i]);
+          for (var j = 0; j <= n; j++) dp[0][j] = j;
+          for (i = 1; i <= m; i++) {
+            for (j = 1; j <= n; j++) {
+              dp[i][j] = a[i - 1] === b[j - 1]
+                ? dp[i - 1][j - 1]
+                : 1 + Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]);
+            }
+          }
+          return dp[m][n];
+        };
+        var baseName = function (src) {
+          return (src || "").split("/").pop().replace(/\.[^.]+$/, "").toLowerCase();
+        };
+        var mediaConnection = function (srcA, srcB) {
+          var a = baseName(srcA);
+          var b = baseName(srcB);
+          if (!a || !b) return 0.5;
+          var dist = levenshtein(a, b);
+          var maxLen = Math.max(a.length, b.length) || 1;
+          return Math.max(0, 1 - dist / maxLen);
+        };
+        var playGlitch = function (connection) {
+          if (!mediaHost.animate) return null;
+          var intensity = 1 - connection;
+          var steps = 3 + Math.round(intensity * 3) + Math.floor(Math.random() * 2);
+          var duration = 340 + intensity * 380 + Math.random() * 140;
+          var Z = " translateZ(0)";
+          var frames = [{ filter: "none", transform: "translateX(0)" + Z, opacity: 1 }];
+          for (var i = 1; i < steps; i++) {
+            var gray = (0.3 + Math.random() * (0.4 + intensity * 0.6)).toFixed(2);
+            var bright = (0.85 + Math.random() * (0.15 + intensity * 0.32)).toFixed(2);
+            var shift = (Math.random() * (0.25 + intensity * 0.85) - (0.12 + intensity * 0.42)).toFixed(2);
+            var op = Math.random() < 0.18 + intensity * 0.3 ? (0.82 + Math.random() * 0.12).toFixed(2) : 1;
+            frames.push({
+              filter: "grayscale(" + gray + ") brightness(" + bright + ")",
+              transform: "translateX(" + shift + "%)" + Z,
+              opacity: op
+            });
+          }
+          frames.push({ filter: "none", transform: "translateX(0)" + Z, opacity: 1 });
+          mediaHost.animate(frames, { duration: duration, easing: "linear" });
+          return duration;
+        };
+
+        var showItem = function (chosen, startTime) {
+          clearAdvanceTimer();
+          currentFile = chosen.file;
+
+          mediaHost.innerHTML = "";
+          var el;
+          if (chosen.type === "video") {
+            el = document.createElement("video");
+            el.autoplay = true;
+            el.muted = true;
+            el.playsInline = true;
+            // No loop - when the clip finishes, cut to the next piece.
+            el.addEventListener("ended", function () {
+              showRandom();
+            });
+            if (startTime) {
+              el.addEventListener("loadedmetadata", function () {
+                el.currentTime = startTime;
+              }, { once: true });
+            }
+            el.src = chosen.file;
+          } else {
+            el = document.createElement("img");
+            el.src = chosen.file;
+            el.alt = chosen.parentTitle || "";
+            // Photos hold for a random stretch under 5 minutes, then advance.
+            var dwell = 8000 + Math.random() * (5 * 60 * 1000 - 8000);
+            advanceTimer = setTimeout(function () {
+              showRandom();
+            }, dwell);
+          }
+          mediaHost.appendChild(el);
+        };
+
+        var transitionTo = function (chosen, forceCut) {
+          if (forceCut) {
+            showItem(chosen);
+            return;
+          }
+          var fromFile = currentFile;
+          var roll = Math.random();
+          if (roll < 0.03) {
+            var fadeDuration = 1100 + Math.random() * 500;
+            mediaHost.style.transition = "opacity " + fadeDuration + "ms ease";
+            mediaHost.style.opacity = "0";
+            setTimeout(function () {
+              showItem(chosen);
+              requestAnimationFrame(function () {
+                mediaHost.style.opacity = "1";
+              });
+            }, fadeDuration);
+          } else if (roll < 0.23) {
+            showItem(chosen);
+          } else {
+            var connection = mediaConnection(fromFile, chosen.file);
+            var glitchDuration = playGlitch(connection);
+            setTimeout(function () {
+              showItem(chosen);
+            }, glitchDuration ? glitchDuration * 0.45 : 0);
+          }
+        };
+
+        var showRandom = function (forceCut) {
+          var choices = items.filter(function (item) {
+            return item.file !== currentFile;
+          });
+          if (!choices.length) choices = items;
+          transitionTo(choices[Math.floor(Math.random() * choices.length)], forceCut);
+        };
+
+        stage.addEventListener("click", function (e) {
+          if (e.target.closest("a")) return;
+          if (window.triggerCursorPush) window.triggerCursorPush();
+          showRandom(true);
+        });
+        stage.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            showRandom(true);
+          }
+        });
+
+        // Arriving here via a click on the homepage video hands off the
+        // exact clip and playback position so the Stream picks up right
+        // where the homepage left off, instead of jumping to something
+        // random. Every click from here on is random as normal.
+        var handoffFile = null;
+        var handoffTime = 0;
+        try {
+          handoffFile = sessionStorage.getItem("streamHandoffFile");
+          handoffTime = parseFloat(sessionStorage.getItem("streamHandoffTime")) || 0;
+          sessionStorage.removeItem("streamHandoffFile");
+          sessionStorage.removeItem("streamHandoffTime");
+        } catch (e) {}
+        var handoffItem = handoffFile && items.filter(function (item) {
+          return item.file === handoffFile;
+        })[0];
+        if (handoffItem) {
+          showItem(handoffItem, handoffTime);
+        } else {
+          // First item on a fresh visit appears instantly - nothing is on
+          // screen yet to transition from.
+          showItem(items[Math.floor(Math.random() * items.length)]);
+        }
+      })();
+    </script>
+    {% endif %}

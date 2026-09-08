@@ -3,7 +3,7 @@ layout: base.njk
 title: "Huey B"
 nav: home
 ---
-    <div class="hero-full" id="hero-reload" role="button" tabindex="0" aria-label="Switch video">
+    <div class="hero-full" id="hero-reload" role="button" tabindex="0" aria-label="Go to the Stream">
       <video class="hero-video" autoplay muted playsinline preload="auto"></video>
       <div class="hero-scrim"></div>
       <div class="container hero-inner">
@@ -131,16 +131,30 @@ nav: home
             setTimeout(applyVideo, glitchDuration ? glitchDuration * 0.45 : 0);
           }
         };
+        var goToStream = function () {
+          if (window.triggerCursorPush) window.triggerCursorPush();
+          if (heroVideo) {
+            var src = heroVideo.currentSrc || heroVideo.src;
+            var path = src;
+            try {
+              path = decodeURIComponent(new URL(src, window.location.href).pathname);
+            } catch (e) {}
+            try {
+              sessionStorage.setItem("streamHandoffFile", path || "");
+              sessionStorage.setItem("streamHandoffTime", String(heroVideo.currentTime || 0));
+            } catch (e) {}
+          }
+          document.body.classList.add("page-fade-out");
+          setTimeout(function () {
+            window.location.href = "/remnants/";
+          }, 420);
+        };
         if (hero) {
-          hero.addEventListener("click", function () {
-            if (window.triggerCursorPush) window.triggerCursorPush();
-            switchVideo();
-          });
+          hero.addEventListener("click", goToStream);
           hero.addEventListener("keydown", function (e) {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
-              if (window.triggerCursorPush) window.triggerCursorPush();
-              switchVideo();
+              goToStream();
             }
           });
         }

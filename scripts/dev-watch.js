@@ -21,7 +21,7 @@ function startEleventy() {
   // Large batches of binary asset writes (e.g. many new/re-encoded videos
   // landing at once) have repeatedly run the watcher out of its default
   // heap and crashed it. A bigger heap ceiling avoids that.
-  child = spawn(process.execPath, ["--max-old-space-size=4096", ELEVENTY_CMD, "--serve"], {
+  child = spawn(process.execPath, ["--max-old-space-size=8192", ELEVENTY_CMD, "--serve"], {
     stdio: "inherit",
     windowsHide: true,
   });

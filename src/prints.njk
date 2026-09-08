@@ -3,7 +3,7 @@ layout: base.njk
 title: "Prints | Huey B"
 nav: prints
 ---
-    {% if not section_visibility.prints %}
+    {% if not prints_settings.hidden %}
     <section class="page-header container">
       <h1>{{ prints_settings.headline }}</h1>
       <p>{{ prints_settings.tagline }}</p>

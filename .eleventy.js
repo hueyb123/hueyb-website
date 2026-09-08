@@ -7,6 +7,17 @@ var fs = require("fs");
 // contents across a whole watch/serve session) so toggling a checkbox in
 // the CMS takes effect on the next build without restarting the server.
 function isSectionHidden(section) {
+  // The Store's toggle lives in prints_settings.json (editable right
+  // alongside its headline/tagline in the CMS) instead of the shared
+  // section_visibility.json every other section uses.
+  if (section === "prints") {
+    try {
+      var printsData = JSON.parse(fs.readFileSync(path.join(__dirname, "src/_data/prints_settings.json"), "utf8"));
+      return !!printsData.hidden;
+    } catch (e) {
+      return false;
+    }
+  }
   try {
     var data = JSON.parse(fs.readFileSync(path.join(__dirname, "src/_data/section_visibility.json"), "utf8"));
     return !!data[section];
@@ -111,6 +122,49 @@ module.exports = function (eleventyConfig) {
   addProjectStyleCollection("installations", "installations");
   addBlogStyleCollection("painting", "painting");
   addBlogStyleCollection("blogPosts", "blog");
+
+  // Flattens every visible media item out of Photography, Installations, and
+  // Painting into one pool - no separate curation step, so anything
+  // uploaded to those sections just shows up here automatically. Each item
+  // remembers which post it came from so it stays clickable back to source.
+  eleventyConfig.addCollection("remnants", function (collectionApi) {
+    var sources = [
+      { folder: "photography", base: "/photography/" },
+      { folder: "installations", base: "/installations/" },
+      { folder: "painting", base: "/painting/" },
+    ];
+    var items = [];
+    sources.forEach(function (src) {
+      var posts = getVisibleByGlob(collectionApi, "src/content/" + src.folder + "/*.md", src.folder);
+      posts.forEach(function (post) {
+        var media = Array.isArray(post.data.media) ? post.data.media : [];
+        var parentTitle = post.data.title || post.data.headline || "Untitled";
+        var parentUrl = src.base + post.fileSlug + "/";
+        media.forEach(function (m) {
+          if (m.hidden || !m.file) return;
+          items.push({
+            file: m.file,
+            type: m.type || "image",
+            parentUrl: parentUrl,
+            parentTitle: parentTitle,
+          });
+        });
+      });
+    });
+    try {
+      var home = JSON.parse(fs.readFileSync(path.join(__dirname, "src/_data/home.json"), "utf8"));
+      (home.videos || []).forEach(function (v) {
+        if (v.hidden || !v.file) return;
+        items.push({
+          file: v.file,
+          type: "video",
+          parentUrl: "/",
+          parentTitle: null,
+        });
+      });
+    } catch (e) {}
+    return items;
+  });
 
   eleventyConfig.addCollection("prints", function (collectionApi) {
     var items = getVisibleByGlob(collectionApi, "src/content/prints/*.md", "prints");

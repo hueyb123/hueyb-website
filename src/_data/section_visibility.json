@@ -3,6 +3,6 @@
   "photography": false,
   "painting": false,
   "blog": true,
-  "prints": false,
-  "cv": false
+  "cv": false,
+  "remnants": false
 }

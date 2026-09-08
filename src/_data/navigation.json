@@ -1,6 +1,11 @@
 {
   "items": [
     {
+      "label": "Stream",
+      "key": "remnants",
+      "url": "/remnants/"
+    },
+    {
       "label": "Installations",
       "key": "installations",
       "url": "/installations/"
